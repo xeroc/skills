@@ -1,0 +1,14 @@
+{
+  "jupiter": {
+    "mac_address": "90:1b:0e:2b:e5:17",
+    "ip_address": "192.168.178.49",
+    "description": "Jupiter server - currently online",
+    "last_wake": "Do 29. Jan 08:59:21 CET 2026"
+  },
+  "truenas": {
+    "mac_address": "b4:7a:f1:a6:eb:7e",
+    "ip_address": "192.168.178.21",
+    "description": "TrueNAS storage server - currently online",
+    "last_wake": "Do 29. Jan 09:07:55 CET 2026"
+  }
+}
