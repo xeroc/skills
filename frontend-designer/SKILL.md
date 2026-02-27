@@ -201,6 +201,66 @@ Ethereal gradient mesh background with flowing aurora borealis colors (teal, pur
 
 ---
 
+## SIGNS OF TASTE IN WEB UI
+
+These principles separate ordinary interfaces from exceptional ones. Every interface you build should embody these characteristics.
+
+### Performance & Responsiveness
+
+- **Every interaction happens in 100ms** - No jank, instant feedback, hardware-accelerated animations
+- **Skeleton loading states** - Show structure before content, avoid spinner-only loading
+- **No visible scrollbars** - Use custom scrollbar styling or hide them elegantly (`scrollbar-hide`, `::-webkit-scrollbar`)
+
+### User Experience & Flow
+
+- **No product tours** - Interface should be immediately understandable on first glance
+- **All navigation is under 3 steps** - Deep content within 3 clicks/taps maximum
+- **Persistent resumable state** - Save progress, form data, scroll position - user never loses work
+- **Honest one-click cancel** - Cancel works instantly, no "are you sure?" prompts for destructive actions
+- **Cmd+K command palette** - Power user shortcut for quick actions
+- **Copy/paste from clipboard** - One-click copy for codes, URLs, data
+
+### Visual Design & Typography
+
+- **Not more than 3 colors** - Primary, accent, neutral. Color restraint = sophistication
+- **Optical alignment vs geometric** - Align visually (optically), not by pixel coordinates
+- **Optimized for L to R reading** - English reading patterns: left-to-right, top-to-bottom visual hierarchy
+- **Larger hit targets for buttons/inputs** - Minimum 44x44px, mobile-friendly touch areas
+
+### Communication & Feedback
+
+- **Very minimal tooltips** - If you need a tooltip, the UI is unclear. Fix the UI instead
+- **Copy is active voice, max 7 words per sentence** - Direct, punchy, imperative ("Save now" not "The file can be saved")
+- **Reassurance about loss** - Explicitly state what happens before destructive actions ("This will permanently delete")
+
+### Brand & Technical
+
+- **URL/slugs are short and simple, no UIDs** - Clean URLs like `/settings/profile`, not `/user/8f4d3a2f/settings`
+- **Copyable SVG logo + brandkit** - SVG assets ready for use, consistent brand elements
+
+### Implementation Checklist
+
+- [ ] All animations/interactions under 100ms
+- [ ] Skeleton loaders for async content
+- [ ] Custom or hidden scrollbars
+- [ ] No walkthrough/onboarding overlay needed
+- [ ] Any content reachable in ≤3 navigation steps
+- [ ] State persists on refresh/reload
+- [ ] Cancel buttons work immediately
+- [ ] Command palette (Cmd+K) available
+- [ ] One-click copy for shareable content
+- [ ] Color palette uses ≤3 distinct colors
+- [ ] Text aligned optically, not just mathematically
+- [ ] Reading flow matches L→R pattern
+- [ ] Touch targets ≥44x44px
+- [ ] No tooltips (UI is self-explanatory)
+- [ ] Copy is active voice, <7 words/sentence
+- [ ] Destructive actions warn before execution
+- [ ] Clean, readable URLs
+- [ ] Brand assets in SVG format
+
+---
+
 ## IMPLEMENTATION GUIDELINES
 
 ### Match Complexity to Vision
