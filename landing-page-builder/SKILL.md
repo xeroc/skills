@@ -128,13 +128,9 @@ export function ThemeToggle() {
           gradient accent
         </span>
       </h1>
-      <p className="text-xl text-muted-foreground">
-        Subheading description
-      </p>
+      <p className="text-xl text-muted-foreground">Subheading description</p>
     </div>
-    <div className="flex flex-col justify-center">
-      {/* Sidebar content */}
-    </div>
+    <div className="flex flex-col justify-center">{/* Sidebar content */}</div>
   </div>
 </section>
 ```
@@ -158,7 +154,10 @@ export function ThemeToggle() {
 ### 4. Section Dividers
 
 ```tsx
-<div className="font-mono text-sm text-muted-foreground/30 select-none" aria-hidden="true">
+<div
+  className="font-mono text-sm text-muted-foreground/30 select-none"
+  aria-hidden="true"
+>
   //
 </div>
 ```
@@ -169,9 +168,7 @@ export function ThemeToggle() {
 <div className="space-y-2">
   <div className="font-mono text-sm text-muted-foreground">01</div>
   <h3 className="font-medium">Feature Title</h3>
-  <p className="text-sm text-muted-foreground">
-    Feature description
-  </p>
+  <p className="text-sm text-muted-foreground">Feature description</p>
 </div>
 ```
 
@@ -254,6 +251,44 @@ Common landing page sections:
 </span>
 ```
 
+### Waitlist or contact form
+
+A separate n8n endpoint that accepts JSON blobs. Use this lib:
+
+```typescript
+export async function addToWaitlist(args: Record<string, string>) {
+  const n8nWebhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
+
+  if (!n8nWebhookUrl) {
+    throw new Error(
+      "N8N webhook URL not configured. Please set NEXT_PUBLIC_N8N_WEBHOOK_URL environment variable.",
+    );
+  }
+
+  try {
+    const response = await fetch(n8nWebhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...args,
+        timestamp: new Date().toISOString(),
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`N8N webhook failed: ${response.statusText}`);
+    }
+
+    await response.json();
+  } catch (error) {
+    console.error("Failed to add to waitlist:", error);
+    throw error;
+  }
+}
+```
+
 ## Common Pitfalls
 
 - **Don't mix font classes**: Keep typography consistent - remove `font-mono` explicit classes
@@ -264,6 +299,7 @@ Common landing page sections:
 ## Example Output
 
 See the Vyne landing page for a complete implementation of this design system:
+
 - Dark/light toggle in header
 - Roboto Mono everywhere
 - Solana purple/teal gradients
