@@ -1,11 +1,11 @@
 ---
 name: landing-page-builder
-description: Build modern landing pages with dark/light theme toggle, Roboto Mono typography, and Solana-inspired color scheme. Use when you need to create a sleek, minimalist landing page with playbooks.com-inspired design patterns, gradient accents, and smooth transitions.
+description: Build modern landing pages with dark/light theme toggle, Roboto Mono typography, and Solana-inspired color scheme. Use when you need to create a sleek, minimalist landing page with playbooks.com-inspired design patterns, gradient accents, busy terminal cards, and smooth transitions.
 ---
 
 # Landing Page Builder
 
-Build modern, high-conversion landing pages with a dark/light toggle, Roboto Mono typography, and Solana color scheme. This skill provides the complete design system and component patterns used to create the Vyne landing page.
+Build modern, high-conversion landing pages with a dark/light toggle, Roboto Mono typography, and Solana color scheme. This skill provides the complete design system and component patterns used to create a modern landing page.
 
 ## Quick Start
 
@@ -172,7 +172,110 @@ export function ThemeToggle() {
 </div>
 ```
 
-### 6. Gradient Background (Optional)
+### 6. Busy Terminal Cards (Git Diff/Code Style)
+
+Create "busy" cards that show activity, terminal output, or git diffs. Use these to make landing pages feel alive and active.
+
+**Git Diff Card Pattern:**
+
+```tsx
+<div className="bg-card border-border rounded-lg border p-4 space-y-3">
+  <div className="flex items-center gap-2">
+    <span className="text-muted-foreground">$</span>
+    <span className="text-foreground">replicas connect update-changelog</span>
+  </div>
+
+  <div className="flex items-center gap-3">
+    <span className="text-sm text-muted-foreground">feat/analytics</span>
+    <div className="flex gap-2">
+      <span className="text-green-500 text-sm">+</span>
+      <span className="text-foreground text-sm">1247</span>
+      <span className="text-red-500 text-sm">-</span>
+      <span className="text-foreground text-sm">89</span>
+    </div>
+  </div>
+
+  <button className="bg-muted hover:bg-muted/80 text-muted-foreground text-xs px-3 py-1.5 rounded transition-colors">
+    Copy command
+  </button>
+</div>
+```
+
+**Terminal Activity Grid:**
+
+```tsx
+<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+  {[
+    {
+      cmd: "replicas connect fix-auth-race",
+      branch: "fix/auth-middleware",
+      add: 12,
+      del: 456,
+    },
+    {
+      cmd: "replicas connect refactor-ml-jobs",
+      branch: "refactor/data-processing",
+      add: 3412,
+      del: 2178,
+    },
+    {
+      cmd: "replicas connect revamp-ui",
+      branch: "feat/dark-mode",
+      add: 834,
+      del: 45,
+    },
+  ].map((item) => (
+    <div
+      key={item.cmd}
+      className="bg-card border-border rounded-lg border p-4 space-y-3"
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-muted-foreground">$</span>
+        <span className="text-foreground text-sm">{item.cmd}</span>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <span className="text-xs text-muted-foreground">{item.branch}</span>
+        <div className="flex gap-2">
+          <span className="text-green-500 text-xs">+</span>
+          <span className="text-foreground text-xs">{item.add}</span>
+          <span className="text-red-500 text-xs">-</span>
+          <span className="text-foreground text-xs">{item.del}</span>
+        </div>
+      </div>
+
+      <button className="bg-muted hover:bg-muted/80 text-muted-foreground text-xs px-3 py-1.5 rounded transition-colors">
+        Copy command
+      </button>
+    </div>
+  ))}
+</div>
+```
+
+**Busy Terminal Animation (Optional):**
+
+```tsx
+import { motion } from "framer-motion";
+
+<motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.3, delay: index * 0.05 }}
+  className="bg-card border-border rounded-lg border p-4"
+>
+  {/* Card content */}
+</motion.div>;
+```
+
+**Color Tokens for Git Diffs:**
+
+```css
+--git-add: 34 197% 39%; /* Green */
+--git-delete: 0 84% 60%; /* Red */
+--git-modify: 253 95% 53%; /* Yellow/Orange */
+```
+
+### 7. Gradient Background (Optional)
 
 ```css
 .gradient-bg {
@@ -195,6 +298,7 @@ When you need to create a landing page:
    - Roboto Mono typography
    - Solana color scheme
    - Playbooks.com-inspired layout
+   - Busy terminal/git-diff cards (for dev tools, CLI products)
    - Optional motion with framer-motion
 
 3. Review and adjust as needed
@@ -211,6 +315,50 @@ Remove all `font-mono` classes from components. Let the default font stack handl
 - **Tablet (md-lg)**: Grid with 2 columns
 - **Desktop (lg)**: Full layout with max-width containers
 
+### Busy Card Motion Guidelines
+
+**Stagger animations for grid entries:**
+
+```tsx
+{
+  items.map((item, index) => (
+    <motion.div
+      key={item.id}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.3,
+        delay: index * 0.05, // Stagger each card
+        ease: "easeOut",
+      }}
+    >
+      {/* Card content */}
+    </motion.div>
+  ));
+}
+```
+
+**Hover lift effect:**
+
+```tsx
+<motion.div
+  whileHover={{ y: -4, boxShadow: "0 10px 30px -10px rgba(153, 69, 255, 0.3)" }}
+  transition={{ duration: 0.2 }}
+>
+  {/* Card content */}
+</motion.div>
+```
+
+**Loading skeleton for busy cards:**
+
+```tsx
+<div className="animate-pulse space-y-3">
+  <div className="h-4 w-3/4 bg-muted rounded"></div>
+  <div className="h-8 w-full bg-muted rounded"></div>
+  <div className="h-4 w-1/2 bg-muted rounded"></div>
+</div>
+```
+
 ### Button States
 
 ```tsx
@@ -225,6 +373,30 @@ Remove all `font-mono` classes from components. Let the default font stack handl
 ```
 
 ## Variations
+
+### Busy Cards for Dev Products
+
+**When to use:** CLI tools, developer platforms, version control, API documentation, terminal-based products.
+
+**Patterns:**
+
+1. **Terminal Activity Grid** (replicas.dev style):
+   - Multiple cards showing concurrent activity
+   - Git diff stats with green/red colors
+   - Command prompts with `$` prefix
+   - Copy buttons for reuse
+
+2. **Code Snippet Cards**:
+   - Syntax-highlighted code blocks
+   - File path indicators
+   - Line numbers
+   - Language badges (TS, JS, Go, etc.)
+
+3. **Process Flow Cards**:
+   - Step-by-step execution visualization
+   - Checkmark `✓` animations
+   - Progress indicators
+   - Terminal output sections
 
 ### Gradient Accents
 
@@ -295,10 +467,13 @@ export async function addToWaitlist(args: Record<string, string>) {
 - **Don't add border-radius**: Use `rounded-none` for buttons to match design system
 - **Don't hardcode theme**: Use toggle with localStorage persistence
 - **Don't over-use gradients**: Subtle radial gradient only for background, inline for specific elements
+- **Don't overuse busy cards**: Limit to 6-9 visible cards at once. More causes visual fatigue
+- **Don't animate everything**: Only animate entry (initial load) and hover states. Continuous animations distract
+- **Don't ignore performance**: Lazy-load busy card grids beyond viewport. Use `loading="lazy"` on images
 
 ## Example Output
 
-See the Vyne landing page for a complete implementation of this design system:
+See to the landing page for a complete implementation of this design system:
 
 - Dark/light toggle in header
 - Roboto Mono everywhere
@@ -306,3 +481,7 @@ See the Vyne landing page for a complete implementation of this design system:
 - Playbooks.com-inspired grid layouts
 - Section dividers with `//`
 - No border radius on buttons
+
+For busy terminal card patterns, see replicas.dev or moltbay.com for reference implementations.
+
+For busy terminal card patterns, see replicas.dev or moltbay.com for reference implementations.
