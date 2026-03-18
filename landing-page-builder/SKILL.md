@@ -287,6 +287,224 @@ import { motion } from "framer-motion";
 }
 ```
 
+### 8. Terminal Execution Flow (Checkmarks)
+
+Show CLI command execution with step-by-step checkmarks. Great for dev tools, CLI products (see terminaluse.com for reference).
+
+```tsx
+<div className="bg-card border-border rounded-lg border p-4 space-y-4">
+  <div className="flex items-center gap-2">
+    <span className="text-muted-foreground">$</span>
+    <span className="font-mono text-sm">tu init</span>
+  </div>
+  <div className="space-y-1 mt-2 pl-4">
+    <div className="flex items-center gap-2 text-xs text-green-500">
+      <span>✓</span>
+      <span>Created agent scaffold</span>
+    </div>
+    <div className="flex items-center gap-2 text-xs text-green-500">
+      <span>✓</span>
+      <span>Agent created and deployed</span>
+    </div>
+    <div className="flex items-center gap-2 text-xs text-green-500">
+      <span>✓</span>
+      <span>Live at acme/my-agent</span>
+    </div>
+  </div>
+</div>
+```
+
+**Multi-step deployment flow:**
+
+```tsx
+<div className="bg-card border-border rounded-lg border p-4 space-y-3">
+  <div className="flex items-center gap-2">
+    <span className="text-muted-foreground">$</span>
+    <span className="font-mono text-sm">tu deploy</span>
+  </div>
+  <div className="space-y-1.5 mt-2 pl-4">
+    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <span>✓</span>
+      <span>Building image...</span>
+    </div>
+    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <span>✓</span>
+      <span>Pushing to registry...</span>
+    </div>
+    <div className="flex items-center gap-2 text-xs text-green-500 font-medium">
+      <span>✓</span>
+      <span>Deployed to production</span>
+    </div>
+  </div>
+</div>
+```
+
+### 9. Code Snippet with File Path
+
+Show code examples with file path indicator. Perfect for API docs, SDK integration guides (see terminaluse.com for reference).
+
+```tsx
+<div className="grid gap-4 md:grid-cols-[auto_1fr]">
+  <div className="bg-muted/20 text-muted-foreground px-3 py-2 font-mono text-xs rounded">
+    api/chat/route.ts
+  </div>
+  <div className="bg-card border-border rounded-lg border p-4 space-y-3">
+    <pre className="text-xs overflow-x-auto">
+      <code className="language-typescript">
+        <span className="text-purple-400">import</span>{" "}
+        <span className="text-blue-400">{terminaluse}</span>{" "}
+        <span className="text-purple-400">from</span>{" "}
+        <span className="text-green-400">'@terminaluse/vercel-ai-sdk'</span>
+        <span className="text-muted-foreground">;</span>
+        {"\n\n"}
+        <span className="text-purple-400">import</span>{" "}
+        <span className="text-blue-400">{streamText}</span>{" "}
+        <span className="text-purple-400">from</span>{" "}
+        <span className="text-green-400">'ai'</span>
+        <span className="text-muted-foreground">;</span>
+      </code>
+    </pre>
+  </div>
+</div>
+```
+
+**Syntax highlighting colors:**
+
+- `import/export` keywords: purple-400
+- Function names: blue-400
+- Strings/literals: green-400
+- Semicolons: muted-foreground
+
+### 10. Progressive Feature Disclosure
+
+Show features with arrow disclosure pattern (icon → description). Good for feature lists (see terminaluse.com for reference).
+
+```tsx
+<div className="space-y-4">
+  <div className="space-y-1">
+    <div className="flex items-center gap-3">
+      <span className="text-xl">🚀</span>
+      <span className="font-medium">Pull requests</span>
+      <span className="text-muted-foreground text-sm">→</span>
+    </div>
+    <div className="pl-10 text-sm text-muted-foreground">
+      Build features, fix bugs, refactor codebases, ship PRs
+    </div>
+  </div>
+
+  <div className="space-y-1">
+    <div className="flex items-center gap-3">
+      <span className="text-xl">📊</span>
+      <span className="font-medium">RL Graders</span>
+      <span className="text-muted-foreground text-sm">→</span>
+    </div>
+    <div className="pl-10 text-sm text-muted-foreground">
+      Score model outputs, run test suites, compute reward signals
+      <span className="text-muted-foreground text-sm">→</span>
+      <span className="text-muted-foreground text-xs">Training rewards</span>
+    </div>
+  </div>
+</div>
+```
+
+### 11. Interactive CLI Input Simulation
+
+Show terminal with simulated typing area and cursor (see terminaluse.com for reference).
+
+```tsx
+<div className="bg-card border-border rounded-lg border p-4 space-y-2">
+  <div className="flex items-center gap-2">
+    <span className="text-muted-foreground">$</span>
+    <span className="font-mono text-sm">
+      tu tasks create -m "Review this PR"
+    </span>
+  </div>
+
+  <div className="pl-4 mt-3 space-y-1">
+    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <span>✓</span>
+      <span>Task created: task_abc123</span>
+    </div>
+    <div className="flex items-center gap-2 text-xs text-muted-foreground animate-pulse">
+      <span>•</span>
+      <span>Agent: Analyzing PR...</span>
+    </div>
+
+    <div className="mt-3 bg-muted/20 rounded p-3">
+      <div className="flex items-center gap-2 text-xs">
+        <span className="text-muted-foreground">Install with</span>
+        <button className="bg-primary/10 hover:bg-primary/20 text-primary text-xs px-2 py-1 rounded transition-colors">
+          uv tool install terminaluse
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+### 12. Simple Pricing Cards
+
+Clean pricing cards with prominent pricing and feature lists (see terminaluse.com for reference).
+
+```tsx
+<div className="grid gap-6 md:grid-cols-3">
+  {[
+    {
+      name: "Hobby",
+      price: "Free",
+      features: ["1 agent", "1 GB filesystem", "100 tasks/month"],
+    },
+    {
+      name: "Starter",
+      price: "$20/mo",
+      features: ["3 agents", "10 GB filesystem", "1,000 tasks/month"],
+      popular: true,
+    },
+    {
+      name: "Pro",
+      price: "$200/mo",
+      features: ["10 agents", "50 GB filesystem", "Unlimited tasks"],
+    },
+  ].map((tier) => (
+    <div
+      key={tier.name}
+      className={`bg-card border-border rounded-lg border p-6 ${tier.popular ? "border-primary shadow-lg shadow-primary/20" : ""}`}
+    >
+      {tier.popular && (
+        <div className="mb-4">
+          <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded">
+            Popular
+          </span>
+        </div>
+      )}
+
+      <h3 className="text-xl font-bold mb-2">{tier.name}</h3>
+      <div className="text-3xl font-bold mb-4">{tier.price}</div>
+
+      <ul className="space-y-2 mb-6">
+        {tier.features.map((feature) => (
+          <li
+            key={feature}
+            className="flex items-center gap-2 text-sm text-muted-foreground"
+          >
+            <span className="text-green-500">✓</span>
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+
+      <button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-none py-3 font-medium transition-colors">
+        {tier.name === "Hobby"
+          ? "Start building"
+          : tier.name === "Starter"
+            ? "Get started"
+            : "Start free trial"}
+      </button>
+    </div>
+  ))}
+</div>
+```
+
 ## Usage Pattern
 
 When you need to create a landing page:
@@ -482,6 +700,6 @@ See to the landing page for a complete implementation of this design system:
 - Section dividers with `//`
 - No border radius on buttons
 
-For busy terminal card patterns, see replicas.dev or moltbay.com for reference implementations.
+For busy terminal card patterns, see replicas.dev, moltbay.com, or terminaluse.com for reference implementations.
 
-For busy terminal card patterns, see replicas.dev or moltbay.com for reference implementations.
+(End of file - total 702 lines)
