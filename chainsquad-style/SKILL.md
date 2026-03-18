@@ -269,7 +269,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <HashRouter>
       <App />
     </HashRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 ```
 
@@ -518,7 +518,7 @@ export async function addToWaitlist(args: Record<string, string>) {
 
   if (!n8nWebhookUrl) {
     throw new Error(
-      "N8N webhook URL not configured. Please set VITE_N8N_WEBHOOK_URL environment variable.",
+      "N8N webhook URL not configured. Please set VITE_N8N_WEBHOOK_URL environment variable."
     );
   }
 
@@ -745,6 +745,7 @@ npm install -D @types/node
 ```
 
 1. Copy config files:
+
    - `vite.config.ts`
    - `tailwind.config.js`
    - `postcss.config.js`
@@ -752,11 +753,13 @@ npm install -D @types/node
    - `src/globals.css`
 
 2. Create directory structure:
+
    - `src/components/`
    - `src/pages/`
    - `src/lib/`
 
 3. Copy component files:
+
    - `src/main.tsx`
    - `src/App.tsx`
    - `src/components/Header.tsx`
@@ -790,9 +793,113 @@ npm run build
 | Forms    | Native fetch      | **n8n webhook** wrapper in `src/lib/n8n.ts`      |
 | Build    | Standard          | Static build for GitHub Pages                    |
 
-## 19. Troubleshooting
+## 19. Landing Page Best Practices
 
-### 19.1. HashRouter Not Working
+### 19.1. No Animations
+
+Avoid `framer-motion` or similar animation libraries. Use CSS transitions for simple hover effects:
+
+```tsx
+// ✗ DON'T
+<motion.div
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5 }}
+>
+  Content
+</motion.div>
+
+// ✅ DO
+<div className="transition-colors hover:bg-muted">
+  Content
+</div>
+```
+
+**Why:**
+
+- Performance: Animations add bundle size and runtime overhead
+- Accessibility: Respects `prefers-reduced-motion`
+- Maintainability: CSS transitions are easier to debug
+- Conversion focus: Content should be the focus, not movement
+
+### 19.2. Section Separators
+
+Use subtle visual separators between sections:
+
+```tsx
+// Terminal-style comment separator
+<div className="font-mono text-sm text-muted-foreground/30 select-none" aria-hidden="true">
+  //
+</div>
+
+// Or a simple border
+<div className="border-t border-border/50" />
+```
+
+### 19.3. Clean Card Layout
+
+Use simple borders instead of shadows and gradients:
+
+```tsx
+// ✗ DON'T - too much visual noise
+<div className="rounded-2xl shadow-lg border hover:shadow-xl hover:-translate-y-1 hover:border-primary/20">
+  <div className="bg-gradient-to-br ...">
+    Content
+  </div>
+</div>
+
+// ✅ DO - clean and focused
+<div className="border border-border/50 hover:border-primary/30 transition-all p-6">
+  Content
+</div>
+```
+
+### 19.4. Stats Section
+
+Display key metrics prominently in the hero:
+
+```tsx
+const stats = [
+  { label: "Metric 1", value: "100" },
+  { label: "Metric 2", value: "99%" },
+];
+
+<div className="flex flex-col justify-center space-y-4">
+  {stats.map((stat) => (
+    <div key={stat.label} className="space-y-2">
+      <div className="font-mono text-sm text-muted-foreground">
+        {stat.label}
+      </div>
+      <div className="text-2xl font-bold">{stat.value}</div>
+    </div>
+  ))}
+</div>;
+```
+
+### 19.5. Typography Hierarchy
+
+Use consistent typography with `uppercase tracking-[0.12em]` for nav/labels:
+
+```tsx
+// Navigation and labels
+<span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">
+  SECTION LABEL
+</span>
+
+// Headings
+<h1 className="text-3xl font-bold tracking-tight">
+  Main Heading
+</h1>
+
+// Body
+<p className="text-muted-foreground leading-relaxed">
+  Body text with comfortable reading width
+</p>
+```
+
+## 20. Troubleshooting
+
+### 20.1. HashRouter Not Working
 
 Ensure you're using `HashRouter` (not `BrowserRouter`) in `src/main.tsx`:
 
