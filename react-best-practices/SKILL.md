@@ -12,6 +12,7 @@ Performance optimization guide for React and Next.js applications, ordered by im
 ## When to Apply
 
 Reference these guidelines when:
+
 - Writing new React components or Next.js pages
 - Implementing data fetching (client or server-side)
 - Reviewing code for performance issues
@@ -22,28 +23,31 @@ Reference these guidelines when:
 
 Rules are prioritized by impact:
 
-| Priority | Category | Impact |
-|----------|----------|--------|
-| 1 | Eliminating Waterfalls | CRITICAL |
-| 2 | Bundle Size Optimization | CRITICAL |
-| 3 | Server-Side Performance | HIGH |
-| 4 | Client-Side Data Fetching | MEDIUM-HIGH |
-| 5 | Re-render Optimization | MEDIUM |
-| 6 | Rendering Performance | MEDIUM |
-| 7 | JavaScript Performance | LOW-MEDIUM |
-| 8 | Advanced Patterns | LOW |
+| Priority | Category                  | Impact      |
+| -------- | ------------------------- | ----------- |
+| 1        | Eliminating Waterfalls    | CRITICAL    |
+| 2        | Bundle Size Optimization  | CRITICAL    |
+| 3        | Server-Side Performance   | HIGH        |
+| 4        | Client-Side Data Fetching | MEDIUM-HIGH |
+| 5        | Re-render Optimization    | MEDIUM      |
+| 6        | Avoid Unnecessary Effects | MEDIUM      |
+| 7        | Rendering Performance     | MEDIUM      |
+| 8        | JavaScript Performance    | LOW-MEDIUM  |
+| 9        | Advanced Patterns         | LOW         |
 
 ## Quick Reference
 
 ### Critical Patterns (Apply First)
 
 **Eliminate Waterfalls:**
+
 - Use `Promise.all()` for independent async operations
 - Start promises early, await late
 - Use `better-all` for partial dependencies
 - Use Suspense boundaries to stream content
 
 **Reduce Bundle Size:**
+
 - Avoid barrel file imports (import directly from source)
 - Use `next/dynamic` for heavy components
 - Defer non-critical third-party libraries
@@ -62,6 +66,7 @@ Rules are prioritized by impact:
 - Defer state reads to usage point
 - Use derived state subscriptions
 - Apply `startTransition` for non-urgent updates
+- Avoid unnecessary useEffect calls (derive state, use event handlers)
 
 ## References
 
@@ -71,6 +76,7 @@ Full documentation with code examples is available in:
 - `references/rules/` - Individual rule files organized by category
 
 To look up a specific pattern, grep the rules directory:
+
 ```
 grep -l "suspense" references/rules/
 grep -l "barrel" references/rules/
@@ -84,6 +90,7 @@ grep -l "swr" references/rules/
 - `server-*` - Server-side performance
 - `client-*` - Client-side data fetching
 - `rerender-*` - Re-render optimization
+- `effect-*` - Avoid unnecessary useEffect patterns
 - `rendering-*` - DOM rendering performance
 - `js-*` - JavaScript micro-optimizations
 - `advanced-*` - Advanced patterns

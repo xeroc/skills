@@ -30,17 +30,22 @@ The section ID (in parentheses) is the filename prefix used to group rules.
 **Impact:** MEDIUM  
 **Description:** Reducing unnecessary re-renders minimizes wasted computation and improves UI responsiveness.
 
-## 6. Rendering Performance (rendering)
+## 6. Avoid Unnecessary Effects (effect)
+
+**Impact:** MEDIUM  
+**Description:** Minimizing unnecessary useEffect calls reduces bugs, improves performance, and simplifies code. Effects are for synchronizing with external systems only.
+
+## 7. Rendering Performance (rendering)
 
 **Impact:** MEDIUM  
 **Description:** Optimizing the rendering process reduces the work the browser needs to do.
 
-## 7. JavaScript Performance (js)
+## 8. JavaScript Performance (js)
 
 **Impact:** LOW-MEDIUM  
 **Description:** Micro-optimizations for hot paths can add up to meaningful improvements.
 
-## 8. Advanced Patterns (advanced)
+## 9. Advanced Patterns (advanced)
 
 **Impact:** LOW  
 **Description:** Advanced patterns for specific cases that require careful implementation.
