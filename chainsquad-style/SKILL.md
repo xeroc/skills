@@ -8,7 +8,7 @@ description: the unique style used by chainsquad.com's websites
 **Use when** creating a new static website with Vite + React that needs:
 
 - HashRouter routing (for GitHub Pages)
-- Tailwind CSS v3 styling
+- Tailwind CSS v4 styling (CSS-first configuration)
 - Dark/light theme toggle
 - Header/Footer separation from pages
 - n8n webhook integration for forms
@@ -20,9 +20,21 @@ description: the unique style used by chainsquad.com's websites
 - **Build Tool**: Vite 6.x
 - **Framework**: React 19.x with TypeScript
 - **Routing**: react-router-dom v7.x (HashRouter)
-- **Styling**: Tailwind CSS 3.x (NOT v4!)
+- **Styling**: Tailwind CSS 4.x (CSS-first config, no tailwind.config.js!)
 - **Icons**: lucide-react
 - **Font**: Roboto Mono + Inter (via Google Fonts)
+
+## Key Differences: Tailwind v3 → v4
+
+| Feature        | Tailwind v3                           | Tailwind v4                                   |
+| -------------- | ------------------------------------- | --------------------------------------------- |
+| Config file    | `tailwind.config.js`                  | **No config file** - use `@theme` in CSS      |
+| CSS import     | `@tailwind base/components/utilities` | `@import 'tailwindcss'`                       |
+| Dark mode      | `darkMode: ['class']` in config       | `@custom-variant dark (&:is(.dark *))` in CSS |
+| PostCSS plugin | `tailwindcss` + `autoprefixer`        | `@tailwindcss/postcss` only                   |
+| Colors/theme   | `theme.extend` in JS                  | `@theme` block in CSS                         |
+| `outline-none` | Removes outline                       | **Use `outline-hidden`**                      |
+| `shadow-xs`    | Extra small shadow                    | **Use `shadow-2xs`**                          |
 
 ## Directory Structure
 
@@ -32,14 +44,13 @@ my-site/
 ├── .gitignore
 ├── index.html                 # Entry point with #root div
 ├── package.json
-├── postcss.config.js
-├── tailwind.config.js         # Tailwind 3 config with HSL vars
+├── postcss.config.cjs         # PostCSS with @tailwindcss/postcss
 ├── tsconfig.json
 ├── tsconfig.node.json
 ├── vite.config.ts             # Vite config with path alias, base: "./"
 ├── src/
 │   ├── env.d.ts
-│   ├── globals.css            # Tailwind directives + CSS vars for theming
+│   ├── globals.css            # @import 'tailwindcss' + @theme + CSS vars
 │   ├── main.tsx              # ReactDOM.createRoot + HashRouter
 │   ├── App.tsx               # Routes + Header + Footer wrapper
 │   ├── components/
@@ -55,6 +66,8 @@ my-site/
 └── dist/                     # Build output (gitignored)
 ```
 
+**NOTE**: No `tailwind.config.js` file exists in Tailwind v4!
+
 ## 1. Package.json
 
 ```json
@@ -69,13 +82,13 @@ my-site/
     "lint": "eslint ."
   },
   "dependencies": {
-    "autoprefixer": "^10.4.24",
+    "@tailwindcss/postcss": "^4.2.2",
     "lucide-react": "^0.564.0",
     "postcss": "^8.5.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.1",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@types/node": "25.2.3",
@@ -88,6 +101,12 @@ my-site/
   }
 }
 ```
+
+**Changes from v3:**
+
+- Removed `autoprefixer` (built into v4)
+- Added `@tailwindcss/postcss`
+- Updated `tailwindcss` to `^4.2.2`
 
 ## 2. Vite Config (vite.config.ts)
 
@@ -120,102 +139,115 @@ export default defineConfig({
 });
 ```
 
-## 3. Tailwind Config (tailwind.config.js)
+## 3. PostCSS Config (postcss.config.cjs)
 
-**IMPORTANT**: Tailwind 3 syntax (NOT v4 - v4 uses different config format).
+**IMPORTANT**: Use `@tailwindcss/postcss` (not `tailwindcss` + `autoprefixer`).
 
 ```javascript
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      fontFamily: {
-        sans: ["Roboto Mono", "Inter", "sans-serif"],
-        mono: ["Roboto Mono", "monospace"],
-      },
-    },
+  plugins: {
+    "@tailwindcss/postcss": {},
   },
-  plugins: [],
 };
 ```
 
+**Note**: File extension is `.cjs` for CommonJS compatibility.
+
 ## 4. Globals CSS (src/globals.css)
 
-Tailwind 3 directives + CSS variables for theming.
+**This is the heart of Tailwind v4** - all configuration happens here via `@theme`.
 
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-sans: Roboto Mono, Inter, sans-serif;
+  --font-mono: Roboto Mono, monospace;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 @layer base {
   :root {
     /* Light theme - Professional blue/slate palette */
     --background: 0 0% 100%;
     --foreground: 222.2 47.4% 11.2%;
+
     --card: 0 0% 100%;
     --card-foreground: 222.2 47.4% 11.2%;
+
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 47.4% 11.2%;
+
+    /* Primary - Professional blue */
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 0 0% 100%;
+
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
+
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
+
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
+
     --radius: 0.5rem;
   }
 
@@ -223,20 +255,28 @@ Tailwind 3 directives + CSS variables for theming.
     /* Dark theme - Same professional blue but dark background */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
+
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
+
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
+
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 210 40% 98%;
+
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
+
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
+
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 217.2 91.2% 59.8%;
@@ -252,6 +292,16 @@ Tailwind 3 directives + CSS variables for theming.
   }
 }
 ```
+
+### Tailwind v4 CSS Syntax Breakdown
+
+| Element      | Syntax                                         | Purpose                               |
+| ------------ | ---------------------------------------------- | ------------------------------------- |
+| Import       | `@import 'tailwindcss';`                       | Replaces `@tailwind` directives       |
+| Dark mode    | `@custom-variant dark (&:is(.dark *));`        | Enables `.dark` class-based dark mode |
+| Theme colors | `--color-primary: hsl(var(--primary));`        | Maps CSS var to Tailwind color        |
+| Theme fonts  | `--font-sans: Roboto Mono, Inter, sans-serif;` | Defines font family                   |
+| Theme radius | `--radius-lg: var(--radius);`                  | Defines border radius                 |
 
 ## 5. Entry Point (src/main.tsx)
 
@@ -269,7 +319,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <HashRouter>
       <App />
     </HashRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 ```
 
@@ -291,7 +341,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
-        {/* Add more routes here */}
       </Routes>
       <Footer />
     </div>
@@ -518,16 +567,14 @@ export async function addToWaitlist(args: Record<string, string>) {
 
   if (!n8nWebhookUrl) {
     throw new Error(
-      "N8N webhook URL not configured. Please set VITE_N8N_WEBHOOK_URL environment variable."
+      "N8N webhook URL not configured. Please set VITE_N8N_WEBHOOK_URL environment variable.",
     );
   }
 
   try {
     const response = await fetch(n8nWebhookUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...args,
         timestamp: new Date().toISOString(),
@@ -584,20 +631,7 @@ Strict TypeScript configuration.
 }
 ```
 
-## 13. PostCSS Config (postcss.config.js)
-
-Required for Tailwind CSS processing.
-
-```javascript
-export default {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-};
-```
-
-## 14. Example Page (src/pages/Home.tsx)
+## 13. Example Page (src/pages/Home.tsx)
 
 ```tsx
 export default function Home() {
@@ -629,17 +663,15 @@ export default function Home() {
 }
 ```
 
-## 15. GitHub Pages Deployment
+## 14. GitHub Pages Deployment
 
-### 15.1. Build Command
+### 14.1. Build Command
 
 ```bash
 npm run build
 ```
 
-This creates `dist/` folder with static files.
-
-### 15.2. GitHub Actions Workflow (.github/workflows/deploy.yml)
+### 14.2. GitHub Actions Workflow (.github/workflows/deploy.yml)
 
 ```yaml
 name: Deploy to GitHub Pages
@@ -686,14 +718,14 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-### 15.3. GitHub Pages Settings
+### 14.3. GitHub Pages Settings
 
 1. Go to repository **Settings** → **Pages**
 2. Set **Source** to **GitHub Actions**
 
-## 16. Common Patterns
+## 15. Common Patterns
 
-### 16.1. Adding New Pages
+### 15.1. Adding New Pages
 
 1. Create page file in `src/pages/YourPage.tsx`
 2. Add route in `src/App.tsx`:
@@ -702,13 +734,13 @@ jobs:
 <Route path="/your-page" element={<YourPage />} />
 ```
 
-### 16.2. Adding New Components
+### 15.2. Adding New Components
 
 Create component in `src/components/YourComponent.tsx`, then import and use in pages.
 
-### 16.3. Styling with Tailwind
+### 15.3. Styling with Tailwind v4
 
-Use utility classes from Tailwind 3. All colors use CSS variables for theming:
+Use utility classes. All colors use CSS variables for theming:
 
 ```tsx
 <div className="bg-background text-foreground border-border">
@@ -717,7 +749,7 @@ Use utility classes from Tailwind 3. All colors use CSS variables for theming:
 </div>
 ```
 
-### 16.4. Dark Mode
+### 15.4. Dark Mode
 
 Use `dark:` prefix for dark-mode-specific styles:
 
@@ -727,7 +759,15 @@ Use `dark:` prefix for dark-mode-specific styles:
 
 Theme toggle handled by `ThemeToggle` component adding/removing `.dark` class on `<html>` element.
 
-## 17. Quick Start
+### 15.5. Tailwind v4 Class Name Changes
+
+| v3 Class        | v4 Replacement   | Notes                             |
+| --------------- | ---------------- | --------------------------------- |
+| `outline-none`  | `outline-hidden` | Hides outline but keeps focusable |
+| `shadow-xs`     | `shadow-2xs`     | Extra small shadow renamed        |
+| `bg-opacity-50` | `bg-primary/50`  | Use opacity syntax directly       |
+
+## 16. Quick Start
 
 1. Scaffold new project:
 
@@ -737,29 +777,25 @@ cd my-site
 npm install
 ```
 
-1. Install dependencies:
+2. Install dependencies:
 
 ```bash
-npm install react-router-dom lucide-react tailwindcss postcss autoprefixer vite-plugin-webfont-dl
+npm install react-router-dom lucide-react @tailwindcss/postcss tailwindcss postcss vite-plugin-webfont-dl
 npm install -D @types/node
 ```
 
-1. Copy config files:
-
+3. Copy config files:
    - `vite.config.ts`
-   - `tailwind.config.js`
-   - `postcss.config.js`
+   - `postcss.config.cjs`
    - `tsconfig.json`
    - `src/globals.css`
 
-2. Create directory structure:
-
+4. Create directory structure:
    - `src/components/`
    - `src/pages/`
    - `src/lib/`
 
-3. Copy component files:
-
+5. Copy component files:
    - `src/main.tsx`
    - `src/App.tsx`
    - `src/components/Header.tsx`
@@ -767,35 +803,37 @@ npm install -D @types/node
    - `src/components/ThemeToggle.tsx`
    - `src/lib/n8n.ts`
 
-4. Create `.env` file with `VITE_N8N_WEBHOOK_URL`
+6. Create `.env` file with `VITE_N8N_WEBHOOK_URL`
 
-5. Run dev server:
+7. Run dev server:
 
 ```bash
 npm run dev
 ```
 
-1. Build for production:
+8. Build for production:
 
 ```bash
 npm run build
 ```
 
-## 18. Key Differences from Standard Vite + React
+## 17. Key Differences from Standard Vite + React
 
-| Feature  | Standard          | ChainSquad Style                                 |
-| -------- | ----------------- | ------------------------------------------------ |
-| Router   | BrowserRouter     | **HashRouter** (for GitHub Pages)                |
-| Tailwind | v4 or v3          | **v3 only** (v4 uses different config)           |
-| Theme    | Manual            | Built-in dark/light with CSS vars                |
-| Layout   | Inline components | **Separated Header/Footer** in `src/components/` |
-| Base URL | `/`               | `"./"` for static hosting                        |
-| Forms    | Native fetch      | **n8n webhook** wrapper in `src/lib/n8n.ts`      |
-| Build    | Standard          | Static build for GitHub Pages                    |
+| Feature  | Standard                       | ChainSquad Style                                 |
+| -------- | ------------------------------ | ------------------------------------------------ |
+| Router   | BrowserRouter                  | **HashRouter** (for GitHub Pages)                |
+| Tailwind | v3 or v4                       | **v4** (CSS-first config, no tailwind.config.js) |
+| Config   | `tailwind.config.js`           | **No config file** - use `@theme` in CSS         |
+| PostCSS  | `tailwindcss` + `autoprefixer` | **`@tailwindcss/postcss`** only                  |
+| Theme    | Manual                         | Built-in dark/light with CSS vars                |
+| Layout   | Inline components              | **Separated Header/Footer** in `src/components/` |
+| Base URL | `/`                            | `"./"` for static hosting                        |
+| Forms    | Native fetch                   | **n8n webhook** wrapper in `src/lib/n8n.ts`      |
+| Build    | Standard                       | Static build for GitHub Pages                    |
 
-## 19. Landing Page Best Practices
+## 18. Landing Page Best Practices
 
-### 19.1. No Animations
+### 18.1. No Animations
 
 Avoid `framer-motion` or similar animation libraries. Use CSS transitions for simple hover effects:
 
@@ -822,7 +860,7 @@ Avoid `framer-motion` or similar animation libraries. Use CSS transitions for si
 - Maintainability: CSS transitions are easier to debug
 - Conversion focus: Content should be the focus, not movement
 
-### 19.2. Section Separators
+### 18.2. Section Separators
 
 Use subtle visual separators between sections:
 
@@ -836,7 +874,7 @@ Use subtle visual separators between sections:
 <div className="border-t border-border/50" />
 ```
 
-### 19.3. Clean Card Layout
+### 18.3. Clean Card Layout
 
 Use simple borders instead of shadows and gradients:
 
@@ -854,7 +892,7 @@ Use simple borders instead of shadows and gradients:
 </div>
 ```
 
-### 19.4. Stats Section
+### 18.4. Stats Section
 
 Display key metrics prominently in the hero:
 
@@ -876,7 +914,7 @@ const stats = [
 </div>;
 ```
 
-### 19.5. Typography Hierarchy
+### 18.5. Typography Hierarchy
 
 Use consistent typography with `uppercase tracking-[0.12em]` for nav/labels:
 
@@ -897,9 +935,9 @@ Use consistent typography with `uppercase tracking-[0.12em]` for nav/labels:
 </p>
 ```
 
-## 20. Troubleshooting
+## 19. Troubleshooting
 
-### 20.1. HashRouter Not Working
+### 19.1. HashRouter Not Working
 
 Ensure you're using `HashRouter` (not `BrowserRouter`) in `src/main.tsx`:
 
@@ -909,15 +947,21 @@ import { HashRouter } from "react-router-dom";
 
 ### 19.2. Tailwind Classes Not Working
 
-Check that `src/globals.css` has Tailwind directives:
+Check that `src/globals.css` has the import:
 
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 ```
 
-Ensure `tailwind.config.js` has correct `content` paths.
+And that `postcss.config.cjs` uses the correct plugin:
+
+```javascript
+module.exports = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+```
 
 ### 19.3. Theme Toggle Not Persisting
 
@@ -938,3 +982,98 @@ Ensure:
 - `base: "./"` is set in `vite.config.ts`
 - GitHub Pages source is set to **GitHub Actions** (not `gh-pages` branch)
 - GitHub Actions workflow deploys `./dist` folder
+
+### 19.6. "outline-none is deprecated" Warning
+
+In Tailwind v4, use `outline-hidden` instead:
+
+```tsx
+// ❌ Wrong (v3)
+<input className="focus:outline-none" />
+
+// ✅ Correct (v4)
+<input className="focus:outline-hidden" />
+```
+
+### 19.7. "shadow-xs is deprecated" Warning
+
+In Tailwind v4, use `shadow-2xs` instead:
+
+```tsx
+// ❌ Wrong (v3)
+<button className="shadow-xs" />
+
+// ✅ Correct (v4)
+<button className="shadow-2xs" />
+```
+
+## 20. Migration Guide: v3 → v4
+
+If upgrading an existing project from Tailwind v3:
+
+### Step 1: Update Dependencies
+
+```bash
+npm uninstall autoprefixer
+npm install @tailwindcss/postcss@^4.2.2 tailwindcss@^4.2.2
+```
+
+### Step 2: Update PostCSS Config
+
+Replace `postcss.config.js` with `postcss.config.cjs`:
+
+```javascript
+module.exports = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+```
+
+### Step 3: Delete tailwind.config.js
+
+```bash
+rm tailwind.config.js
+```
+
+### Step 4: Update globals.css
+
+Replace:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+With:
+
+```css
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* Move all theme.extend colors here */
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  /* ... etc */
+}
+```
+
+### Step 5: Update Class Names
+
+Find and replace:
+
+- `outline-none` → `outline-hidden`
+- `shadow-xs` → `shadow-2xs`
+
+### Step 6: Test Build
+
+```bash
+npm run build
+```
+
+---
+
+**Remember**: Tailwind v4 is CSS-first. No JavaScript config file needed!
