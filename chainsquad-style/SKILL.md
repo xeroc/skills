@@ -24,17 +24,17 @@ description: the unique style used by chainsquad.com's websites
 - **Icons**: lucide-react
 - **Font**: Roboto Mono + Inter (via Google Fonts)
 
-## Key Differences: Tailwind v3 → v4
+## Tailwind v4 Essentials
 
-| Feature        | Tailwind v3                           | Tailwind v4                                   |
-| -------------- | ------------------------------------- | --------------------------------------------- |
-| Config file    | `tailwind.config.js`                  | **No config file** - use `@theme` in CSS      |
-| CSS import     | `@tailwind base/components/utilities` | `@import 'tailwindcss'`                       |
-| Dark mode      | `darkMode: ['class']` in config       | `@custom-variant dark (&:is(.dark *))` in CSS |
-| PostCSS plugin | `tailwindcss` + `autoprefixer`        | `@tailwindcss/postcss` only                   |
-| Colors/theme   | `theme.extend` in JS                  | `@theme` block in CSS                         |
-| `outline-none` | Removes outline                       | **Use `outline-hidden`**                      |
-| `shadow-xs`    | Extra small shadow                    | **Use `shadow-2xs`**                          |
+| Feature        | Implementation                                                 |
+| -------------- | -------------------------------------------------------------- |
+| Config file    | **No config file** — use `@theme` in CSS                       |
+| CSS import     | `@import 'tailwindcss'`                                        |
+| Dark mode      | `@custom-variant dark (&:is(.dark *))` in CSS                  |
+| PostCSS plugin | `@tailwindcss/postcss` only (no autoprefixer needed)           |
+| Colors/theme   | `@theme` block in CSS                                          |
+| `outline-none` | **Use `outline-hidden`** (accessibility-safe invisible)        |
+| Default shadow | `shadow-xs` (smallest), `shadow-sm`, `shadow`, `shadow-md` ... |
 
 ## Directory Structure
 
@@ -102,11 +102,10 @@ my-site/
 }
 ```
 
-**Changes from v3:**
+**Notes:**
 
-- Removed `autoprefixer` (built into v4)
-- Added `@tailwindcss/postcss`
-- Updated `tailwindcss` to `^4.2.2`
+- `@tailwindcss/postcss` replaces the old `tailwindcss` PostCSS plugin + `autoprefixer`
+- `tailwindcss` v4 includes built-in imports and vendor prefixing
 
 ## 2. Vite Config (vite.config.ts)
 
@@ -199,12 +198,9 @@ module.exports = {
 }
 
 /*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
+  Tailwind CSS v4 changed the default border color to `currentcolor`.
+  This sets a consistent default border color across all elements.
+  Remove these styles if you prefer to specify border colors explicitly.
 */
 @layer base {
   *,
@@ -293,7 +289,7 @@ module.exports = {
 }
 ```
 
-### Tailwind v4 CSS Syntax Breakdown
+### Tailwind v4 CSS Syntax
 
 | Element      | Syntax                                         | Purpose                               |
 | ------------ | ---------------------------------------------- | ------------------------------------- |
@@ -759,13 +755,13 @@ Use `dark:` prefix for dark-mode-specific styles:
 
 Theme toggle handled by `ThemeToggle` component adding/removing `.dark` class on `<html>` element.
 
-### 15.5. Tailwind v4 Class Name Changes
+### 15.5. Tailwind v4 Key Class Names
 
-| v3 Class        | v4 Replacement   | Notes                             |
-| --------------- | ---------------- | --------------------------------- |
-| `outline-none`  | `outline-hidden` | Hides outline but keeps focusable |
-| `shadow-xs`     | `shadow-2xs`     | Extra small shadow renamed        |
-| `bg-opacity-50` | `bg-primary/50`  | Use opacity syntax directly       |
+| Class            | Notes                                    |
+| ---------------- | ---------------------------------------- |
+| `outline-hidden` | Hides outline but keeps focusable (a11y) |
+| `shadow-xs`      | Smallest shadow                          |
+| `bg-primary/50`  | Opacity modifier syntax for colors       |
 
 ## 16. Quick Start
 
@@ -822,8 +818,8 @@ npm run build
 | Feature  | Standard                       | ChainSquad Style                                 |
 | -------- | ------------------------------ | ------------------------------------------------ |
 | Router   | BrowserRouter                  | **HashRouter** (for GitHub Pages)                |
-| Tailwind | v3 or v4                       | **v4** (CSS-first config, no tailwind.config.js) |
-| Config   | `tailwind.config.js`           | **No config file** - use `@theme` in CSS         |
+| Tailwind | Default setup                  | **v4** (CSS-first config, no tailwind.config.js) |
+| Config   | `tailwind.config.js`           | **No config file** — use `@theme` in CSS         |
 | PostCSS  | `tailwindcss` + `autoprefixer` | **`@tailwindcss/postcss`** only                  |
 | Theme    | Manual                         | Built-in dark/light with CSS vars                |
 | Layout   | Inline components              | **Separated Header/Footer** in `src/components/` |
@@ -988,99 +984,18 @@ Ensure:
 In Tailwind v4, use `outline-hidden` instead:
 
 ```tsx
-// ❌ Wrong (v3)
-<input className="focus:outline-none" />
-
-// ✅ Correct (v4)
 <input className="focus:outline-hidden" />
 ```
 
-### 19.7. "shadow-xs is deprecated" Warning
+### 19.7. Shadow Scale in Tailwind v4
 
-In Tailwind v4, use `shadow-2xs` instead:
+Tailwind v4 provides: `shadow-xs`, `shadow-sm`, `shadow`, `shadow-md`, `shadow-lg`, `shadow-xl`, `shadow-2xl`.
 
-```tsx
-// ❌ Wrong (v3)
-<button className="shadow-xs" />
-
-// ✅ Correct (v4)
-<button className="shadow-2xs" />
-```
-
-## 20. Migration Guide: v3 → v4
-
-If upgrading an existing project from Tailwind v3:
-
-### Step 1: Update Dependencies
-
-```bash
-npm uninstall autoprefixer
-npm install @tailwindcss/postcss@^4.2.2 tailwindcss@^4.2.2
-```
-
-### Step 2: Update PostCSS Config
-
-Replace `postcss.config.js` with `postcss.config.cjs`:
-
-```javascript
-module.exports = {
-  plugins: {
-    "@tailwindcss/postcss": {},
-  },
-};
-```
-
-### Step 3: Delete tailwind.config.js
-
-```bash
-rm tailwind.config.js
-```
-
-### Step 4: Update globals.css
-
-Replace:
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
-With:
-
-```css
-@import "tailwindcss";
-
-@custom-variant dark (&:is(.dark *));
-
-@theme {
-  /* Move all theme.extend colors here */
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  /* ... etc */
-}
-```
-
-### Step 5: Update Class Names
-
-Find and replace:
-
-- `outline-none` → `outline-hidden`
-- `shadow-xs` → `shadow-2xs`
-
-### Step 6: Test Build
-
-```bash
-npm run build
-```
-
----
-
-## 21. Landing Page Section Templates
+## 20. Landing Page Section Templates
 
 Reusable section components for building landing pages. Each section is self-contained and follows the ChainSquad dark-theme aesthetic. Sections are separated by `space-y-36` on the parent wrapper.
 
-### 21.0. Page Wrapper Pattern
+### 20.0. Page Wrapper Pattern
 
 All sections live inside a single wrapper `<div>` with generous vertical spacing:
 
@@ -1090,7 +1005,7 @@ export default function Home(): JSX.Element {
 }
 ```
 
-### 21.1. Hero Section
+### 20.1. Hero Section
 
 **Use when:** Every landing page needs one. First thing visitors see. Sets the tone.
 
@@ -1181,7 +1096,7 @@ export default function Home(): JSX.Element {
 
 ---
 
-### 21.2. How It Works (Steps Section)
+### 20.2. How It Works (Steps Section)
 
 **Use when:** Explaining a multi-step process. Onboarding flows, product demos, getting-started guides.
 
@@ -1263,7 +1178,7 @@ const steps = [
 
 ---
 
-### 21.3. Sidebar Feature Showcase
+### 20.3. Sidebar Feature Showcase
 
 **Use when:** Showcasing multiple related features that users should browse interactively. API capabilities, tool comparisons, feature deep-dives.
 
@@ -1370,7 +1285,7 @@ const [activeFeature, setActiveFeature] = useState(features[0]);
 
 ---
 
-### 21.4. Editorial Section (Copy + Visual, Standard)
+### 20.4. Editorial Section (Copy + Visual, Standard)
 
 **Use when:** Deep-dive into a single feature. Best for the most important capability that needs long-form copy with a code/visual companion. Product pages, technical features.
 
@@ -1466,7 +1381,7 @@ const [activeFeature, setActiveFeature] = useState(features[0]);
 
 ---
 
-### 21.5. Editorial Section (Reversed: Visual + Copy)
+### 20.5. Editorial Section (Reversed: Visual + Copy)
 
 **Use when:** Same as standard editorial but for the second feature. Alternating layout creates visual rhythm. Use for the second or third deep-dive on the same page.
 
@@ -1555,7 +1470,7 @@ const [activeFeature, setActiveFeature] = useState(features[0]);
 
 ---
 
-### 21.6. Editorial Section (Copy + Docs/Table Preview)
+### 20.6. Editorial Section (Copy + Docs/Table Preview)
 
 **Use when:** Showcasing documentation, API references, or structured data output. Use when the visual companion is a formatted document, not a terminal/code block.
 
@@ -1579,7 +1494,7 @@ const [activeFeature, setActiveFeature] = useState(features[0]);
       <p className="text-gray-400 leading-relaxed text-[15px]">
         Description of the documentation feature.
       </p>
-      <ul className="space-y-5">{/* Same checklist pattern as 21.4 */}</ul>
+      <ul className="space-y-5">{/* Same checklist pattern as 20.4 */}</ul>
       <Link
         to="/page"
         className="inline-flex items-center gap-2 text-sm text-primary font-medium group"
@@ -1663,7 +1578,7 @@ const [activeFeature, setActiveFeature] = useState(features[0]);
 
 ---
 
-### 21.7. Social Proof Section
+### 20.7. Social Proof Section
 
 **Use when:** Building trust. Place after editorial sections but before the final CTA. Use testimonials, tweet embeds, or logo walls.
 
@@ -1704,7 +1619,7 @@ const [activeFeature, setActiveFeature] = useState(features[0]);
 
 ---
 
-### 21.8. Final CTA Section
+### 20.8. Final CTA Section
 
 **Use when:** Every landing page needs one. Last section before the footer. Drives the primary conversion action.
 
@@ -1743,18 +1658,18 @@ const [activeFeature, setActiveFeature] = useState(features[0]);
 
 ---
 
-### 21.9. Section Selection Guide
+### 20.9. Section Selection Guide
 
 | Section                       | Purpose                                | Position on Page             | Count     |
 | ----------------------------- | -------------------------------------- | ---------------------------- | --------- |
-| **Hero** (21.1)               | First impression, main value prop      | 1st                          | Exactly 1 |
-| **How It Works** (21.2)       | Process explanation, onboarding        | After Hero                   | 0-1       |
-| **Sidebar Features** (21.3)   | Multiple related features, interactive | After How It Works           | 0-1       |
-| **Editorial Standard** (21.4) | Primary feature deep-dive              | After Sidebar Features       | 1-3       |
-| **Editorial Reversed** (21.5) | Secondary feature (alternating layout) | Alternating with Standard    | As needed |
-| **Editorial Docs** (21.6)     | Documentation/API reference showcase   | Mixed with other editorials  | 0-1       |
-| **Social Proof** (21.7)       | Trust building, testimonials           | After editorials, before CTA | 0-1       |
-| **Final CTA** (21.8)          | Last conversion push                   | Last section before footer   | Exactly 1 |
+| **Hero** (20.1)               | First impression, main value prop      | 1st                          | Exactly 1 |
+| **How It Works** (20.2)       | Process explanation, onboarding        | After Hero                   | 0-1       |
+| **Sidebar Features** (20.3)   | Multiple related features, interactive | After How It Works           | 0-1       |
+| **Editorial Standard** (20.4) | Primary feature deep-dive              | After Sidebar Features       | 1-3       |
+| **Editorial Reversed** (20.5) | Secondary feature (alternating layout) | Alternating with Standard    | As needed |
+| **Editorial Docs** (20.6)     | Documentation/API reference showcase   | Mixed with other editorials  | 0-1       |
+| **Social Proof** (20.7)       | Trust building, testimonials           | After editorials, before CTA | 0-1       |
+| **Final CTA** (20.8)          | Last conversion push                   | Last section before footer   | Exactly 1 |
 
 **Recommended page order:**
 
@@ -1770,4 +1685,4 @@ Hero → Editorial A → Final CTA
 
 ---
 
-**Remember**: Tailwind v4 is CSS-first. No JavaScript config file needed!
+**Remember**: Tailwind v4 is CSS-first. No JavaScript config file needed. Use `@theme` in CSS for all customization.
