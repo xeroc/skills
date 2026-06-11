@@ -502,6 +502,154 @@ fn test_account_is_rent_exempt() {
 7. **Use validation checks** - Leverage the `Check` API for comprehensive validation
 8. **Test with realistic data** - Use proper rent-exempt balances and realistic account states
 
+### Test Suite Performance: Batch Transaction Pattern
+
+Anchor TypeScript test suites often perform many sequential on-chain operations in `beforeAll` blocks and individual tests (SOL transfers, ATA creations, mints, balance reads). Each `await` is a full validator round-trip. Batching these into single transactions cuts suite time significantly (observed ~47% reduction on a 71-test suite).
+
+**Key idea:** Combine multiple instructions into a single `Transaction` and send once instead of N sequential transactions.
+
+#### Batch Helper Functions
+
+```typescript
+import {
+  createAssociatedTokenAccountInstruction,
+  createMintToInstruction,
+  getAssociatedTokenAddress,
+} from "@solana/spl-token";
+import {
+  Connection,
+  PublicKey,
+  Transaction,
+  SystemProgram,
+  LAMPORTS_PER_SOL,
+} from "@solana/web3.js";
+
+// Bundle multiple SOL transfers (airdrops) into one transaction
+async function batchFund(
+  connection: Connection,
+  payer: anchor.Wallet,
+  recipients: { pubkey: PublicKey; lamports: number }[]
+): Promise<string> {
+  const tx = new Transaction();
+  for (const { pubkey, lamports } of recipients) {
+    tx.add(
+      SystemProgram.transfer({
+        fromPubkey: payer.publicKey,
+        toPubkey: pubkey,
+        lamports,
+      })
+    );
+  }
+  return sendAndConfirm(connection, tx, [payer.payer]);
+}
+
+// Bundle multiple ATA creations into one transaction
+async function batchCreateATAs(
+  connection: Connection,
+  payer: anchor.Wallet,
+  mint: PublicKey,
+  owners: PublicKey[]
+): Promise<PublicKey[]> {
+  const tx = new Transaction();
+  const atas: PublicKey[] = [];
+  for (const owner of owners) {
+    const ata = await getAssociatedTokenAddress(mint, owner);
+    atas.push(ata);
+    tx.add(
+      createAssociatedTokenAccountInstruction(
+        payer.publicKey,
+        ata,
+        owner,
+        mint
+      )
+    );
+  }
+  await sendAndConfirm(connection, tx, [payer.payer]);
+  return atas;
+}
+
+// Bundle multiple mintTo instructions into one transaction
+async function batchMintTo(
+  connection: Connection,
+  authority: anchor.Wallet,
+  mint: PublicKey,
+  mints: { ata: PublicKey; amount: bigint }[]
+): Promise<string> {
+  const tx = new Transaction();
+  for (const { ata, amount } of mints) {
+    tx.add(createMintToInstruction(mint, ata, authority.publicKey, amount));
+  }
+  return sendAndConfirm(connection, tx, [authority.payer]);
+}
+```
+
+#### Before/After Pattern
+
+**Before (slow — N sequential transactions):**
+```typescript
+await fund(user1.publicKey, 10 * LAMPORTS_PER_SOL);
+await fund(user2.publicKey, 10 * LAMPORTS_PER_SOL);
+await fund(user3.publicKey, 10 * LAMPORTS_PER_SOL);
+// 3 round-trips
+
+const ata1 = await createAssociatedTokenAccount(connection, payer, mint, user1.publicKey);
+const ata2 = await createAssociatedTokenAccount(connection, payer, mint, user2.publicKey);
+// 2 round-trips
+
+await mintTo(connection, payer, mint, ata1, authority, 1_000_000);
+await mintTo(connection, payer, mint, ata2, authority, 1_000_000);
+// 2 round-trips
+// Total: 7 round-trips
+```
+
+**After (fast — batched into fewer transactions):**
+```typescript
+await batchFund(connection, payer, [
+  { pubkey: user1.publicKey, lamports: 10 * LAMPORTS_PER_SOL },
+  { pubkey: user2.publicKey, lamports: 10 * LAMPORTS_PER_SOL },
+  { pubkey: user3.publicKey, lamports: 10 * LAMPORTS_PER_SOL },
+]);
+// 1 round-trip
+
+const [ata1, ata2] = await batchCreateATAs(connection, payer, mint, [
+  user1.publicKey,
+  user2.publicKey,
+]);
+// 1 round-trip
+
+await batchMintTo(connection, authority, mint, [
+  { ata: ata1, amount: 1_000_000n },
+  { ata: ata2, amount: 1_000_000n },
+]);
+// 1 round-trip
+// Total: 3 round-trips
+```
+
+#### Batch RPC Reads
+
+Read-only calls (balance queries, account fetches) don't need transactions but still benefit from parallelism:
+
+```typescript
+// Before: sequential reads
+const bal1 = await connection.getTokenAccountBalance(ata1);
+const bal2 = await connection.getTokenAccountBalance(ata2);
+const bal3 = await connection.getTokenAccountBalance(ata3);
+
+// After: parallel reads
+const [bal1, bal2, bal3] = await Promise.all([
+  connection.getTokenAccountBalance(ata1),
+  connection.getTokenAccountBalance(ata2),
+  connection.getTokenAccountBalance(ata3),
+]);
+```
+
+#### Pitfalls
+
+- **Transaction size limit:** Solana transactions cap at ~1232 bytes. Each instruction adds ~40-100 bytes. Batch 10-15 instructions safely; beyond that, split into multiple transactions.
+- **Compute unit limit:** Default 200K CU per transaction. Complex programs may hit this with many instructions. Use `ComputeBudgetProgram.setComputeUnitLimit()` if needed.
+- **Different mints:** Batch helpers that hardcode a single mint won't work for tests using multiple mints. Use manual `createAssociatedTokenAccountInstruction` / `createMintToInstruction` for those cases.
+- **Ordering matters:** ATAs must be created before minting to them. Fund accounts before creating ATAs that need rent. Batch within each phase, not across phases.
+
 ### Quick Reference Commands
 
 ```bash

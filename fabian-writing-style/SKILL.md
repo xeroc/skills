@@ -240,6 +240,37 @@ Run this checklist on every paragraph:
 - Bold is used for key design decisions
 - Always mention legal implications honestly
 
+## Twitter/X Short-Form Style (from openclaw FABIAN-STYLE.md)
+
+### Format
+- Ideal: 6-15 words. Under 20 preferred.
+- 78% single sentence, 22% structured pattern
+- Drop period at end for +20% engagement
+- Lowercase-dominant, minimal punctuation
+
+### Style
+- Direct, no fluff: "just shipped" not "excited to announce"
+- Self-deprecating: "painful", "took me a while", "finally got"
+- Shows expertise through technical details, not jargon
+- Mentions (@handle) > hashtags (#tag)
+- Minimal hashtags: 0-2, only 20-30% of tweets
+
+### Patterns (use sparingly)
+1. **Alliterative contrast:** "Theory impresses peers. Practice produces results."
+2. **Matched meter:** "Build distribution, then build product."
+3. **Chiasmus:** "You don't find a niche. A niche finds you."
+4. **Negation flip:** "To make money while you sleep, build systems that don't sleep."
+5. **Paradox:** "The less code you write, the more problems you solve."
+6. **Conditional reveal:** "If everyone understands your tech stack, you're too late."
+7. **Two-part parallel:** "Good protocols scale. Great protocols disappear."
+
+### Fabian-adapted reference tweets
+- "Good protocols scale. Great protocols disappear."
+- "Theory explains the system. Tests prove it works."
+- "Complex protocols die simple deaths."
+- "Build distribution, then build protocol."
+- "For every 0.1% you ship, you leapfrog teams still planning."
+
 ## Related Skills
 
 - [copywriter](../copywriter/SKILL.md)

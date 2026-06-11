@@ -19,6 +19,7 @@ Load these before writing:
 | `references/story-circle.md`   | Narrative framework for posts   |
 | `references/post-templates.md` | Starter structures by post type |
 | `references/seo-checklist.md`  | Pre-publish SEO checks          |
+| `references/project-article-workflow.md` | Project article workflow + research cache |
 
 ## Process
 
@@ -35,7 +36,9 @@ Don't require organization. The mess is the input.
 
 ### 2. Load Voice Guide
 
-Read `references/voice-tone.md` for writing style:
+**If writing for Fabian Schuh / ChainSquad / Tributary / any article in Fabian's voice**: load the `fabian-writing-style` skill INSTEAD of `references/voice-tone.md`. The Fabian skill is the authoritative voice guide. It overrides everything in the generic voice file. Do not layer both -- Fabian's anti-AI rules are strict and the generic voice contradicts them.
+
+Otherwise, read `references/voice-tone.md` for writing style:
 
 - Professional-casual tone
 - First-person, inclusive language ("we", "us")
