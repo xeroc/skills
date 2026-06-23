@@ -110,9 +110,58 @@ commit_b: v1.2.5
 include_diff: true
 ```
 
+## Large-Diff Thematic Analysis (alternative workflow)
+
+For large commit ranges (20+ commits, many files), per-commit iteration produces noisy, repetitive output. Use this grouped approach instead.
+
+### Workflow
+
+1. **Commit overview**: `git log --oneline A..B -- <path>` — get the commit list and count at a glance
+2. **File-level stat**: `git diff --stat A..B -- <path>` — see which files changed and by how much
+3. **Grouped file diffs**: Run targeted `git diff A..B -- <file1> <file2> ...` in parallel batches, grouping files by concern area (e.g., instructions/, controllers/, state/, math/, config/). For diffs over ~500 lines, pipe through `head -N` on first read, then re-read specific sections if needed.
+4. **Thematic synthesis**: Categorize findings into themes (branding, fee changes, safety rails, new features, refactors, bugfixes). For each theme, note what changed, why (from commit messages or code comments), and the behavioral impact.
+
+### Output format
+
+```markdown
+# <Component> Changes since <ref>
+
+N commits, M files, ~X lines changed. One-line summary.
+
+## 1. Theme Name
+- Bullet points of specific changes
+- File references where relevant
+
+## 2. Theme Name
+...
+
+## N. Minor / Cleanup
+- Gas optimizations, logging changes, etc.
+
+---
+**Summary:** One paragraph capturing the arc of changes.
+```
+
+### When to use this vs per-commit
+
+| Scenario | Use |
+|---|---|
+| Release notes, changelogs, blog articles | Per-commit workflow (original) |
+| "What changed in this directory since X?" | Thematic workflow (this section) |
+| Code review for a specific PR (1-10 commits) | Per-commit workflow (original) |
+| Large fork/modification audit (20+ commits) | Thematic workflow (this section) |
+
+### Pitfalls
+
+- Don't skip the `--stat` step — it reveals which files deserve deep reads vs skimming
+- For diffs over 800 lines in a single file, read in sections (offset/limit or `head`/`tail`) rather than dumping the whole thing
+- Commit messages in forks often contain the *rationale* for changes (e.g., "Mash: we trust the oracle fully") — mine these for the "why" in the report
+- Group parallel `git diff` calls by concern area to keep the analysis organized from the start
+
 ## Notes
 
 - Requires git repository with accessible commit history
 - Large commit ranges may produce lengthy articles
 - Use `include_diff: true` for detailed technical reviews
 - Commits are processed in chronological order (oldest first)
+- For path-scoped analysis, append `-- <path>` to all git commands

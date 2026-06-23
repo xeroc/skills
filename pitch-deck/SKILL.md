@@ -148,9 +148,34 @@ Before submitting, verify:
 
 ---
 
+## Pitch Auditing (Existing Decks)
+
+When asked to review, improve, or rewrite an existing pitch deck — not build from scratch — use the [First Round Levels of PMF framework](references/pmf-audit-framework.md) as your audit lens.
+
+### The Audit Process
+
+1. **Determine the PMF level** — Map the company against the Level 1-4 benchmarks (team size, customer count, demand source, revenue, retention). Most pre-seed companies are Level 1.
+2. **Run the friend-zone test** — "Would customers be disappointed if the product disappeared?" If you can't answer with confidence, flag it as the biggest risk.
+3. **Check the 4Ps** — Is the persona too broad? Is the promise crisp? Is the problem urgent? Is the product delivering?
+4. **Identify what to cut and what to add** using the pre-seed best practices in the reference.
+
+### The Discovery Story Pattern
+
+The strongest pitch opening for early-stage companies: lead with a customer who used the product in a way the founder didn't design for. This proves market pull and reveals the real product thesis organically. See the reference for structure and examples (Plaid, Ironclad).
+
+**Common audit findings for pre-seed decks:**
+- Top-down TAM slides → replace with bottom-up unit economics
+- Scattered use cases (breadth without depth) → name one beachhead persona
+- Vision-first opening → restructure around the discovery story
+- Hockey-stick projections → directional unit economics only
+- Missing "what users taught us" section → add it, show the converging pattern
+
+---
+
 ## References
 
+- [First Round Levels of PMF — Pitch Audit Framework](references/pmf-audit-framework.md) — 4 levels, 3 dimensions, 4Ps levers, friend-zone test, discovery story pattern, pre-seed best practices
 - YC Guide: How to Build Your Seed Round Pitch Deck — https://www.venturecurator.com/p/ycombinator-guide-how-to-build-your
 - Pixar Story Formula for Startups — https://startuppitch.substack.com/p/nail-your-startup-pitch-use-pixars
 - DoorDash YC Application Video (S13) — https://www.youtube.com/watch?v=RzlrZtNSlOU
-- Methodology: Josip Volarevic — 3 Colosseum hackathons, 2 wins, mentored 100+ teams, 10+ won prizes and raised funding
+- Methodology: Josip Volarević — 3 Colosseum hackathons, 2 wins, mentored 100+ teams, 10+ won prizes and raised funding
