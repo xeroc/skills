@@ -50,7 +50,149 @@ system_program = { github = "QEDGen/solana-skills", path = "interfaces/system_pr
 my_amm         = { path = "../my_amm" }
 ```
 
-Each entry is one of two source forms:
+Each entry is one of two source forms.
+
+### Builtin sources (v2.26)
+
+QEDGen ships a small interface stdlib resolved before manifest lookup:
+
+```
+import Token    from "spl"        # crates/qedgen/data/interfaces/spl_token.qedspec
+import System   from "system"     # crates/qedgen/data/interfaces/system.qedspec
+import Metadata from "metaplex"   # crates/qedgen/data/interfaces/metaplex.qedspec
+```
+
+The `"spl"`, `"system"`, and `"metaplex"` keys are reserved and
+resolved via embedded `include_str!` fixtures — no `qed.toml` entry
+needed, and a manifest that contains *only* builtin imports validates
+as empty. The bundled fixtures are Tier-1 (declared `ensures` +
+`upstream { binary_hash }` pin), so callers' Lean theorems discharge
+via `<Interface>.<handler>.ensures_axiom_<idx>` and Kani harnesses
+propagate the substituted ensures as `kani::assume` after the call
+site. The Metaplex fixture covers the high-traffic Token Metadata
+handlers — `create_metadata_account_v3`, `update_metadata_account_v2`,
+`sign_metadata`, `verify_collection`, `set_and_verify_collection` —
+the canonical CPI surface for NFT mint, metadata update, and
+creator/collection verification. The pinned `binary_hash` values in
+all three bundled fixtures are `sha256:0000...` placeholders pending
+audit — the contract chain is structurally complete but
+cryptographically un-anchored until real pins land.
+
+v2.27 — the bundled fixtures gained substantive state-aware
+contracts (balance preservation on `Token.transfer`, lamport
+conservation on `System.transfer`, verified-flag flips on
+`Metadata.sign_metadata`, …). SPL Token + Metaplex also ship
+bundled Lake-buildable proof packages alongside the qedspec
+fixtures, materialized to `<cache>/builtin/<key>/.qed/proofs/`
+on demand — callers automatically get Stance 2 (imported callee
+theorem) end-to-end with no manual proof authoring. System Program
+intentionally stays Stance 1 in v2.27; see the "Stance 1 vs
+Stance 2" section below.
+
+Real `binary_hash` pins replace the v2.26 `sha256:0000…`
+placeholders for SPL Token + Metaplex (captured 2026-05-23 from
+mainnet payload dumps). The System Program stays at the all-zero
+sentinel (native program; no deployed binary to hash).
+
+User-authored interfaces (`import X from "..."` referencing a github
+or path source declared in `qed.toml`) continue to work unchanged.
+
+### Stance 1 vs Stance 2 — verified-callee composition
+
+Two ways an imported interface's `ensures` clauses can be discharged
+at the caller's `lake build`:
+
+- **Stance 1** (default, unchanged from v2.26): codegen writes a
+  local sibling `<Iface>.lean` axiom module next to `Spec.lean`.
+  The caller's theorem applies `Token.transfer.ensures_axiom_<i>`
+  against an `axiom` declared in that local module. Trust anchor:
+  the `upstream { binary_hash }` pin on the interface.
+- **Stance 2** (v2.27, opt-in via shipped proofs): when the
+  provider ships `<source_dir>/.qed/proofs/<Iface>.lean +
+  lakefile.lean` alongside the qedspec, the resolver detects it
+  and:
+  - Codegen does NOT emit the local `<Iface>.lean` axiom module.
+  - The consumer's `lakefile.lean` gets a `require <pkg>Proofs
+    from "<rel-path>"` directive injected (the package name is
+    `<lowercase-first-char + rest>Proofs` — e.g. `tokenProofs`,
+    `metadataProofs`).
+  - The caller's theorem applies the same identifier — and it
+    resolves to a bundled `axiom` in the shared provider package
+    instead of a local one. Per the v2.27 Phase 2 lake-graph
+    spike, the Spec.lean theorem application string is byte-
+    identical between stances.
+
+  v2.28 note: the bundled packages declare their `ensures_axiom_<i>`
+  as top-level `axiom`s directly (v2.27 wrapped them in
+  one-step `theorem ... := runtime_trust_<binder>` indirection;
+  the indirection masked the trust surface in `#print axioms`
+  output). Stance 2's value vs Stance 1 in v2.28 is structural —
+  one shared axiom across all consumers rather than N per-consumer
+  copies — not verification strength. Both stances still
+  axiomatize against the upstream `binary_hash` pin. The real
+  Stance 3 (qedsvm-discharged theorems against the pinned ELF)
+  ships in v3.0+; bundled package docstrings name the
+  `qedsvm_discharge` target for each axiom.
+
+Bundled stdlib coverage in v2.27:
+
+- `import Token from "spl"` → Stance 2 (bundled `tokenProofs` package).
+- `import Metadata from "metaplex"` → Stance 2 (bundled `metadataProofs`).
+- `import System from "system"` → Stance 1 (no bundled proof package
+  in v2.27 — its handlers have `Pubkey` params that would require
+  the bundled module to import `QEDGen.Solana.Account`, defeating
+  the self-contained-distribution goal).
+
+`qedgen verify --require-verified` is the CI gate that surfaces any
+imported Tier-1+ interface that's still on Stance 1. Default-off
+in v2.27 because System Program is unbundled-Stance-1; revisit when
+its bundled proof package lands.
+
+### Abstract callee-state vocabulary
+
+An interface can declare its abstract callee-state vocabulary with an
+optional `state { name : Type, ... }` block (v2.27 Phase 0). The
+named fields can be referenced from per-handler `ensures` clauses via
+`state.X` (post-state) and `old(state.X)` (pre-state); they lower to
+polymorphic `(X : State → T)` accessors in the bundled axiom
+signature. Callers map them to concrete State fields via per-call
+`state_binders`:
+
+```
+interface Token {
+  state {
+    from_balance : U64
+    to_balance   : U64
+    total_supply : U64
+  }
+  handler transfer (amount : U64) {
+    requires amount > 0
+    ensures  state.from_balance == old(state.from_balance) - amount
+    ensures  state.to_balance == old(state.to_balance) + amount
+  }
+}
+```
+
+Caller side:
+
+```
+call Token.transfer(
+  amount = amount,
+  state_binders {
+    from_balance = state.alice_balance,
+    to_balance = state.bob_balance,
+  },
+)
+```
+
+Type map: `Nat` for the `U*` family (also the back-compat default
+when a field is not declared in `state { ... }`), `Int` for `I*`,
+`Bool` for `Bool`, `Pubkey` for `Pubkey`. Skip-comment fallback:
+when the caller supplies NO binders for an ensures, that per-ensures
+theorem is silently dropped from the caller's Spec.lean with a
+one-line explanatory comment — the contract still holds in the
+callee (binary_hash is the warrant), the caller just doesn't pull
+it into its own proof.
 
 ### GitHub source
 
@@ -198,6 +340,24 @@ Per-dep outcomes:
 - **Error** — `solana` CLI failed (network, auth, CLI missing) or
   `--offline` blocked a needed fetch.
 
+### v2.26 — differentiated severity gates
+
+`--check-upstream` is now a real verification gate with severity that
+varies by surface:
+
+| Surface | Mismatch severity | Blocking? |
+|---|---|---|
+| `qedgen verify --check-upstream` | **CRIT** | yes (non-zero exit) |
+| `qedgen verify --check-upstream --upstream-stale-ok` | Info | no |
+| `qedgen check --frozen` (default) | P2 warning | no |
+| `qedgen check --frozen --strict` | **CRIT** | yes |
+
+Auto-on when `qed.lock` declares any pinned hash; no-op otherwise.
+Network/CLI errors (missing `solana`, unreachable RPC) stay P2 under
+any gate — a missing toolchain does NOT false-positive CRIT. Use
+`--upstream-stale-ok` for offline development; use `check --frozen
+--strict` in CI when frozen-lock drift should block the build.
+
 ## End-to-end example: escrow with SPL Token
 
 `examples/rust/escrow-split/qed.toml`:
@@ -271,9 +431,10 @@ What lands downstream:
 - **First-class Anchor support** — `#[qed]` on existing Anchor handlers
   (free-fn, type-associated, accounts-method, and inline shapes),
   brownfield `qedgen adapt` and `qedgen check --anchor-project`. v2.9
-  headline. Anchor and Quasar are both fully supported; non-Anchor /
-  raw-program (Pinocchio) reserves the CLI surface but is not yet
-  implemented.
+  headline. Anchor, Quasar, and Pinocchio all emit a full program
+  scaffold (Pinocchio: `#![no_std]` + zeropod state + SPL Token CPIs).
+  Imported account-type mirrors are not yet emitted for Pinocchio (a
+  clean error, not a panic).
 - **Stance 2 (proof composition).** `sorry` in the ensures-as-axiom theorems
   stays — v3.0 (refactor + breaking-changes release) will replace with
   imported callee proofs.

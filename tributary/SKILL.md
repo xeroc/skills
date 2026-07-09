@@ -31,14 +31,14 @@ User -> Create UserPayment (owner/mint)
 
 ### Account Hierarchy
 
-| Account | PDA Seeds | Size | Purpose |
-|---------|-----------|------|---------|
-| ProgramConfig | `["config"]` | 336B | Global protocol config, fees, admin, emergency pause |
-| PaymentGateway | `["gateway", authority]` | 296B | Business-specific gateway, fees, signer, feature flags |
-| UserPayment | `["user_payment", owner, mint]` | 382B | Per-user/mint tracker, policy counter |
-| PaymentPolicy | `["payment_policy", user_payment, policy_id]` | 586B | Individual payment rule (Subscription/Milestone/PayAsYouGo) |
-| ReferralAccount | `["referral", gateway, code]` | 200B | 3-level referral chain (zero_copy) |
-| PaymentsDelegate | `["payments"]` | PDA signer | CPI authority for token transfers |
+| Account          | PDA Seeds                                     | Size       | Purpose                                                     |
+| ---------------- | --------------------------------------------- | ---------- | ----------------------------------------------------------- |
+| ProgramConfig    | `["config"]`                                  | 336B       | Global protocol config, fees, admin, emergency pause        |
+| PaymentGateway   | `["gateway", authority]`                      | 296B       | Business-specific gateway, fees, signer, feature flags      |
+| UserPayment      | `["user_payment", owner, mint]`               | 382B       | Per-user/mint tracker, policy counter                       |
+| PaymentPolicy    | `["payment_policy", user_payment, policy_id]` | 586B       | Individual payment rule (Subscription/Milestone/PayAsYouGo) |
+| ReferralAccount  | `["referral", gateway, code]`                 | 200B       | 3-level referral chain (zero_copy)                          |
+| PaymentsDelegate | `["payments"]`                                | PDA signer | CPI authority for token transfers                           |
 
 ### PolicyType Enum (129 bytes: 1 discriminator + 128 payload)
 
@@ -204,3 +204,14 @@ make prep              # Setup Solana toolchain (v1.18.20, Anchor 0.31.0)
 - METEORA.md — DLMM integration spec (execute_delegate_to_program)
 - "Composable Pull Payments on Solana.md" — Article draft with use cases and funding rationale
 - PROJECT.md — Full project summary
+
+## Hosted Documentation (tributary.so)
+
+Full reference guides served from the landing page. Use `webfetch` to load on demand.
+
+| Document             | URL                               | Scope                                                |
+| -------------------- | --------------------------------- | ---------------------------------------------------- |
+| SKILL.md (hub)       | tributary.so/SKILL.md             | Overview, quickstart, package index                  |
+| SKILL-cli.md         | tributary.so/SKILL-cli.md         | CLI commands, parameters, workflows                  |
+| SKILL-sdk.md         | tributary.so/SKILL-sdk.md         | Architecture, SDK/React/x402/Payments integration    |
+| SKILL-composables.md | tributary.so/SKILL-composables.md | Composable anatomy, Lighthouse facade, ForwardConfig |
