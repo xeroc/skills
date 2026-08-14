@@ -257,7 +257,9 @@ type Account = {
 ### Sum types (ADTs)
 
 ML-style sum types with optional payloads. Variants without payload are bare
-idents; payload variants use `of { ... }`.
+idents; **struct** variants use `of { named : T, … }`; a single-field **tuple**
+variant uses `of <Type>` (no braces) — mirroring a Rust tuple variant like
+`Custom(i64)`.
 
 ```fsharp
 // State ADT — variants with optional payloads
@@ -272,7 +274,18 @@ type State
     }
   | Draining
   | Resetting
+
+// Tuple variant — `Custom of I64` mirrors the real `PeriodV2::Custom(i64)`;
+// the State-driven Kani ctor builds it positionally as `PeriodV2::Custom(…)`.
+type PeriodV2
+  | OneTime
+  | Daily
+  | Custom of I64
 ```
+
+(Tuple variants are supported by the brownfield Kani construction path and the
+`is .Variant` test — `state.period is .Custom` → `matches!(…, PeriodV2::Custom(..))`.
+The Lean ADT backend still assumes unit/struct shapes.)
 
 Sum types used as `Map` values are emitted as proper Lean `inductive`
 declarations; state ADTs flatten for downstream transition codegen.
@@ -301,15 +314,43 @@ type Amount     = U128
 `Fin[N]` is a bounded natural index domain of size `N` — the canonical shape
 for subscripting a `Map[N] T` field.
 
+### `dimension` — nominal numeric units
+
+```fsharp
+dimension Lamports = U64
+dimension Bps      = U64
+```
+
+Declares a nominal unit over an integer base type. Values typed as a
+`dimension` carry the same on-chain ABI as the base (`Lamports` **is** a
+`U64` to codegen — the nominal name erases), but the spec checker treats
+distinct dimensions as **incompatible**: cross-unit arithmetic, comparison,
+and assignment between `Lamports` and `Bps` (or between either and a bare
+`U64`) are rejected at `qedgen check`, catching unit-confusion bugs before
+codegen. Unlike a `type` alias (which is fully transparent), a `dimension`
+is a one-way relationship — it accepts its base but is not accepted where
+the base or another dimension is expected.
+
 ### Parameterised and map types
 
-Type expressions: `Pubkey`, `U8`, `U16`, `U64`, `U128`, `I128`, `Vec U64`,
-`Option Pubkey`, `Map[N] T`, `Fin[N]`.
+Type expressions: `Pubkey`, `Bytes32`, `Bytes64`, `U8`, `U16`, `U64`, `U128`,
+`I128`, `Vec U64`, `Option Pubkey`, `Map[N] T`, `Fin[N]`.
 
 ```fsharp
 accounts : Map[MAX_ACCOUNTS] Account
 slots    : Map[16] (Option Pubkey)
 ```
+
+`Fin[N]` / `Map[N] T` bounds accept a numeric literal (`Fin[8]`,
+`Map[4] U64`), a declared `const` name, or a unit-only sum type name
+(variant count). Every parameterized form parses into the canonical type
+IR (#327): Lean renders `Fin N` / `List T` / `Option T`, proptest
+generates strategies over exactly the declared domain (`Fin[N]` samples
+`[0, N)`, #330), and a `Vec` state field is an explicit proptest
+capability error (no length-bound policy exists yet — model bounded
+collections as `Map[N] T`). Undeclared or malformed type spellings fail
+`qedgen check` with the `unknown_type` lint (Error severity) instead of
+surfacing later as invalid Lean or a wrong-domain test strategy.
 
 **Pubkey lowering (v2.21):** the user-facing Anchor / Quasar program
 target keeps `Pubkey` (Solana's 32-byte newtype) so on-chain accounts
@@ -318,6 +359,20 @@ state fields lower to `[u8; 32]` automatically — the structurally-
 equivalent byte array that proptest's `prop::array::uniform32(0u8..)`
 strategy already generates. P6 fires at `Info` severity as a note,
 not as a `Warning`; no spec-side action is required.
+
+**`Bytes32` / `Bytes64` — opaque byte tokens (#191):** hashes / digests /
+merkle roots (`Bytes32`, `[u8; 32]`) and signatures / recovered secp keys
+(`Bytes64`, `[u8; 64]`). Equality-only semantics like `Pubkey`, but with **no
+framework newtype** — they lower to raw byte arrays in *every* Rust backend
+(Anchor structs included) and to an opaque token in Lean. Needed to mirror a
+brownfield `#[account]` struct with `merkle_root: [u8; 32]` or
+`last_sig: [u8; 64]` fields, which `Pubkey` can't cover (its ctor emits the
+newtype). Kani note: a raw byte-array compare is a real memcmp loop Kani
+**cannot stub** (generic core impl — model-checking/kani#1997), so a
+`Bytes32`/`Bytes64` field raises the suggested `#[kani::unwind]` to 34/66 even
+when the Pubkey wide-compare abstraction is active. The prelude ships
+`wide_eq_64`/`wide_cmp_64` (machine-checked, like the 32-byte pair) for
+hand-written adapters over *named* 64-byte newtypes, which are stubbable.
 
 ### `state` (sugar)
 
@@ -606,6 +661,16 @@ handler transfer_sol { ... }
 | `takes { ... }` | Parameters (sugar, prefer signature) | `takes amount : U64` |
 | `abstract` (v2.29) | Existentially-quantified value the handler refers to in `requires` / `effect` / `ensures` without expressing how it was computed. | `abstract d : U64` |
 
+**Name resolution in `requires` / `ensures` / `let`:** a bare identifier
+resolves innermost-binding-first — expression binders (`forall` / `exists` /
+`sum` / `let … in` / match-arm payloads), then handler params, `let`
+bindings, `abstract` binders, account names, and consts — and finally falls
+back to the state fields, where `active` reads the same slot as
+`state.active` (both render through the state receiver: `s.active` in
+Rust-side harnesses, `s.active` in the Lean transition). A name that
+resolves to nothing is a check error (`unknown_guard_identifier`) rather
+than non-compiling generated code.
+
 #### `abstract <name> : <Type>` (v2.29)
 
 When a handler's spec depends on a value that comes from a library call or
@@ -729,6 +794,30 @@ Values on the RHS may be integer literals, qualified paths, arithmetic
 expressions, constructor applications (`.Variant payload`), record literals,
 record updates, `match … with`, or built-in helpers like `mul_div_floor`.
 
+#### Effect semantics: parallel (pre-state) reads
+
+An `effect { … }` block is a single atomic transition, not a statement
+sequence: **every state-field read on an RHS observes the PRE-state
+value**, regardless of the effect's position in the block. This is the
+semantics of the Lean model's record update (`{ s with balance :=
+s.balance + amount, last_seen := s.balance }` — `last_seen` gets the
+*old* balance), and as of v2.44 every generated artifact agrees:
+handler bodies, Kani/proptest transition models, and unit-test apply
+helpers all snapshot block-written fields (`let pre_balance = …;`)
+before mutating, so a read-after-write never silently observes the
+sequential (post-state) value.
+
+For sequential dataflow — compute a value, then use it in a later
+update — bind it with a handler-level `let` before the effect block:
+
+```fsharp
+let fee = mul_div_floor amount rate 10000
+effect {
+  collected += fee
+  balance   -= fee
+}
+```
+
 #### Effect arithmetic
 
 As of v2.7, `+=` / `-=` default to **checked** semantics *in both the
@@ -764,6 +853,35 @@ effect {
   nonce +=? 1
 }
 ```
+
+#### Bare arithmetic in `:=` RHS and predicates
+
+Bare `+` / `-` (outside the `+=`-family operators) follows the same
+checked doctrine in the harness lane (issues #143–#146):
+
+- **`:=` RHS** (`residual := fee - cut`): the Kani/proptest transition
+  evaluates the expression with `checked_*` ops — over/underflow (and
+  division by zero) makes the transition **return false** instead of
+  panicking, matching the `+=` checked default.
+- **Guard / property / ensures comparisons** (`requires now >= start +
+  period`, `property (cut + residual) == fee`): the harness evaluates
+  the arithmetic **widened to u128/i128** (subtraction on unsigned kinds
+  saturates), so the predicate computes exactly what the Lean `Nat`
+  model computes and can never overflow-panic on unconstrained symbolic
+  state. The Anchor/Quasar scaffold guards keep native-width rendering.
+
+The Lean transition carries matching **auto bound-guards** (#148): each
+bare `-` over unsigned kinds adds `<rhs> ≤ <lhs>` to the guard
+conjunction (cumulative for chains: `a - b - c` guards `b ≤ a` and
+`c ≤ a - b`), each `/` / `%` with a non-literal divisor adds
+`<divisor> ≠ 0`, and a `:=` RHS containing `+` / `*` / `mul_div_*` on a
+bounded target field adds a final-value `≤ MAX` bound — so the Lean
+model rejects (`none`) exactly where the checked harness returns
+`false`. Guards apply only to unconditionally-evaluated positions:
+arithmetic inside an `if`/`match` arm of the RHS is checked in Rust only
+when that arm is taken, so it gains no unconditional Lean guard — if the
+distinction matters there, write the bound explicitly
+(`requires fee >= cut`).
 
 ### `permissionless` clause
 
@@ -886,6 +1004,12 @@ old(state.accounts[i].pnl)
 forall s : Pool.Active, s.total_deposits >= s.total_borrows
 exists l : Loan.Active, l.collateral > 0
 
+// Quantifiers over a COLLECTION value (a `Vec` field) — `in`, not `:`. Binds
+// each element; Rust `coll.iter().all|any(|x| body)`, Lean `∀|∃ x ∈ coll, body`.
+// The "some/every element of a collection satisfies P" primitive.
+forall s in state.signers, s.mask >= threshold
+exists c in state.destinations, c == authority
+
 // Quantifiers — multi-binder (desugars to nested single-binder forms)
 forall p1 p2 : Path, black_count(p1) == black_count(p2)
 
@@ -964,11 +1088,12 @@ let authority =
     | .Resetting => 0
 ```
 
-### `mul_div_floor` / `mul_div_ceil` — fixed-point helpers
+### `mul_div_floor` / `mul_div_ceil` / `mul_div_round_half_up` — fixed-point helpers
 
 ```fsharp
 requires mul_div_floor(size_q, exec_price, POS_SCALE) <= MAX_ACCOUNT_NOTIONAL
 ensures state.F == old(state.F) + mul_div_ceil(fee, numerator, denominator)
+ensures state.payout == mul_div_round_half_up(shares, pool, total)
 ```
 
 Integer VMs (EVM, Solana sBPF) have no native fixed-point arithmetic and
@@ -976,6 +1101,13 @@ users writing `(a * b) / d` by hand routinely get the widen-before-divide
 step wrong. These helpers are built-in so the spec, the generated Rust
 (promoted to `u256`/`U512` locally), and the Lean proof (using Mathlib
 `mul_div_cancel` / `Nat.div_add_mod` lemmas) all agree on exact semantics.
+
+`mul_div_round_half_up(a, b, d)` computes the nearest integer to `(a * b) / d`
+with exact half-way cases rounded **up** (nearest-with-ties-up), for
+non-negative quantities with `d > 0`. It lowers to one shared rounding body
+across Rust scaffold, Kani, and proptest, and to `(a * b + d / 2) / d` in
+Lean. Ties-down or banker's rounding are not built in; a generic "nearest"
+still requires you to pick and declare a tie policy.
 
 ### Function application
 
@@ -1157,6 +1289,29 @@ environment interest_rate_change {
 }
 ```
 
+- `mutates <field> : <Ty>` — a state field the environment may change; the
+  constraint bounds the new value.
+- `external <object>.<field> : <Ty>` — a typed value read from **outside**
+  program state (an oracle price, the clock slot). Each `<object>` is a
+  distinct namespace: `clock.slot` and `oracle.price` are independent
+  symbols, and `old(clock.slot)` denotes the value before the environment
+  step. Kani and Lean receive separate pre/post symbolic values for each
+  external rather than rewriting program state.
+
+```fsharp
+environment oracle_step {
+  external oracle.price : U64
+  mutates cached_price  : U64
+  constraint cached_price == oracle.price
+  constraint oracle.price >= old(oracle.price)
+}
+```
+
+Externals are **scoped to the environment that declares them**: a constraint
+may only reference externals declared in its own `environment` block (declare
+the `external` again in another block to use it there). The reserved namespace
+`state` cannot be used as an external object.
+
 ## Pragmas
 
 `pragma <name> { <items> }` wraps platform-specific declarations in a named
@@ -1199,6 +1354,130 @@ prefer it unless you specifically want the inductive sum-type modeling.
 > `WrongState` error variant — so adding or removing a lifecycle error silently flipped
 > the State representation. The pragma makes it explicit. `WrongState` keeps its
 > independent role as the error returned on a variant-mismatch fallthrough.
+
+**`pragma harness_use = <path>`** (repeatable) — inject extra `use` lines into a
+generated **brownfield impl-Kani** harness. Needed when the harness is placed
+in-module (`pragma state_module`) and the mirrored `#[account]` State references
+a field type declared in a *second* private module: `use super::*` reaches only
+the placement module's own declared + `pub use` items, so the ctor's bare
+reference to that type won't resolve. Name each missing path (a `::*` glob or a
+single item — the module path is the one thing the spec can't infer from a type
+name); the paths are emitted verbatim under one `#[allow(unused_imports)]`, in
+source order:
+
+```fsharp
+pragma state_module = state::policies::implementations::foo_policy
+pragma harness_use  = crate::state::policies::utils::foo_types::*
+pragma harness_use  = crate::state::policies::policy_core::traits::FooTrait
+```
+
+**`pragma kani_reject = on`** — emit **guard-enforcement (reject) proofs** in the
+brownfield impl-Kani output. For **every** handler with a `requires` / `when`
+guard — including a postcondition-free validator (no `ensures`/`effect`) — a
+`verify_<handler>_rejects` harness assumes the guard is **violated** and
+asserts the real handler returns `Err` — verifying the code *enforces* the guard
+the spec declares (the converse of the ensures-preservation proof, which checks
+what holds *after* a successful call). The agent-fill is the same real handler
+call as the ensures harness. Off by default. Example: a handler with
+`requires not contains(state.approved, signer) else AlreadyApproved` gets a
+reject proof that assumes `contains(state.approved, signer)` (signer already
+voted) and asserts the call rejects the duplicate.
+
+**`pragma kani_panic_free = on`** — emit a **panic-freedom proof** per handler in
+the brownfield impl-Kani output: `verify_<handler>_panic_free` constructs
+symbolic state + params and CALLS the real handler (agent-fill) with **no
+assertion** — Kani's built-in checks (unwrap / overflow / division-by-zero /
+index / explicit panic) verify the call cannot abort on any symbolic input. The
+natural shape for a `()`-returning method whose only property is that it doesn't
+panic (e.g. a `reset_if_needed` doing unchecked-looking period arithmetic). Off
+by default; works on a handler with no `ensures`/`effect`.
+
+**`pragma kani_solver = <solver>`** — bake `#[kani::solver(<solver>)]` into every
+generated proof (right after `#[kani::proof]`), so a harness that needs a
+specific solver is reproducible without a `cargo kani --solver` flag. Use an SMT
+solver (`z3`, `cvc5`) when the harness divides/mods by a *symbolic* value — they
+reason about bit-vector division natively, where the default SAT backend
+(CaDiCaL) bit-blasts it and can blow up. Values: `z3`, `cvc5`, `bitwuzla`,
+`cadical`, `kissat`, `minisat`.
+
+**`pragma kani_vec_empty = <field>`** (repeatable) — build that State `Vec` field
+as `vec![]` (no element construction) in the brownfield ctor. Lets a harness
+mirror only the fields its property reads: a heavy/irrelevant `Vec<BigNestedType>`
+field costs nothing (its element type needn't even be declared as a spec `type` —
+only named in the field type), and a recursing `invariant()` over it is skipped
+(avoiding a symbolic-input panic in the element's own invariant). Essential for
+mirroring a large `#[account]` struct where the property only touches a few fields.
+
+**`pragma kani_target = <handler>::<method>[::<kind>]`** (repeatable) — the
+handler's real logic is a **state-struct method**, so the brownfield impl-Kani
+harnesses can GENERATE the effect call instead of leaving it agent-fill (#163):
+the ensures/reject harnesses bind `ok` to `state.<method>(<params>)` and the
+panic-free harness calls it as a statement. The optional `<kind>` segment names
+the return shape the spec can't otherwise know: `result` (default —
+`.is_ok()`), `bool` (used directly), `unit` (a non-panicking return is
+success). With a generated ctor (`pragma state_struct`) this makes the whole
+harness **zero agent-fill**. Free functions / non-state receivers stay
+agent-fill — their call shape is real-source knowledge.
+
+```fsharp
+pragma state_struct = SpendingLimit
+pragma kani_target  = decrement::try_decrement          -- Result-returning
+pragma kani_target  = reset::reset_if_needed::unit      -- ()-returning
+```
+
+**`pragma context_struct = <Struct>` / `= <handler>::<Struct>`** (repeatable) —
+name the real `#[derive(Accounts)]` struct the **Context/instruction** harness
+(`--kani-impl-context`, #169) drives through `try_accounts`. The two-segment
+form binds per handler; the bare form is the spec-wide default; absent both,
+the name defaults to `PascalCase(handler)` — the dominant Anchor convention
+(`fn execute_transaction(ctx: Context<ExecuteTransaction>, …)`).
+
+**`pragma kani_abstract_div = on`** — the **#182 arithmetic tier**: replace
+`i64::checked_div` with `checked_div_abstract`, a fresh symbolic quotient pinned
+by division's *exact* contract (`a = q·b + r`, `|r| < |b|`, `sign(r) = sign(a)`,
+plus the two `None` cases), via `#[kani::stub]`. A symbolic 64-bit divisor
+bit-blasts a sequential divider circuit that stalls both SAT (CaDiCaL) and SMT
+(z3); the abstraction removes the circuit while staying sound (the quotient is
+unique, so it's exact — no false proofs). Same discipline as the Pubkey/PDA
+stubs. Needs `-Z stubbing`.
+
+**`pragma kani_stub_hash = on`** — the **#189 Tier-2 trusted-crypto stubs**:
+replace `solana_program::{hash,keccak,blake3}::{hash,hashv}` with
+*deterministic uninterpreted functions* backed by the prelude's `UfMap32` —
+same input ⇒ same digest (memoized; determinism machine-checked in the
+prelude), distinct inputs ⇒ distinct digests (**collision-freedom axiom** —
+the Kani mirror of trusting sha256 collision resistance, exactly the Lean
+side's hash axioms). One map per primitive (domain separation); `hash(x)` and
+`hashv(&[x])` agree by shared key construction. Without the stub, CBMC
+bit-blasts the real compression function at zero verification value. Opt-in
+like `kani_stub_pda` (the hashing is inside called methods, invisible to the
+spec). Needs `-Z stubbing`.
+
+**`pragma kani_stub_secp256k1 = on`** — #189: stub
+`solana_program::secp256k1_recover::secp256k1_recover` to a deterministic
+uninterpreted function over `(hash, recovery_id, signature)` (UfMap64-backed,
+collision-freedom axiom), with a *nondeterministic* failure branch so the
+real invalid-input error path stays explored. This is the one in-program
+signature primitive; **ed25519 verification has no stubbable in-program
+entry point** (it's a precompile reached via instruction introspection).
+Needs `-Z stubbing`.
+
+> The pre-existing `pragma kani_stub_pda` (#182 Tier 2) is upgraded by #189:
+> `find_program_address` / `create_program_address` now route through the same
+> deterministic + injective UfMap machinery instead of returning a fresh
+> `kani::any()` address per call — restoring the derive-then-compare
+> determinism real programs rely on. The bump stays fully symbolic; the two
+> entry points use separate domains (the bump-in-seeds relationship between
+> them is not modeled). Any harness using a #189 UfMap stub gets its suggested
+> `#[kani::unwind]` floored at 10 to cover the CAP=8 memo scan.
+
+**Vec under-coverage lint (#192)** — at Kani codegen time, a handler
+`ensures`, `invariant`, or `property` that reads a `Vec`-typed state field
+while `pragma kani_vec_bound` is **unset** (default 1) emits a warning naming
+the field and the pragma: the harness would explore only 1-element
+collections, silently under-covering membership/aggregation behavior. Setting
+the pragma to any explicit value — including 1 — silences it (an explicit
+bound is a conscious BMC trade-off). Scalar-only properties stay silent.
 
 ## Interface declarations
 
@@ -1558,7 +1837,7 @@ mismatch.
 
 ```rust
 #[qed(verified,
-      spec      = "../../percolator.qedspec",
+      spec      = "../../escrow.qedspec",
       handler   = "deposit",
       hash      = "3f2c9a81b0d5e4f7",   // body content hash
       spec_hash = "7e1a48d93b2c0f65")]  // spec-handler content hash
@@ -1634,7 +1913,7 @@ generates guard-chain infrastructure. This is the Lean-side companion to
 ```lean
 import QEDGen.Solana.Guards
 
-qedguards Dropset where
+qedguards VaultLock where
   prog: progAt
   chunks progAt_0 progAt_1 progAt_2
 
@@ -1648,7 +1927,7 @@ qedguards Dropset where
 
   guard P1 "wrong discriminant"
     offset: DISCRIMINANT_OFFSET
-    expected: DISCRIMINANT_REGISTER_MARKET
+    expected: DISCRIMINANT_LOCK_VAULT
     fuel 8
     error E_DISCRIMINANT
     proof auto

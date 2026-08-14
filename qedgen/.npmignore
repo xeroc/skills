@@ -1,0 +1,61 @@
+# Development files
+.git
+.gitignore
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Test outputs
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Build artifacts
+node_modules/
+dist/
+build/
+target/
+**/target/
+.lake/
+**/.lake/
+*.olean
+*.olean.trace
+*.old
+bin/qedgen-debug
+bin/qedgen-release
+
+# Local agent, audit, and review state
+.agents/
+.claude/
+.qed/
+**/.qed/
+.superstack/
+learnings/
+LEARNINGS_*.md
+docs/research/
+docs/reviews/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+.cache/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/

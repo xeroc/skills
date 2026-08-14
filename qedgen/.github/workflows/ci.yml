@@ -1,0 +1,245 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Free ~20GB of preinstalled bloat. The qedgen dep tree
+      # (solana / anchor / ark-bn254 …) plus `target/` overruns the
+      # runner's default disk, which surfaced as "No space left on device"
+      # during the cache restore.
+      - name: Free disk space
+        run: |
+          echo "before:"; df -h / | tail -1
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc \
+                      /usr/local/.ghcup /opt/hostedtoolcache/CodeQL \
+                      /usr/local/share/boost /usr/local/share/powershell \
+                      /usr/local/lib/node_modules
+          sudo docker image prune --all --force >/dev/null 2>&1 || true
+          echo "after:"; df -h / | tail -1
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      # Cache the cargo registry + workspace target dir between runs.
+      # Without this, the `Codegen scaffold compile smoke` step fetches
+      # anchor-lang / anchor-spl / solana-program from cold every run
+      # (~2 min). With the cache, ~30s.
+      - name: Cache cargo registry and target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Check formatting
+        run: cargo fmt --check
+
+      - name: Run clippy
+        run: cargo clippy -- -D warnings
+
+      - name: Run tests
+        run: cargo test
+
+      - name: Check version metadata
+        run: bash scripts/check-version-consistency.sh
+
+      - name: Check auditor skill contract
+        run: |
+          bash scripts/check-auditor-skill.sh
+          bash scripts/test-auditor-preflight.sh
+
+      # #273: static analysis over every shipped shell script. Warning
+      # severity — info-level notes (e.g. intentional single-quoted grep
+      # patterns) don't gate.
+      - name: Shellcheck
+        run: shellcheck --severity=warning install.sh scripts/*.sh skills/qedgen-auditor/scripts/*.sh
+
+      - name: Check README drift
+        run: bash scripts/check-readme-drift.sh
+
+      - name: Check example codegen drift
+        run: cargo run -p qedgen-solana-skills -- check --regen-drift
+
+      # #271: the RELEASING §7/§8 gate, mechanical and on every PR — the
+      # bundled-example baseline (frozen check exit codes + summaries) and
+      # the zero-sorry sweep. Expectation table lives in the script.
+      - name: Release gate (example baseline + zero-sorry)
+        run: |
+          cargo build -p qedgen-solana-skills --bin qedgen
+          QEDGEN_BIN=target/debug/qedgen bash scripts/release-gate.sh
+
+      - name: Codegen scaffold compile smoke
+        run: cargo test -p qedgen-solana-skills --test codegen_smoke -- --ignored
+
+  # #294 P0: executable generated-artifact gate. Snapshot suites prove
+  # generated text is stable; this job proves the artifacts work as
+  # software: for every bundled Anchor example it regenerates all
+  # artifacts from the spec, compiles the scaffold and every test
+  # target, runs the generated unit tests and proptests, and
+  # type-checks the generated Kani harness with ordinary rustc
+  # (`--cfg kani` + the kani-compile-stub crate — full `cargo kani`
+  # execution stays in kani.yml). Separate job so the heavy generated-
+  # crate compiles run in parallel with `test`; separate cache key so
+  # the gate's dep builds (anchor-lang under
+  # target/generated-artifact-gate) survive between runs.
+  generated-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          echo "before:"; df -h / | tail -1
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc \
+                      /usr/local/.ghcup /opt/hostedtoolcache/CodeQL \
+                      /usr/local/share/boost /usr/local/share/powershell \
+                      /usr/local/lib/node_modules
+          sudo docker image prune --all --force >/dev/null 2>&1 || true
+          echo "after:"; df -h / | tail -1
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry and target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-gate-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-gate-
+            ${{ runner.os }}-cargo-
+
+      # Serial (`--test-threads=1`): the three examples share one cargo
+      # target dir for dep reuse; parallel runs would only serialize on
+      # cargo's own file lock with interleaved output.
+      - name: Generated artifact gate
+        run: cargo test -p qedgen-solana-skills --test generated_artifact_gate -- --ignored --test-threads=1
+
+  # #294 P0: runtime signer/init journey. PDA seeds, bump, payer,
+  # space, and `init` constraints are generated by codegen and are
+  # invisible to every other gate — `cargo check` compiles them and the
+  # spec-model harnesses never execute them. They are wrong only at
+  # runtime. This job regenerates the fixture program from its spec,
+  # builds it to SBF bytecode, and drives real transactions through
+  # Mollusk, asserting both the success path and the failure path
+  # (wrong seeds, non-canonical bump, unsigned payer, re-init).
+  #
+  # Separate job because it is the only one needing the Solana platform
+  # tools; `cargo build-sbf` downloads them on first use (~1 min), so
+  # both the toolchain and the SBF target dir are cached.
+  runtime-journey:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          echo "before:"; df -h / | tail -1
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc \
+                      /usr/local/.ghcup /opt/hostedtoolcache/CodeQL \
+                      /usr/local/share/boost /usr/local/share/powershell \
+                      /usr/local/lib/node_modules
+          sudo docker image prune --all --force >/dev/null 2>&1 || true
+          echo "after:"; df -h / | tail -1
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Solana CLI (provides cargo-build-sbf)
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
+
+      # ~/.cache/solana holds the platform-tools bundle cargo-build-sbf
+      # fetches on first invocation; without it every run re-downloads.
+      - name: Cache cargo registry, target, and platform tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            ~/.cache/solana
+            target
+          key: ${{ runner.os }}-cargo-journey-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-journey-
+            ${{ runner.os }}-cargo-
+
+      - name: Verify SBF toolchain
+        run: cargo build-sbf --version
+
+      # The journey shells out to the built CLI to regenerate the
+      # fixture, so build it first.
+      - name: Runtime signer/init journey
+        run: |
+          cargo build -p qedgen-solana-skills --bin qedgen
+          cargo test -p qedgen-sandbox --test runtime_journey -- --ignored --nocapture
+
+  # Supply-chain gate. Runs independently of `test` so an advisory
+  # publish doesn't block a feature PR's other checks from reporting,
+  # and so the cargo-audit / cargo-deny tool installs don't bloat the
+  # primary cache key.
+  supply-chain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      # Cache the supply-chain tool binaries. `cargo install` is slow
+      # cold (~3 min for cargo-audit + cargo-deny); cached, the step
+      # is a no-op.
+      - name: Cache cargo-audit and cargo-deny binaries
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/cargo-audit
+            ~/.cargo/bin/cargo-deny
+          key: ${{ runner.os }}-supply-chain-tools-v1
+
+      - name: Install cargo-audit and cargo-deny
+        run: |
+          command -v cargo-audit >/dev/null || cargo install --locked cargo-audit
+          command -v cargo-deny  >/dev/null || cargo install --locked cargo-deny
+
+      # cargo-audit reads Cargo.lock and cross-references the RustSec
+      # advisory DB. Fails on any unignored vulnerability; the
+      # informational allowlist for transitive Solana SDK / Arkworks
+      # crates lives in `deny.toml`'s `[advisories].ignore` list.
+      - name: cargo audit
+        # Ignore list MUST match `deny.toml`'s `[advisories].ignore`
+        # array. Both files document each ID's justification inline.
+        run: |
+          cargo audit --deny warnings \
+            --ignore RUSTSEC-2024-0436 \
+            --ignore RUSTSEC-2024-0388 \
+            --ignore RUSTSEC-2025-0141 \
+            --ignore RUSTSEC-2025-0161 \
+            --ignore RUSTSEC-2026-0097
+
+      # cargo-deny enforces the license allowlist, registry / git
+      # source allowlist, and duplicate-version warning gate from
+      # `deny.toml`.
+      - name: cargo deny check
+        run: cargo deny check

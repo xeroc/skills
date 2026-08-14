@@ -1,0 +1,148 @@
+name: Lake build (Lean side)
+
+# Runs `bash scripts/check-lake-build.sh --strict` over every bundled
+# `examples/*/formal_verification/` project. Heavier than the Rust-side
+# gates because it provisions elan + Mathlib (cache-miss can take 15–45
+# min). Temporarily manual-only: routine pushes rely on Rust-side generation,
+# snapshot, and drift gates. Run this workflow before a release or when changing
+# Lean codegen/proof dependencies.
+
+on:
+  workflow_dispatch:
+
+# Stacked pushes to main supersede each other — cancel the older run
+# rather than queueing hour-long builds back to back.
+concurrency:
+  group: lake-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lake-build:
+    runs-on: ubuntu-latest
+    # Warm-cache runs finish in ~50 min; a cold run (cache invalidated by
+    # a qedsvm/Mathlib bump, or evicted by the repo's 10 GB cache limit)
+    # takes ~2h+ across all 9 examples. The job timeout must cover the
+    # cold case: with the old 60-min ceiling every cold run was cancelled,
+    # and a cancelled job skips the cache post-steps, so the cache could
+    # never be re-seeded (35 consecutive cancellations, 2026-07-07→15).
+    timeout-minutes: 170
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          set -euo pipefail
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      # Cache elan's toolchain store. Keyed on every `lean-toolchain`
+      # file in the repo so a Lean version bump invalidates cleanly.
+      - name: Cache elan toolchains
+        uses: actions/cache@v4
+        with:
+          path: ~/.elan/toolchains
+          key: ${{ runner.os }}-elan-${{ hashFiles('**/lean-toolchain') }}
+          restore-keys: |
+            ${{ runner.os }}-elan-
+
+      # Cache per-example `.lake/` (built oleans + downloaded Mathlib).
+      # Keyed on the lakefiles + manifests so dependency or toolchain
+      # bumps invalidate the right examples. Restore/save are split (not
+      # plain actions/cache) so the save step below can run `if: always()`
+      # — a sweep that fails or times out still persists partial build
+      # progress instead of losing the whole cache warm-up.
+      - name: Restore example .lake directories
+        id: lake-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: examples/**/formal_verification/.lake
+          key: ${{ runner.os }}-lake-${{ hashFiles('examples/**/lakefile.lean', 'examples/**/lake-manifest.json', '**/lean-toolchain') }}
+          restore-keys: |
+            ${{ runner.os }}-lake-
+
+      # v2.27 — examples that import bundled stdlib (`Token from "spl"`,
+      # `Metadata from "metaplex"`) have lakefiles whose `require
+      # tokenProofs from "<rel-path>"` directive was rewritten relative
+      # to the author's `$HOME` (the bundled proof package is
+      # materialized to `~/.qedgen/cache/builtin/<key>/.qed/proofs/`).
+      # The relative-path depth depends on how deep the repo is under
+      # `$HOME` — committed lakefiles therefore only resolve cleanly on
+      # the machine they were generated on. Rebuild qedgen and re-run
+      # codegen on each affected example to (a) materialize the bundled
+      # proof package into the runner's `$HOME/.qedgen/cache/`, and
+      # (b) rewrite the lakefile's require directive with a path that
+      # resolves correctly under the runner's path layout.
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ". -> target"
+      - name: Build qedgen + regen bundled-stdlib lakefiles
+        run: |
+          set -euo pipefail
+          cargo build --release --bin qedgen
+          repo_root="$(pwd)"
+          mkdir -p bin
+          cp target/release/qedgen "$repo_root/bin/qedgen"
+          for ex in examples/rust/escrow-split examples/rust/bundled-stdlib-demo; do
+            if [ -f "$ex/qed.toml" ]; then
+              echo "==> regen lakefile for $ex"
+              # Strip any existing `require <pkg>Proofs from "..."` lines
+              # AND the v2.27-Track-B preamble comment so codegen's
+              # `inject_verified_callee_requires` re-emits them with the
+              # CI runner's correct relative path (committed lakefile's
+              # path was computed against the author's $HOME depth).
+              # The function is idempotent on presence — if we left the
+              # stale line in place it would skip the rewrite.
+              lakefile="$ex/formal_verification/lakefile.lean"
+              if [ -f "$lakefile" ]; then
+                sed -i '/^require [a-zA-Z_][a-zA-Z0-9_]*Proofs from /d; /^-- v2\.27 Track B: verified-callee proof package/d' "$lakefile"
+              fi
+              # cd into the example: `qedgen codegen --lean`'s default
+              # output is `./formal_verification/Spec.lean` (cwd-relative).
+              # Running from the repo root would write to the wrong place
+              # AND the inject step would skip because `./formal_verification/
+              # lakefile.lean` wouldn't exist in cwd. Session-3 carry-forward
+              # `--lean-output` cwd-default limitation; fix queued for v2.27.x.
+              ( cd "$ex" && "$repo_root/bin/qedgen" codegen --lean --spec . )
+              # The fresh require for `tokenProofs` / `metadataProofs`
+              # isn't in the cached lake-manifest.json. Invalidate the
+              # stale manifest so the bootstrap step's `lake update`
+              # repopulates it. `.lake/` itself can stay (Mathlib oleans
+              # are still valid); only the manifest references need a refresh.
+              rm -f "$ex/formal_verification/lake-manifest.json"
+            fi
+          done
+
+      # Populate `.lake/` for any example whose cache missed. `lake update`
+      # is a no-op when the manifest matches; otherwise it fetches Mathlib.
+      - name: Bootstrap missing .lake directories
+        run: |
+          set -euo pipefail
+          shopt -s globstar
+          for lakefile in examples/**/formal_verification/lakefile.lean; do
+            dir="$(dirname "$lakefile")"
+            if [ ! -d "$dir/.lake" ] || [ ! -f "$dir/lake-manifest.json" ]; then
+              echo "==> lake update in $dir"
+              ( cd "$dir" && lake update )
+            fi
+          done
+
+      # Step-level timeout (below the job's 170) so a hung sweep fails the
+      # STEP, leaving the job alive to run the always() cache save below.
+      # A job-level cancellation would skip it.
+      - name: Run lake-build sweep
+        timeout-minutes: 150
+        run: bash scripts/check-lake-build.sh --strict
+
+      # Save even when the sweep failed or timed out: the oleans built so
+      # far make the next run incremental. Skip only on an exact-key
+      # restore hit (nothing new to save). Reuse the restore step's
+      # resolved key — the regen step rewrites lakefiles/manifests mid-job,
+      # so re-hashing here would mint a new multi-GB entry every run.
+      - name: Save example .lake directories
+        if: always() && steps.lake-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: examples/**/formal_verification/.lake
+          key: ${{ steps.lake-cache.outputs.cache-primary-key }}

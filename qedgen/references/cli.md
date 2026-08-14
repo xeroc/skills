@@ -106,6 +106,11 @@ $QEDGEN interface --idl target/idl/jupiter.json --vendor
 | `--vendor` | bool | false | Drop into `.qed/interfaces/<program>.qedspec`. Requires a discoverable `.qed/` ancestor. |
 
 ### `spec`
+**DEPRECATED (slated for v3.0 removal).** The IDL is now an evidence
+*source* for `qedgen probe` — the hypothesizer consumes IDL signer flags
+and `has_one` relations directly and offers confirmable clauses instead
+of a TODO shell. Remains functional in v2.x with a runtime warning.
+
 Scaffold a `.qedspec` from an Anchor IDL JSON. (For Tier-0 interface
 scaffolding from an IDL — program ID + handler signatures only — prefer
 `interface`, which is more focused.) v2.10 dropped the SPEC.md
@@ -124,6 +129,14 @@ $QEDGEN spec --idl target/idl/program.json --output-dir ./formal_verification
 | `--output-dir` | Path | `./formal_verification` | Output directory; `<idl-stem>.qedspec` is written inside |
 
 ### `adapt`
+**DEPRECATED (slated for v3.0 removal).** `adapt` bundled two unrelated
+jobs and both now have honest homes: scaffold mode is subsumed by
+`qedgen probe --emit-spec-candidates --audit-dir` (elicitation-first —
+confirmable, evidence-anchored hypotheses instead of TODO stubs, and the
+same skeleton written as a byproduct), and attribute mode is
+[`stamp`](#stamp) (same emission plus the recorded-verification gate).
+Both modes remain functional in v2.x with a runtime warning.
+
 Brownfield adapter for existing Anchor programs. Two modes:
 
 - **Scaffold mode** (`--program <c>` only): parses `<c>/src/lib.rs`, finds
@@ -165,6 +178,45 @@ $QEDGEN adapt --program ./programs/my_program \
 | `--spec` | Path | - | Existing `.qedspec`. Switches to attribute-emit mode |
 | `--out` | Path | stdout | Output path. In scaffold mode writes a `.qedspec`; in attribute mode writes a `// === handler … ===` report |
 | `--handler` | `NAME=PATH` | - | Manually point an unrecognized handler at its actual implementation. Format: `<handler>=<rust_path>` where path is `module::sub::function` or just `function`. Repeatable. Wins over the classifier's choice for any outcome (Inline / FreeFn / Method / Unrecognized) |
+
+### `stamp`
+v2.44 — stamp `#[qed(verified, …)]` drift attributes for an
+already-verified spec: the post-verification half of the old `adapt`,
+under a name that says what it does. Emits one attribute per handler
+(body hash + spec-block hash, plus the Accounts-struct seal when the
+`Context<X>` struct is found) to paste above each `pub fn`; the
+`qedgen-macros` proc macro recomputes both at compile time and fires
+`compile_error!` on drift. Anchor-only (it round-trips through the
+Anchor project parser to locate each handler body).
+
+`stamp` runs **after** verification and proves nothing itself. Its one
+new behavior over `adapt --spec` is the gate: it requires recorded
+implementation-verified evidence — `.qed/verify-evidence.json`, written
+by every `qedgen verify` run — with (a) a `spec_hash` matching the spec
+being stamped byte-for-byte, (b) a `program_hash` matching the current
+program source tree, and (c) at least one passing **implementation-bound**
+backend (miri or a `kani_impl*.rs` harness). Checking/model-tested results
+and bug-oriented `--probe-repros` are not eligible; an edited spec or
+program invalidates the evidence until re-verified. So
+the division of labor is: a source-bound backend establishes the
+implementation claim, `stamp` freezes it, the compiler guards the
+freeze.
+
+```bash
+# 1. verify with an implementation-bound backend (records evidence)
+$QEDGEN verify --spec my_program.qedspec --program programs/my_program --kani --kani-path programs/my_program/src/kani_impl.rs
+
+# 2. stamp — refuses unless the recorded evidence matches and is impl-bound
+$QEDGEN stamp --program programs/my_program --spec my_program.qedspec
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--program` | Path | required | Program crate (directory holding `Cargo.toml`, with `src/lib.rs` inside) |
+| `--spec` | Path | required | The verified `.qedspec` to stamp against |
+| `--out` | Path | stdout | Output path for the `// === handler … ===` attribute report |
+| `--handler` | `NAME=PATH` | - | Manually point an unrecognized handler at its implementation (same semantics as `adapt`) |
+| `--evidence` | Path | `<spec_dir>/.qed/verify-evidence.json` | Override the verification-evidence path |
 
 ### `check`
 Validate a spec — lint, coverage, drift, and verification report. Default
@@ -222,7 +274,7 @@ $QEDGEN check --regen-drift --examples-root examples/rust
 |---|---|---|---|
 | `--spec` | Path | optional | Spec file or directory. Defaults to `.qed/config.json spec` |
 | `--proofs` | Path | `./formal_verification` | Proofs directory |
-| `--coverage` | bool | false | Show operation × property matrix (also enabled by default) |
+| `--coverage` | bool | false | Show operation × property matrix (spec coverage) plus the per-backend obligation rollup (backend coverage, #332): for each of kani / lean / proptest, how many requested obligations are `emitted` vs `unsupported(reason)` vs `failed`, recomputed in memory from the current spec. `--json` adds a `backend_coverage` key next to the existing matrix fields. |
 | `--explain` | bool | false | Generate Markdown verification report |
 | `--output` | Path | stdout | Output file for --explain |
 | `--drift` | Path | - | Rust source path for #[qed(verified)] drift detection |
@@ -237,6 +289,7 @@ $QEDGEN check --regen-drift --examples-root examples/rust
 | `--no-cache` | bool | false | Force-refresh the github source cache for every imported dep. Wipes `~/.qedgen/cache/github/<org>/<repo>/<kind>/<ref>/` and re-clones. |
 | `--regen-drift` | bool | false | Regenerate bundled examples into temporary directories and fail if committed generated support code, harnesses, or `Spec.lean` drift. Also fails when an example has `.qed/` state or generated artifacts but no `qed.toml`. |
 | `--examples-root` | Path | `examples/rust` | Example root scanned by `--regen-drift` |
+| `--write` | bool | false | With `--regen-drift`, also write the regenerated content into the repo so committed example outputs match current codegen. Useful for rebasing PRs across codegen-touching releases. Never touches user-owned files (handler bodies, Spec.lean proofs) — only the codegen-owned set `--regen-drift` already compares. |
 | `--json` | bool | false | Machine-readable output |
 
 Lints fired by `check` include `[shape_only_cpi]` for `call
@@ -305,6 +358,16 @@ flags, runs every backend whose artifact is present on disk
 `./formal_verification/`). Use `--proptest` / `--kani` / `--lean` to
 target one backend.
 
+v2.44 — every run also records its evidence to
+`<spec_dir>/.qed/verify-evidence.json` (spec hash, optional program-source
+hash, per-backend status, and whether an **implementation-bound** backend
+passed: miri, or Kani only when the `--kani-path` file is a
+`kani_impl*.rs` harness). Plain proptest/Kani/Lean exercise the spec model,
+while `--probe-repros` confirms bug findings; neither category counts. This
+record is what [`stamp`](#stamp) gates
+on; it is written on pass and fail alike (a failed run is still evidence
+of what ran) and a failed write never turns a green verify red.
+
 ```bash
 # Auto-detect: every backend whose artifact exists on disk
 $QEDGEN verify --spec my_program.qedspec
@@ -332,45 +395,137 @@ $QEDGEN verify --spec my_program.qedspec --check-upstream --upstream-stale-ok
 | Flag | Type | Default | Description |
 |---|---|---|---|
 | `--spec` | Path | required | Spec file (`.qedspec`) |
+| `--program` | Path | none | Program crate to hash into implementation-bound evidence; required before `stamp` can consume that evidence |
 | `--proptest` | bool | false | Run proptest harnesses (`cargo test --release`) |
 | `--proptest-path` | Path | `./programs/tests/proptest.rs` | Proptest harness file |
 | `--kani` | bool | false | Run Kani BMC harnesses (`cargo kani --tests`) |
 | `--kani-path` | Path | `./programs/tests/kani.rs` | Kani harness file |
 | `--lean` | bool | false | Run Lean proofs (`lake build`) |
 | `--lean-dir` | Path | `./formal_verification` | Lean project directory |
+| `--miri` | bool | false | Run Pinocchio Miri reproducers under `.qed/probes/pinocchio/*/repro_miri.rs` via `cargo +nightly miri test`. UB / aliasing / overflow diagnostics surface as findings; dual-execution divergence against Mollusk repros surfaces as Critical. |
 | `--fail-fast` | bool | false | Stop on the first failing backend |
 | `--json` | bool | false | Machine-readable output for CI |
 | `--check-upstream` | bool | false | Diff each pinned `upstream_binary_hash` against the on-chain `.so` via `solana program dump`. Skips deps without a pinned hash. Non-zero exit on any mismatch. |
 | `--rpc-url` | String | Solana CLI default | Override RPC endpoint passed to `solana program dump --url <rpc>` |
 | `--offline` | bool | false | Refuse to reach the network. Any dep that would require an on-chain fetch reports as Error. CI-gate friendly. |
 | `--upstream-stale-ok` | bool | false | Suppress the upstream binary-hash check even when the lock declares pinned hashes. Mismatches demote to Info; verify exits zero. Offline-dev only — do not use in CI. Pairs with the auto-on behavior of `--check-upstream`. |
-| `--probe-repros` | bool | false | Run probe reproducers under `<project>/target/qedgen-repros/` (PLAN-v2.16 D4). Each repro is a Mollusk-driven Rust test asserting a probe finding's bug fires; the verb captures pass/fail per finding so the auditor / next probe invocation can drop findings whose repros didn't reproduce. Pre-populated repros (v3-pending) — emits `note: no repros found` placeholder until the agent-fill workflow lands. |
+| `--probe-repros` | bool | false | Discover and run probe reproducers under `<project>/target/qedgen-repros/`, including agent-authored audit repros and mechanically generated category repros. Reports `Fired`, `Silent`, or `BuildError` per repro; emits `note: no repros found` only when the directory contains no runnable reproducers. |
 | `--crucible` | u64 | none | Run the coverage-guided fuzz engine for the given wall-clock seconds. Thin alias over `probe --fuzz` — folds findings into the BackendReport so they render through the same named-trace human surface as Kani / proptest. |
 | `--crucible-harness-dir` | Path | `./fuzz/<prog>/` | Harness directory for `--crucible`. |
 | `--crucible-no-smoke` | bool | false | Skip the 30s smoke pre-flight. |
 | `--crucible-stateful` | bool | false | Stateful action-chain mode for `--crucible`. |
 | `--recursive` | bool | false | v2.27 Track D3 — DFS-walk the transitive proof-package closure (deduped by path) and run `lake build` per layer. Per-layer PASS/FAIL is reported; failed layers print the first ~10 lines of stderr/stdout. Exits non-zero on any layer failure; emits "every imported proof package built clean" when all pass. No-op success when the spec imports nothing with `verified = true` in `qed.lock`. |
 | `--require-verified` | bool | false | v2.27 Track D2 — exits non-zero before any backend dispatches if any imported Tier-1+ interface (binary_hash + `ensures`) did NOT ship a `.qed/proofs/<Iface>.lean + lakefile.lean` package alongside. Tier-0 (no ensures) and sentinel-pinned natives (all-zero binary_hash) are exempt. Default-off in v2.27 because the bundled stdlib still ships Stance 1 for `import System from "system"` (no bundled proof package for Pubkey-param handlers). |
+| `--strict` | bool | false | #332 — recompute the reconciled backend-obligation manifest (kani / lean / proptest, in memory) and exit 1 on any `unsupported` or `failed` entry. A passing strict verify means no requested obligation was silently dropped by a backend. Known capability gaps (multi-account file-level features #324, ADT Kani parity #326, pubkey Lean clauses #328, multi-account ghosts #331) fail affected specs by design. |
 
 ### `probe`
-Probe a `.qedspec` for category-coverage gaps (spec-aware mode) or
-walk a brownfield project root and emit a per-handler work list
-(spec-less / `--bootstrap` / `--program` mode). Output is JSON,
-consumed by the auditor subagent. Spec-aware emits `findings`;
-spec-less emits `runtime`, `handlers`, `applicable_categories`.
-v2.16 schema bumps to `version: 2` with the addition of an optional
-`reproducer` field on findings (drop-on-fail pipeline; findings
-without a confirmed reproducer are silently dropped — see
-`feedback_probes_reproducible_only.md`). v2.19 schema bumps to
-`version: 3` when `--emit-spec-candidates` is set, adding a
-`clusters[]` array that the auditor subagent surfaces through the
-scaffold-to-spec interview. v2.20 extends the bootstrap envelope
+Probe a `.qedspec` for category-coverage gaps (spec-aware mode) or walk a
+brownfield project root and emit a per-handler work list (spec-less /
+`--bootstrap` / `--program` mode). Output is always a schema-v3 JSON envelope;
+`qedgen probe` has no `--json` flag. Spec-aware runs may contain both
+`candidates[]` (unconfirmed investigation leads) and `findings[]`
+(reproducer-backed results). Spec-less runs also report `runtime`, `handlers`,
+and `applicable_categories`.
+
+In schema v3, `engine_runs[]` records per-engine status (`passed | partial
+| blocked | failed | skipped`, with `candidates_dropped` and
+`skipped_files`); `coverage` reports what was discovered/exercised;
+and `outcome` (`passed_with_coverage | no_findings_low_coverage |
+blocked_incomplete_harness | engine_failed | dry_run`) lets a consumer
+tell a real clean pass from a probe that under-ran (only
+`passed_with_coverage` licenses "found nothing"). `findings[]` keeps
+its reproducer-only contract. Budget-0 fuzz reports `outcome: dry_run`
+with the fuzz engine `blocked`. Migration: `docs/design/probe-schema-v3-migration.md`.
+v2.19 adds an optional `clusters[]` array under `--emit-spec-candidates`
+(additive; distinct from `candidates[]` — clusters are proto-spec-clauses
+for the scaffold-to-spec interview). v2.20 extends the bootstrap envelope
 with `dispatcher_kind: "shank_central_match"` for native programs
 where `qedgen probe --bootstrap` detects a central-match dispatcher
 in `lib.rs` (S2.1 Shank adapter), and each `handlers[]` entry now
 carries per-handler `applicable_categories` + `intent_tag`
 narrowed by handler-body heuristic (S2.2 — authority-gated /
 trader-gated / permissionless).
+
+v2.44 (#235) adds the **IDL-enrichment overlay** to every spec-less
+envelope. Source discovery stays ground truth; when an on-disk IDL exists
+(canonical paths: `idl.json`, `program/idl.json`, `target/idl/*.json`,
+`idl/*.json` — Anchor legacy / 0.30 / Codama IR all accepted) the envelope
+reports it as `idl_path` and each matched `handlers[]` entry gains
+`idl_accounts` (signer/writable flags) + `idl_args` (name/type,
+discriminators elided). On Anchor/Quasar — where declared signer flags are
+runtime-enforced — the IDL derives an `intent_tag` for handlers the body
+classifier left untagged, narrowing `applicable_categories` (body
+classification always wins; Codama/Shank flags on other runtimes enrich
+but never narrow). Handler-set disagreement between source and IDL
+surfaces as `idl_source_drift` entries in `candidates[]` (both
+directions, never silently reconciled). Pinocchio bootstrap fills its
+otherwise-empty `handlers[]` from the Codama IDL (`discovered_via:
+"idl"`, `source_file` = the IDL path). No IDL on disk → overlay skipped;
+when one is mechanically derivable it is reported as `derivable_idl:
+"anchor" | "quasar" | "shank" | "codama"` — an unbuilt Anchor/Quasar
+checkout is one `anchor build` away (idl-build default-on since Anchor
+0.30, and this beats any codama config, which in framework repos consumes
+the built IDL), a `shank`/`codama` dep or codama config file is one
+`shank idl` / `codama run` away. A hint for the agent, the CLI does not
+shell out.
+
+v2.44 (#240) also runs a **dead-guard / unwired-error-variant sweep** on
+every spec-less envelope: each `#[error_code]` enum variant that is defined
+but has no enforcement call-site (`require!` / `require_*!` / `err!` /
+`return Err(.. Variant ..)` / a match arm) anywhere in `src/` surfaces as an
+`unwired_error_variant` entry in `candidates[]` (`handler` = the variant,
+`spec_silent_on` = its definition `file:line`). A named-but-never-fired
+error is a guard that exists in name only — the path it was meant to protect
+proceeds unchecked. Deterministic (enumerate the enum, grep each variant),
+so it is a candidate, never a reproducer-backed finding; the
+`investigation_hint` carries the severity rule (grade at the impact ceiling
+of the unguarded path, not a dead-variant floor). No `#[error_code]` enum →
+no candidates (clean no-op, not a false positive).
+
+v2.44 adds **spec elicitation** (design:
+`docs/design/spec-elicitation-prd.md`) to every spec-less envelope,
+default-on (no flag):
+
+- `run_id` — stable per-run identifier (`run-<program>-<unix-secs>`),
+  threaded through the audit working set so `ratify` outputs join back to
+  the probe run (funnel conversion, time-to-first-check).
+- `hypotheses[]` — evidence-anchored, confirmable invariant hypotheses
+  about *this* program from the deterministic hypothesizer
+  (`probe/hypothesize.rs`). Seven classes: `authorization` (a single
+  unambiguous IDL signer plus a stored-authority binding — body
+  key-comparison / assert helper, an IDL `has_one` relation naming the
+  signer, or an authority-named enforced signer); `lifecycle_init_once`
+  (an init-shaped handler plus an init guard in the body or an Anchor
+  `#[account(init, …)]` constraint; `init_if_needed` does not count);
+  `arithmetic_bound` (a bound check the body already enforces —
+  `require!(param <= X, Err)` or the if-return-Err shape — lifted into a
+  question; never guessed from a type width or name); `conservation` (a
+  paired forward/reverse operation — deposit/withdraw etc. — with no
+  supply-changing flow anywhere in the scan; abstains the moment any
+  issuance/destruction flow exists); `cpi_integrity` (a pinned SPL-token
+  callee plus a resolved `Transfer { from, to, authority }` role
+  mapping; abstains when either is unresolved); `unwired_guard` (a #240
+  dead-guard candidate flipped into "you named this check but never
+  wired it — should it hold?"; `accept` routes to a missing-enforcement
+  finding, `reject` records a dead variant); and `state_machine` (an IDL
+  status enum carried by a state struct field — exactly one, else the
+  representation is ambiguous and it abstains — lifted into the spec's
+  `type State`). Precision rule: **no evidence anchor
+  → no hypothesis** — a handler name alone never fires. Each record
+  carries `id` (`h-<8hex>-<class>-<handler>`, stable across runs),
+  `claim`, `evidence[]` (`{kind, detail, source}`), `payoff`, `backend`,
+  `assurance` (always `checking` at emission — §3.1 assurance contract),
+  `confidence`, and an optional `lowering` recipe `ratify` executes on
+  accept.
+- `spec_readiness` — `{hypotheses_total, by_class, by_confidence,
+  lowerable}` supply counts.
+- A ranked human-readable hypothesis summary (claim + evidence + payoff +
+  backend + id) prints on **stderr**; stdout JSON stays the agent
+  surface.
+
+Deep cross-procedure hypothesis formation (state-machine completeness,
+conservation across paths) remains the agent's job; the binary owns only
+the deterministic, evidence-anchored classes.
 
 ```bash
 # Spec-aware
@@ -392,8 +547,11 @@ $QEDGEN probe --program programs/my_program \
 
 # v2.21 — Crucible brownfield protocol-mode. No .qedspec required;
 # emits a harness under <root>/.qed/fuzz/<prog>/ whose
-# invariant_test() body is empty (protocol-level panics, unwraps,
-# borrow-mut errors, and overflow surface via Crucible's host loop).
+# protocol guard suite checks observable post-state deltas such as
+# lamport conservation, ownership/discriminator changes, close/realloc
+# integrity, rent loss, and token-balance conservation. Program-internal
+# errors (panic, unwrap, require!, overflow) remain transaction errors and
+# require a spec assertion or an agent-authored reproducer.
 $QEDGEN probe --fuzz 300 --root programs/my_program
 
 # v2.21 — budget-0 dry-run: emit the harness without paying the
@@ -410,64 +568,120 @@ $QEDGEN probe --fuzz 0 --root programs/my_program
 #   <root>/idl/*.json            (Codama default output dir)
 # Anchor 0.30 top-level `instructions[]` and Codama IR nested
 # `program.instructions[]` are both recognised. Native + sBPF still
-# bail (deferred to v2.23+; native will gate on Shank).
+# are not supported by brownfield Crucible. Native still has static probe
+# coverage; sBPF assembly uses the dedicated Lean/qedsvm proof path.
 $QEDGEN probe --fuzz 300 --root programs/my_pinocchio_program
+
+# Domain mode — replay ratified domain sequences, then fuzz. Protocol
+# mode stays blind to domain-specific bugs; domain mode links a ratified
+# dossier fact to a spec invariant and deterministically replays the
+# bound witness before exploratory fuzzing.
+$QEDGEN probe --fuzz 300 --crucible-mode domain \
+  --spec my_program.qedspec \
+  --domain-dossier .qed/audit/latest/domain-dossier.json \
+  --domain-sequences .qed/audit/latest/domain-sequences.json \
+  --domain-sequence-bindings .qed/audit/latest/domain-sequence-bindings.json
 ```
 
 | Flag | Type | Default | Description |
 |---|---|---|---|
 | `--spec` | Path | optional | Path to `.qedspec` (spec-aware mode) — conflicts with `--bootstrap` and `--program` |
 | `--bootstrap` | bool | false | Spec-less mode — walk a project root and emit the auditor work list. Requires `--root`. |
-| `--root` | Path | optional | Project root for spec-less mode (the program crate dir). v2.21 also paired with `--fuzz` (no `--spec`) for brownfield protocol-mode Crucible — emits a harness at `<root>/.qed/fuzz/<prog>/` whose `invariant_test()` body is empty so only intrinsic crashes (panic / unwrap-on-None / `BorrowMutError` / arithmetic overflow) fire. v2.22 lifts the runtime gate for Pinocchio when a Codama / Anchor 0.30 IDL is on disk (canonical paths: `idl.json`, `program/idl.json`, `idl/*.json`, `target/idl/*.json`); native + sBPF still bail with a deferral message targeting v2.24+ (v2.23 shipped the pre/post property lowering trust fix + brownfield first-contact onboarding flow instead of touching this gate). |
-| `--program` | Path | optional | v2.19 user-facing alias for `--bootstrap --root <path>` (the Pinocchio-shape probe entry point; auto-routes via `Cargo.toml` detection so the same flag works for Anchor / native crates too, falling back to the generic spec-less envelope when not Pinocchio) |
-| `--runtime` | enum | auto | Override runtime detection. Values: `pinocchio`, `anchor`, `quasar`, `native`, `sbpf`. Only `pinocchio` has dedicated probe output today; the others fall back to the generic bootstrap envelope. |
-| `--emit-spec-candidates` | bool | false | v2.19 — lift findings into candidate spec clauses (clusters) the auditor subagent surfaces through the scaffold-to-spec interview. Schema bumps to v3 with a `clusters[]` field. v2-shape consumers see no change when the flag is off. |
-| `--audit-dir` | Path | optional | v2.19 — when paired with `--emit-spec-candidates`, write the full audit working set (`interview.md`, `clusters.json`, `skeleton.qedspec`) to this directory. Companion `qedgen ratify --audit-dir <path>` consumes the three files to produce the final spec. Conventionally `.qed/audit/<timestamp>/`. |
-| `--fuzz` | u64 | none | Wall-clock seconds. Runs the coverage-guided fuzz engine alongside (or instead of) the pattern-match predicates. v2.21+: requires `--spec <path>` (spec-driven invariants) OR `--root <project-path>` (brownfield protocol-mode); passing both layers spec invariants on top of protocol crash detection. Findings come back in the same `findings[]` with `category: crucible_fuzz_crash` and a `Reproducer::Crucible`. Budget `0` emits the harness scaffold (brownfield only) and exits without building / running the fuzzer — handy for previewing what the agent needs to fill before paying the Crucible build cost. |
-| `--harness-dir` | Path | `./fuzz/<prog>/` | Crucible harness directory. Matches `codegen --crucible` output. |
+| `--root` | Path | optional | Project root for spec-less mode (the program crate dir). Paired with `--fuzz` (without `--spec`) for brownfield protocol-mode Crucible. The generated harness checks observable post-state guards: wallet/total lamports, ownership and discriminator stability, close/realloc integrity, rent exemption, and token-balance conservation. Program-internal faults such as panic, unwrap, `require!`, and overflow return transaction errors and are outside this spec-less guard suite. Pinocchio requires an on-disk Codama / Anchor 0.30 IDL (canonical paths: `idl.json`, `program/idl.json`, `idl/*.json`, `target/idl/*.json`); native and sBPF brownfield fuzzing are unsupported. |
+| `--program` | Path | optional | Program audit mode entry point. Auto-routes via `Cargo.toml` detection to the runtime's dedicated extractor: Pinocchio → site catalogue + SAFETY metadata (v2.19), Anchor/Quasar → anchor extractor (scaffold-to-spec interview), native/qedgen-codegen → native extractor; runtimes without an extractor fall back to the generic bootstrap envelope. Static engine only: conflicts with `--spec`, `--bootstrap`, `--root`, and `--fuzz` (fuzz brownfield targets via `--fuzz <budget> --root <path>`; merge the two JSON outputs to combine engines). |
+| `--runtime` | enum | auto | Override runtime detection. Values: `pinocchio`, `anchor`, `quasar`, `native`, `sbpf`. Pinocchio, Anchor/Quasar, and native each have a dedicated extractor under `--program`. `sbpf` identifies the target and returns generic metadata only; it does not make assembly auditable by the source auditor. |
+| `--emit-spec-candidates` | bool | false | Lift probe evidence into candidate spec clauses in `clusters[]` for the scaffold-to-spec interview. This field is additive within the schema-v3 envelope and is distinct from `candidates[]`: clusters are proto-spec clauses; candidates are unconfirmed security leads. |
+| `--audit-dir` | Path | optional | When paired with `--emit-spec-candidates`, write the resumable audit working set: `hypotheses.json` (run_id + the elicitation hypothesis set — ratify's lowering input), `clusters.json`, `skeleton.qedspec`, `domain-dossier.{json,md}`, `domain-interview.{json,md}`, `run-manifest.json` (carries `run_id` + `spec_readiness`), and the legacy `interview.md`. `qedgen ratify --audit-dir <path>` consumes this directory and adds the ratified handoff/sequence artifacts. Conventionally `.qed/audit/<timestamp>/`. |
+| `--fuzz` | u64 | none | Wall-clock seconds. Runs the coverage-guided fuzz engine INSTEAD of the pattern-match predicates for that invocation (run `probe --spec` separately and merge the JSON to combine engines). Requires `--spec <path>` (spec-driven invariants) OR `--root <project-path>` (brownfield protocol-mode); passing both layers spec invariants on top of protocol guards. Findings come back in the same `findings[]` with a `Reproducer::Crucible`. Each minimized crash is replayed and classified from the harness's `[FUZZ_FINDING]` marker rather than a last-action heuristic: the reproducer carries the named `invariant_id` when replay identified one, `category_tag` reflects the evidence (`invariant_violation`, `property_violation`, a protocol guard, `assertion_failure`, or `unclassified_crash`), non-reproducing crashes are dropped, and `coverage.replay_success` reports replay health. Budget `0` emits the selected harness and returns `outcome: dry_run` without building or fuzzing. |
+| `--harness-dir` | Path | `./fuzz/<prog>/` | Crucible harness directory. Matches `codegen --crucible` output. An existing harness is reused, never regenerated (agent-filled `todo!()` account literals survive re-runs); delete it to pick up spec or binding changes. When the directory leaf differs from the program name it is treated as a parent and the `<prog>` leaf is appended. |
 | `--no-smoke` | bool | false | Skip the 30s smoke pre-flight that stops early on high-rate duplicate findings. |
 | `--stateful` | bool | false | Stateful action-chain mode. Higher throughput, longer crash chains. |
+| `--crucible-mode` | enum | inferred | Select the Crucible verification layer explicitly (all values require `--fuzz`): `protocol` (mechanical behavioral guards; requires `--root`), `skeleton` (structural `.qedspec` assertions; requires `--spec`), `domain` (ratified domain facts plus protocol guards; requires `--spec` and `--domain-dossier`). Omitted → legacy inference: root-only = protocol, spec-only = skeleton, spec + root = both. |
+| `--domain-dossier` | Path | - | Canonical `domain-dossier.json` for `--crucible-mode domain`. Every fact assigned to the Crucible lane must be ratified (`auto` or `user`) before fuzzing starts. Requires `--fuzz`. |
+| `--domain-sequences` | Path | - | Deterministic action targets emitted by `qedgen ratify`. Every target must resolve before domain-mode replay starts. Requires `--fuzz` and `--domain-sequence-bindings`. |
+| `--domain-sequence-bindings` | Path | - | Explicit user values for every unresolved account, argument, and lifecycle association in `--domain-sequences` — never inferred from names or nearby source. Requires `--fuzz` and `--domain-sequences`. Produces `resolved-domain-sequences.json`, `account-binding-overlay.json`, a byte-exact replay seed corpus, and a durable `domain-replay-report.json`. |
+| `--execute-repros` | bool | false | **#228** — build and run generated reproducer harnesses, promoting a candidate to a finding only when its harness actually reproduces. **Off by default**: the default `probe --spec` only *generates* harnesses under `target/qedgen-repros/<category>/<handler>/` and leaves each candidate carrying a `repro_harness` pointer (path + exact `rustc … && ./repro` invocation + `failing_input`) for the agent/CI to run — so the default path performs no builds and no execution (agent-authored-repros default preserved). Currently wired for `ArithmeticOverflowWrapping` (`+=?` / `-=?`): the harness is a deterministic boundary-value program that exits 0 iff the wrap reproduces. On promotion the finding carries a `Reproducer::BoundaryValue`. A `reproducers` engine run reports counts (generated / executed / reproduced / build errors); `blocked` when generated-not-run. Requires `rustc` on PATH (soft dependency). |
+| `--json` | bool | false | Accepted for parity with sibling subcommands (#251) — probe output is unconditionally JSON, so the flag is a no-op rather than a clap error. |
 
 ### `ratify`
-v2.19 — consume the working set emitted by `qedgen probe
---emit-spec-candidates --audit-dir <path>` (an `interview.md` checked
-by the user, a `clusters.json`, and a `skeleton.qedspec`) and produce
-the final `.qedspec`. Decisions on `interview.md` route as follows:
+Consume the working set emitted by `qedgen probe --emit-spec-candidates
+--audit-dir <path>` and produce the final `.qedspec`. Since v2.44 the
+primary answer surface is **structured**: the in-harness interview's
+answers land in `<audit_dir>/answers.json` —
+`{"run_id": …, "answers": [{"id", "decision", "note"}]}` — addressing
+elicitation hypotheses (`h-…`, from `hypotheses.json`) and scaffold
+clusters (`c-…`, from `clusters.json`) uniformly. When `answers.json`
+resolves, the legacy user-edited `interview.md` is not consulted (and not
+required); audit dirs from older probes keep working through the
+`interview.md` path unchanged.
 
-- `[x] accept` → cluster's candidate clause merged into the handler
-  body or top-level invariant set of the output `.qedspec`.
-- `[x] narrow` → clause emitted per-handler instead of program-wide.
-- `[x] reject` → cluster dropped from the spec, but appended to
-  `<project_root>/.qed/plan/scoping.md` with the user's rationale
-  (the rejected-decision log).
-- `[x] bug` → emitted as a finding file under
-  `<project_root>/.qed/findings/scaffold-to-spec-<id>.md`. Used when
-  the implicit precondition the cluster surfaced is a real
-  missing-enforcement bug, not a spec gap.
+Decisions route as follows:
+
+- `accept` → cluster clauses merge as before; **confirmed hypotheses are
+  lowered to executable clauses** (authorization → `auth <signer>`
+  injected into the handler body; lifecycle → an init-shaped
+  `: State.<pre> -> State.<post>` transition resolved against the
+  skeleton's own `type State` variants, rewriting placeholder
+  self-loops). Each lowering commits only if the spec still parses and
+  introduces no new Error-severity lints; otherwise the hypothesis is
+  reported **`confirmed, not executable`** and stays in the dossier —
+  never inserted as a placeholder comment.
+- `narrow` → clusters only; clause emitted per-handler instead of
+  program-wide.
+- `reject` → appended to `<project_root>/.qed/plan/scoping.md` with the
+  rationale (clusters and hypotheses alike).
+- `bug` → a finding file: clusters →
+  `.qed/findings/scaffold-to-spec-<id>.md`, hypotheses →
+  `.qed/findings/elicitation-<id>.md` (the invariant is intended but
+  unenforced — elicitation doubling as a bug-catcher).
+
+The check gate is mandatory: the ratified spec **must parse** (hard
+error otherwise) and completeness-lint counts are printed beside the
+result with its assurance level (`checking`). Ratify also writes
+`elicitation-outcome.json` (`run_id`, per-hypothesis outcomes,
+`time_to_ratify_seconds`, check counts) into the audit dir — the
+conversion half of the Phase-0 funnel instrumentation.
 
 ```bash
-$QEDGEN ratify --audit-dir .qed/audit/2026-05-16 \
+# Structured answers (in-harness interview; the agent writes answers.json)
+$QEDGEN ratify --audit-dir .qed/audit/2026-07-17 \
               --out my_program.qedspec
+
+# Also generate the spec-model proptest harness from the ratified spec
+$QEDGEN ratify --audit-dir .qed/audit/2026-07-17 --proptest
 ```
 
 | Flag | Type | Default | Description |
 |---|---|---|---|
-| `--audit-dir` | Path | required | Directory previously written by `probe --emit-spec-candidates --audit-dir`. Must contain `interview.md`, `clusters.json`, `skeleton.qedspec`. |
+| `--audit-dir` | Path | required | Directory previously written by `probe --emit-spec-candidates --audit-dir`. Must contain `clusters.json` and `skeleton.qedspec`, plus either `answers.json` (structured) or the legacy `interview.md`. |
 | `--out` | Path | derived | Output path for the generated `.qedspec`. Defaults to `<project_root>/<project_name>.qedspec`, derived from the audit-dir grandparent. |
-| `--scoping-out` | Path | `<project_root>/.qed/plan/scoping.md` | Override the rejected-cluster scoping-notes path (append-on-write). |
-| `--findings-dir` | Path | `<project_root>/.qed/findings/` | Override the directory bug-flagged cluster findings are written to. |
+| `--scoping-out` | Path | `<project_root>/.qed/plan/scoping.md` | Override the rejected-answer scoping-notes path (append-on-write). |
+| `--findings-dir` | Path | `<project_root>/.qed/findings/` | Override the directory bug-flagged findings are written to. |
+| `--answers` | Path | `<audit_dir>/answers.json` if present | Structured answer set. When resolved, `interview.md` is ignored. |
+| `--proptest` | bool | false | Also generate the spec-model proptest harness at `<audit_dir>/model-proptest.rs`. Generation is `checking`-level evidence that the spec lowers; **running** the harness (`qedgen verify --proptest` in a scaffolded project) is what earns the `model-tested` label — never conflate the two. |
 
 ## Code generation
 
 ### `codegen`
-Generate committed artifacts from a qedspec. Default (no flags) generates
-the program Rust skeleton only (Anchor-compatible; see the generated
-`Cargo.toml` for dependency configuration).
+Generate committed artifacts from a qedspec. Default (no artifact flags)
+generates the program Rust skeleton only (Anchor-compatible; see the generated
+`Cargo.toml` for dependency configuration). Passing explicit artifact flags
+generates only those selected artifacts; `--all` emits the Rust scaffold plus
+every artifact. The `.qed/` prerequisite therefore applies to the default and
+`--all`, not to a harness-only invocation such as `--proptest`.
 
 Requires a git repo (see [Require-git guard](#require-git-guard)).
 
 `--spec` is optional — when omitted, resolved via the nearest
 `.qed/config.json`'s `spec` field. Explicit `--spec` overrides.
+
+When any model backend runs (`--kani`, `--proptest`, `--lean`, `--all`; not
+sBPF specs), codegen also writes the backend-obligation manifest to
+`.qed/obligations.json` (#332): every requested obligation, per backend, as
+`emitted` (with the harness / theorem / test name), `unsupported` (with a
+machine-readable capability reason), or `failed`. One summary line per
+backend is printed, plus one line per non-emitted obligation. The manifest
+never gates codegen — `verify --strict` is the gate.
 
 ```bash
 # From inside a project initialized with `qedgen init --spec ...`
@@ -484,28 +698,37 @@ $QEDGEN codegen --test
 $QEDGEN codegen --proptest
 $QEDGEN codegen --integration
 $QEDGEN codegen --ci
+
+# Rename recovery (#288) — after a spec-level rename left the user-owned
+# files stale (codegen warns). Both need a committed git baseline.
+$QEDGEN codegen --merge-accounts   # Anchor: regen #[derive(Accounts)] structs only, fills survive
+$QEDGEN codegen --force            # regen user-owned set wholesale; re-apply fills from git
 ```
 
 | Flag | Type | Default | Description |
 |---|---|---|---|
 | `--spec` | Path | optional | Spec file or directory. Defaults to `.qed/config.json spec` |
-| `--target` | enum | `anchor` | Framework target for the Rust program crate. Values: `anchor` (Anchor-compatible, default); `quasar` (Blueshift `quasar_lang`); `pinocchio` (Pinocchio `#![no_std]` — `entrypoint!` + byte-discriminant dispatch, zeropod zero-copy state, `&AccountInfo` account structs with `.handler()` methods, checked effects, SPL Token CPIs). All three targets emit the full program scaffold. The verification backends (`--kani` / `--proptest` / `--lean` / `--integration` / `--ci`) are spec-driven and target-agnostic — they run for any target (see the comment at the top of any generated `tests/kani.rs`). |
-| `--output-dir` | Path | `./programs` | Output directory for Rust skeleton |
-| `--all` | bool | false | Generate all artifacts |
+| `--target` | enum | `anchor` | Framework target for the Rust program crate. Values: `anchor` (Anchor-compatible, default); `quasar` (Blueshift `quasar_lang`); `pinocchio` (Pinocchio `#![no_std]` — `entrypoint!` + byte-discriminant dispatch, zeropod zero-copy state, `&AccountInfo` account structs with `.handler()` methods, checked effects, SPL Token CPIs). All three targets emit the full program scaffold. The verification backends (`--kani` / `--proptest` / `--lean` / `--ci`) are spec-driven and target-agnostic — they run for any target (see the comment at the top of any generated `tests/kani.rs`). Exception: `--integration` is Quasar-only — the in-process SVM scaffold imports `quasar_svm` and the generated `<name>-client` crate, which don't compile for other targets; non-Quasar targets skip it with a note. |
+| `--output-dir` | Path | `./programs` | Output directory for Rust skeleton. Relative paths — this and every `--*-output` default below — resolve against the **spec's directory** (the project root), not the invoker's cwd (#279): `codegen --spec <elsewhere>/x.qedspec` from anywhere writes into `<elsewhere>/`. Absolute paths pass through untouched. |
+| `--force` | bool | false | **Destructive opt-in (#288):** regenerate the USER-OWNED files too (`src/lib.rs`, `src/instructions/*.rs`) — the rename workflow where regen + re-fill beats hand-merging. Every affected file must have a committed, unmodified git baseline (the recovery path); dirty or untracked files abort before anything is written. Conflicts with `--merge-accounts`. |
+| `--merge-accounts` | bool | false | **Surgical rename recovery (#288, Anchor only):** regenerate only the `#[derive(Accounts)]` structs inside the user-owned `lib.rs`, preserving handler fills and everything else (the Cargo.toml section-merge doctrine applied to Rust items). Hand-tuned constraints inside replaced structs are overwritten, so the same git-baseline guard applies. Structs with no matching spec handler (pre-rename leftovers, hand-added instructions) are left in place and reported. |
+| `--all` | bool | false | Generate the Rust scaffold and all artifacts |
 | `--lean` | bool | false | Generate Lean 4 proofs |
 | `--lean-output` | Path | `./formal_verification/Spec.lean` | Lean output path |
 | `--kani` | bool | false | Generate Kani proof harnesses (spec-model — verifies the spec's effect block against its own `ensures` clauses). |
 | `--kani-output` | Path | `./programs/tests/kani.rs` | Kani output path. Lives **inside the program package** so `cargo kani --tests` resolves `programs/Cargo.toml` without a hand-authored root shim. |
 | `--kani-impl` | bool | false | Generate **impl-targeted** Kani harnesses (v2.26): calls the user's real Anchor handler against a symbolic `Accounts` context and asserts the spec's `ensures` clauses. Pairs with `--kani` (spec-model harnesses live in a separate file). Even without this flag, emission is auto-triggered when any handler declares `modifies` listing fields absent from its `effect` block — the LP-shape signal indicating the impl is expected to fill those fields. Anchor target only in v2.26. |
 | `--kani-impl-output` | Path | `./programs/tests/kani_impl.rs` | Impl-targeted Kani harness output path. Separate file from `--kani-output` so `cargo kani --harness` can target either set without ambiguity. |
+| `--kani-impl-brownfield` | bool | false | Emit the **brownfield** Anchor impl-Kani shape (#162): a state-struct harness (symbolic state → agent-fill: apply the real effect + validity gate → assert `ensures`) instead of the greenfield `Accounts` context + `accounts.handler(...)` shape, which does not resolve against a pre-existing Anchor program (shared Accounts structs, `Context<T>` + `Args`, associated-fn handlers). Snapshots/assume/assert are generated; only the struct construction and effect application are `todo!()`. Implies emission (no separate `--kani-impl` needed). Anchor target only. |
+| `--kani-impl-context` | bool | false | Emit the **Context/instruction** impl-Kani shape (#169): drives the REAL `#[derive(Accounts)]` constraint gate — `<Ctx>::try_accounts` over symbolic leaked-backing `AccountInfo`s — then the real instruction fn through a `Context` (the one agent-fill site), asserting instruction-level authorization: generated signer-gate asserts per spec-`signer` account plus the `ensures`. `try_deserialize` is stubbed to the spec-generated symbolic state ctor (needs `pragma state_struct`), bypassing the Borsh wall. The real `#[derive(Accounts)]` struct name comes from `pragma context_struct = <Struct>` (or `= <handler>::<Struct>` per handler; default `PascalCase(handler)`). Composes with the #182 Pubkey/PDA/Clock/log/CPI stubs. Implies emission. Anchor target only. |
 | `--test` | bool | false | Generate unit tests |
-| `--test-output` | Path | `./programs/src/tests.rs` | Unit test output path |
+| `--test-output` | Path | `./programs/tests/unit.rs` | Unit test output path. Lives in `tests/` so cargo auto-discovers the target (the pre-v2.47 `src/tests.rs` default was never included by the scaffold's `lib.rs`, so the tests never compiled or ran). Legacy `src/tests.rs` files are still recognized by regen-drift. |
 | `--proptest` | bool | false | Generate proptest harnesses |
 | `--proptest-output` | Path | `./programs/tests/proptest.rs` | Proptest output path. Lives inside the program package (see `--kani-output`). |
 | `--crucible` | bool | false | Generate a coverage-guided fuzz harness (v2.18). Anchor target only; sBPF specs are skipped with a note (assembly is Lean-verified); Pinocchio specs error early. Output is a self-contained `fuzz/<prog>/` directory with `Cargo.toml`, `src/main.rs` (the harness), and `idls/`. Action-body `accounts::X { ... }` literals emit as `todo!()` for agent-fill (same as handler bodies). |
 | `--crucible-output` | Path | `./fuzz` | Parent directory for the generated harness. Final tree lives at `<dir>/<prog>/`. |
-| `--integration` | bool | false | Generate in-process SVM integration tests |
-| `--integration-output` | Path | `./src/integration_tests.rs` | Integration test output path |
+| `--integration` | bool | false | Generate in-process SVM integration tests. Quasar targets only — skipped with a note on `anchor` / `pinocchio` (the scaffold's `quasar_svm` + client-crate imports don't compile there) |
+| `--integration-output` | Path | `./programs/tests/integration_tests.rs` | Integration test output path |
 | `--ci` | bool | false | Generate GitHub Actions CI workflow |
 | `--ci-output` | Path | `.github/workflows/verify.yml` | CI workflow output path |
 | `--ci-asm` | String | - | sBPF assembly source (for CI verify step) |
@@ -739,6 +962,7 @@ $QEDGEN readiness --list-rules
 | Flag | Type | Default | Description |
 |---|---|---|---|
 | `--idl` | Path | required | Anchor IDL JSON (typically `target/idl/<program>.json`) |
+| `--quasar` | bool | auto | Treat `--idl` as a Quasar-emitted IDL rather than an Anchor IDL. Auto-detected when a `Quasar.toml` (and no shadowing `Anchor.toml`) lives in the current working directory; pass explicitly to force Quasar mode from elsewhere. |
 | `--list-rules` | bool | false | Print the catalog of P-rules applied and exit |
 | `--json` | bool | false | Machine-readable output |
 
@@ -771,6 +995,7 @@ $QEDGEN check-upgrade --list-rules
 | `--unsafe` | String | - | Acknowledge a specific finding so it reports as Additive (repeatable). Pass `--list-rules` to see the full flag catalog. |
 | `--migrated-account` | String | - | Declare an account as having a migration in source; demotes R003/R004 findings for that account to Additive (repeatable) |
 | `--realloc-account` | String | - | Declare an account as having `realloc = ...` in source; demotes R005 for that account to Additive (repeatable) |
+| `--quasar` | bool | auto | Treat both IDLs as Quasar-emitted rather than Anchor. Auto-detected from `Quasar.toml`; the flag forces Quasar mode when running from elsewhere. Mixed-framework diffs (Anchor old vs Quasar new) are out of scope. |
 | `--list-rules` | bool | false | Print the catalog of R-rules applied and exit |
 | `--json` | bool | false | Machine-readable output |
 
@@ -821,6 +1046,15 @@ $QEDGEN discharge --spec vault.qedspec --handler increment \
 | `--qedlift` | Path | required | Built qedsvm `qedlift` binary (built with `--features qedrecover`) |
 | `--module` | String | `<Account><Handler>` | Lean module name for the emitted proof |
 | `--out-dir` | Path | temp dir (artifacts discarded) | Persist `<Module>TracedLifted.lean` + `<Module>Refinement.lean` into this directory |
+| `--transition` | flag | off | Whole-transition mode (qedsvm v0.9.0, #40): lift **every** path from discovered `<stem>_<path>.pcs` traces beside the `.so`; emits per-path `*_transition_path` / `*_transition_fault` corollaries + the one bundle theorem (`<StemPascal>Transition.lean`) covering success and abort paths. Requires `--out-dir` and ≥ 2 traces |
+
+Whole-transition example:
+
+```bash
+$QEDGEN discharge --spec counter.qedspec --handler increment \
+  --so counter.so --qedlift /path/to/qedlift \
+  --transition --out-dir formal_verification/discharge
+```
 
 ## Utility
 

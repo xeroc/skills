@@ -1,0 +1,16 @@
+[package]
+name = "qed-drift-fixture"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "v2.9 drift-loop fixture. Exercises `#[qed(verified, spec=, handler=, hash=, spec_hash=)]` against committed hashes — `cargo build` succeeds when both hashes match the recomputed values, fires `compile_error!` on any drift. Pin between `qedgen-macros::content_hash` and `qedgen::spec_hash::body_hash_for_fn`."
+
+[lib]
+crate-type = ["lib"]
+
+[dependencies]
+# Explicit version pin alongside the path. cargo-deny's wildcard
+# check rejects path-only deps in workspace fixtures; the version
+# anchor is purely satisfying that policy — Cargo resolves through
+# the path attribute first.
+qedgen-macros = { path = "../../crates/qedgen-macros", version = "0.1.0" }
