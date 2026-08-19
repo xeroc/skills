@@ -1,241 +1,96 @@
 ---
 name: git-worktree
-description: This skill manages Git worktrees for isolated parallel development. It handles creating, listing, switching, and cleaning up worktrees with a simple interactive interface, following KISS principles.
+description: Use git worktrees to run multiple coding agents in parallel on one repo without collisions. Use when starting a task in a shared repo, when the user says "worktree", "parallel agents", "one worktree per task", or when agents keep overwriting each other's changes. Covers creating worktrees, making them as complete as the main checkout (.env files, dependencies, databases, ports), merging back, and cleanup.
+disable-model-invocation: true
 ---
 
-## What are git worktrees?
+# Git Worktrees for Parallel Agents
 
-**ELI5:** Normally, you can only work on one git branch at a time in a folder. Want to fix a bug while working on a feature? You have to stash changes, switch branches, then switch back. Git worktrees let you have multiple branches checked out at once in different folders - like having multiple copies of your project, each on a different branch.
+## Start here (before any task work)
 
-**The Problem:** Everyone's using git worktrees wrong (or not at all):
-
-- Constantly stashing/switching branches disrupts flow
-- Running tests on main while working on features requires manual copying
-- Reviewing PRs means stopping current work
-- **Parallel AI agents on different branches?** Nearly impossible without worktrees
-
-**Why people sleep on worktrees:** The DX is terrible. `git worktree add ../my-project-feature feature` is verbose, manual, and error-prone.
-
-**Enter gtr:** Simple commands, AI tool integration, automatic setup, and built for modern parallel development workflows.
-
-**Usage:**
+Detect where you are:
 
 ```bash
-# One-time setup (per repository)
-git gtr config set gtr.editor.default nvim
-git gtr config set gtr.ai.default opencode
-
-# Daily workflow
-git gtr new my-feature          # Create worktree folder: my-feature
-git gtr new my-feature --editor # Create and open in editor
-git gtr new my-feature --ai     # Create and start AI tool
-git gtr new my-feature -e -a    # Create, open editor, then start AI
-git gtr editor my-feature       # Open in nvim
-git gtr ai my-feature           # Start opencode
-
-# Run commands in worktree
-git gtr run my-feature npm test # Run tests
-
-# Navigate to worktree
-gtr new my-feature --cd         # Create and cd (requires shell integration)
-gtr cd                          # Interactive picker (requires fzf + shell integration)
-gtr cd my-feature               # Requires shell integration (see below)
-cd "$(git gtr go my-feature)"   # Alternative without shell integration
-
-# List all worktrees
-git gtr list
-
-# Remove when done
-git gtr rm my-feature
-
-# Or remove all worktrees with merged PRs/MRs (requires gh or glab CLI)
-git gtr clean --merged
+[ "$(git rev-parse --path-format=absolute --git-dir)" = "$(git rev-parse --path-format=absolute --git-common-dir)" ] \
+  && echo "primary checkout" || echo "worktree"
 ```
 
-## Why gtr?
+- **Primary checkout** → do NOT start editing here. Create a worktree named after the task, bootstrap it (see "Making the worktree complete"), `cd` into it, and do ALL task work there.
+- **Worktree** (e.g. Cursor already started you in one) → proceed with the task.
 
-While `git worktree` is powerful, it's verbose and manual. `git gtr` adds quality-of-life features for modern development:
+## What a worktree is
 
-| Task              | With `git worktree`                        | With `git gtr`                           |
-| ----------------- | ------------------------------------------ | ---------------------------------------- |
-| Create worktree   | `git worktree add ../repo-feature feature` | `git gtr new feature`                    |
-| Create + open     | `git worktree add ... && cursor .`         | `git gtr new feature --editor`           |
-| Open in editor    | `cd ../repo-feature && cursor .`           | `git gtr editor feature`                 |
-| Start AI tool     | `cd ../repo-feature && claude`             | `git gtr ai feature`                     |
-| Copy config files | Manual copy/paste                          | Auto-copy via `gtr.copy.include`         |
-| Run build steps   | Manual `npm install && npm run build`      | Auto-run via `gtr.hook.postCreate`       |
-| List worktrees    | `git worktree list` (shows paths)          | `git gtr list` (shows branches + status) |
-| Clean up          | `git worktree remove ../repo-feature`      | `git gtr rm feature`                     |
+One repo, multiple folders. `git worktree add` creates an extra checkout of the same repository in a separate directory, on its own branch. All worktrees share one `.git` history, but each has its own files. Two agents in two worktrees physically cannot overwrite each other's work.
 
-**TL;DR:** `git gtr` wraps `git worktree` with quality-of-life features for modern development workflows (AI tools, editors, automation).
+## The working model
 
-## Commands
+- **One task = one worktree = one agent session.** Never let two agents share a working directory.
+- **The primary checkout is the integration point.** It stays on the main branch and is used only to review, merge, and push. It is not a scratchpad.
+- **Nothing auto-merges.** The human reviews each worktree's diff, then merges it into main (or discards it), then deletes the worktree.
+- **Worktree branches are local and short-lived.** Never push them unless the user explicitly asks. Only main gets pushed.
+- Merge one worktree at a time. Rebase a stale worktree onto main before merging if main moved.
 
-Commands accept branch names to identify worktrees. Use `1` to reference the main repo.
-Run `git gtr help` for full documentation.
-
-### `git gtr new <branch> [options]`
-
-Create a new git worktree. Folder is named after the branch.
+## Creating and removing
 
 ```bash
-git gtr new my-feature                                                                   # Creates folder: my-feature
-git gtr new hotfix --from v1.2.3                                                         # Create from specific ref
-git gtr new variant-1 --from-current                                                     # Create from current branch
-git gtr new feature/auth                                                                 # Creates folder: feature-auth
-git gtr new feature/implement-user-authentication-with-oauth2-integration --folder auth  # Custom folder name
-git gtr new feature-auth --name backend --force                                          # Same branch, custom name
-git gtr new my-feature --name descriptive-variant                                        # Optional: custom name without --force
+git worktree add ../myrepo-task-x          # new worktree + branch "myrepo-task-x"
+git worktree add ../fix-y -b fix-y main    # explicit branch off main
+git worktree list                          # see all worktrees
+git worktree remove ../myrepo-task-x       # delete when merged/abandoned
+git worktree prune                         # clean up stale registrations
 ```
 
-**Options:**
+Note: a branch can only be checked out in ONE worktree at a time (including main).
 
-- `--from <ref>`: Create from specific ref
-- `--from-current`: Create from current branch (useful for parallel variant work)
-- `--track <mode>`: Tracking mode (auto|remote|local|none)
-- `--no-copy`: Skip file copying
-- `--no-fetch`: Skip git fetch
-- `--no-hooks`: Skip post-create hooks
-- `--force`: Allow same branch in multiple worktrees (**requires --name or --folder**)
-- `--name <suffix>`: Custom folder name suffix (optional, required with --force)
-- `--folder <name>`: Custom folder name (replaces default, useful for long branch names)
-- `--editor`, `-e`: Open in editor after creation
-- `--ai`, `-a`: Start AI tool after creation
-- `--yes`: Non-interactive mode
+In Cursor: start agents in worktrees via the Agents Window, or `/worktree <task>` in a chat. `/apply-worktree` merges the result into your main checkout; `/delete-worktree` discards; `/best-of-n model1,model2 <task>` runs the same task in parallel worktrees, one per model. Cursor auto-deletes older worktrees (default cap 25 per machine), so merge or push results promptly.
 
-### `git gtr editor <branch> [--editor <name>]`
+## Making the worktree complete
 
-Open worktree in editor (uses `gtr.editor.default` or `--editor` flag).
+A fresh worktree contains ONLY tracked files. Everything gitignored is missing. An agent dropped into a bare worktree will fail confusingly, so replicate:
+
+1. **Env/secret files** — copy `.env`, `.env.local`, and similar from the primary checkout. Copy, never symlink (an agent editing a symlinked env file would corrupt the original).
+2. **Dependencies** — run the install (`npm ci`, `pnpm install`, `uv sync`, `bundle install`). Never symlink `node_modules`; it breaks builds in both checkouts.
+3. **Local databases and services** — decide per service:
+   - Shared server (e.g. one Postgres container): pin the identity so worktrees don't spawn duplicates fighting over the same port. For Docker Compose, set a top-level `name:` in the compose file — otherwise the project name comes from the folder name and every worktree starts its own container on the same port.
+   - Per-worktree state (e.g. SQLite files): copy or re-seed it.
+4. **Ports** — dev servers, test servers, and debuggers bind fixed ports. Either run one at a time across all worktrees, or make the port configurable per worktree.
+5. **Generated files and caches** — rebuild in the worktree (`npm run build`, codegen); build output is gitignored and won't be there.
+6. **Git hooks** — `core.hooksPath` and `.git/config` are shared across worktrees automatically; verify hook scripts don't assume the primary checkout's path.
+
+## Automate the setup
+
+Codify the checklist so every worktree bootstraps itself. In Cursor, `.cursor/worktrees.json` runs on worktree creation (`$ROOT_WORKTREE_PATH` = the primary checkout):
+
+```json
+{
+  "setup-worktree": [
+    "npm ci",
+    "cp $ROOT_WORKTREE_PATH/.env.local .env.local"
+  ]
+}
+```
+
+Without Cursor, keep a `scripts/setup-worktree.sh` in the repo and run it as the first command in any new worktree. Inside a worktree, the primary checkout's path is:
 
 ```bash
-git gtr editor my-feature                    # Uses configured editor
-git gtr editor my-feature --editor vscode    # Override with vscode
+dirname "$(git rev-parse --path-format=absolute --git-common-dir)"
 ```
 
-### `git gtr ai <branch> [--ai <name>] [-- args...]`
-
-Start AI coding tool (uses `gtr.ai.default` or `--ai` flag).
+## Merging back
 
 ```bash
-git gtr ai my-feature                      # Uses configured AI tool
-git gtr ai my-feature --ai codex          # Override with different tool
-git gtr ai my-feature -- --model gpt-4    # Pass arguments to tool
-git gtr ai 1                              # Use AI in main repo
+# from the primary checkout, after reviewing the worktree's diff:
+git merge --no-ff task-branch     # or: git merge --squash task-branch
+git worktree remove ../myrepo-task-x
+git branch -d task-branch
 ```
 
-### `git gtr run <branch> <command...>`
+Or in Cursor, simply `/apply-worktree` from the agent's chat, review, commit.
 
-Execute command in worktree directory.
+## Gotchas
 
-```bash
-git gtr run my-feature npm test             # Run tests
-git gtr run my-feature npm run dev          # Start dev server
-git gtr run feature-auth git status         # Run git commands
-git gtr run 1 npm run build                 # Run in main repo
-```
-
-### `git gtr rm <branch>... [options]`
-
-Remove worktree(s) by branch name.
-
-```bash
-git gtr rm my-feature                              # Remove one
-git gtr rm feature-a feature-b                     # Remove multiple
-git gtr rm my-feature --delete-branch --force      # Delete branch and force
-```
-
-**Options:** `--delete-branch`, `--force`, `--yes`
-
-### `git gtr mv <old> <new> [--force] [--yes]`
-
-Rename worktree directory and branch together. Aliases: `rename`
-
-```bash
-git gtr mv feature-wip feature-auth      # Rename worktree and branch
-git gtr mv old-name new-name --force     # Force rename locked worktree
-git gtr mv old-name new-name --yes       # Skip confirmation
-```
-
-**Options:** `--force`, `--yes`
-
-**Note:** Only renames the local branch. Remote branch remains unchanged.
-
-### `git gtr copy <target>... [options] [-- <pattern>...]`
-
-Copy files from main repo to existing worktree(s). Useful for syncing env files after worktree creation.
-
-```bash
-git gtr copy my-feature                       # Uses gtr.copy.include patterns
-git gtr copy my-feature -- ".env*"            # Explicit pattern
-git gtr copy my-feature -- ".env*" "*.json"   # Multiple patterns
-git gtr copy -a -- ".env*"                    # Copy to all worktrees
-git gtr copy my-feature -n -- "**/.env*"      # Dry-run preview
-```
-
-**Options:**
-
-- `-n, --dry-run`: Preview without copying
-- `-a, --all`: Copy to all worktrees
-- `--from <source>`: Copy from different worktree (default: main repo)
-
-### `git gtr list [--porcelain]`
-
-List all worktrees. Use `--porcelain` for machine-readable output.
-
-### `git gtr config {get|set|add|unset|list} <key> [value] [--global]`
-
-Manage configuration via git config.
-
-```bash
-git gtr config set gtr.editor.default cursor       # Set locally
-git gtr config set gtr.ai.default claude --global  # Set globally
-git gtr config get gtr.editor.default              # Get value
-git gtr config list                                # List all gtr config
-```
-
-### `git gtr clean [options]`
-
-Remove worktrees: clean up empty directories, or remove those with merged PRs/MRs.
-
-```bash
-git gtr clean                                  # Remove empty worktree directories and prune
-git gtr clean --merged                         # Remove worktrees for merged PRs/MRs
-git gtr clean --merged --dry-run               # Preview which worktrees would be removed
-git gtr clean --merged --yes                   # Remove without confirmation prompts
-```
-
-**Options:**
-
-- `--merged`: Remove worktrees whose branches have merged PRs/MRs (also deletes the branch)
-- `--dry-run`, `-n`: Preview changes without removing
-- `--yes`, `-y`: Non-interactive mode (skip confirmation prompts)
-
-**Note:** The `--merged` mode auto-detects your hosting provider (GitHub or GitLab) from the `origin` remote URL and requires the corresponding CLI tool (`gh` or `glab`) to be installed and authenticated. For self-hosted instances, set the provider explicitly: `git gtr config set gtr.provider gitlab`.
-
-### Other Commands
-
-- `git gtr doctor` - Health check (verify git, editors, AI tools)
-- `git gtr adapter` - List available editor & AI adapters
-- `git gtr version` - Show version
-
-## CRUCIAL: Remind the user to configure gtr
-
-```bash
-# Set your editor (antigravity, cursor, vscode, zed)
-git gtr config set gtr.editor.default nvim
-
-# Set your AI tool (aider, auggie, claude, codex, continue, copilot, cursor, gemini, opencode)
-git gtr config set gtr.ai.default opencode
-
-# Copy env files to new worktrees
-git gtr config add gtr.copy.include "**/.env.example"
-
-# Run setup after creating worktrees
-git gtr config add gtr.hook.postCreate "npm install"
-
-# Re-source environment after gtr cd or gtr new --cd (runs in current shell)
-git gtr config add gtr.hook.postCd "source ./vars.sh"
-
-# Disable color output (or use "always" to force it)
-git gtr config set gtr.ui.color never
-```
+- Gitignored files silently missing is the #1 failure — always bootstrap before the agent starts.
+- Disk: each worktree duplicates the working files plus its own `node_modules`. Delete merged worktrees; don't hoard them.
+- Long-lived worktrees rot. If a task stalls for days, rebase onto main or restart it.
+- Uncommitted work in a deleted worktree is gone. Commit in the worktree early and often; the commits live in the shared repo even after the folder is removed.
+- One shared stash list, one shared config, one shared refs namespace — worktrees isolate files, not git state.
