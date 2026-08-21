@@ -119,10 +119,10 @@ $: note("<[~ eb4] [~ f4] [~ ab4] [~ bb4]>")
   .gain(0.3)
   .room(0.5)
   .delay(0.25)
-  .sometimes((x) => x.add(12).gain(0.12));
+  .sometimes((x) => x.transpose(12).gain(0.12));
 
 // Texture: vinyl air at the edge of perception
-$: s("crackle*4").gain(sine.range(0.02, 0.06).slow(7));
+$: s("fx*4").gain(sine.range(0.02, 0.06).slow(7));
 ```
 
 ## How the brief maps to the code
