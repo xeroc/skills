@@ -2,16 +2,25 @@ Indie rock's equivalent moment is **the jangle** — the intro guitar figure you
 
 ## What the jangle actually is
 
-It's an arpeggiated clean-guitar figure — usually 16ths, usually built from the song's verse chords — that starts the track alone and functions as its identity card. There's no verified clean-electric GM patch in the toolkit, so the jangle lives on `pluck` (bright, picked, takes delay beautifully) or `triangle` arps (glassier, synth-adjacent); strums go to `gm_acoustic_guitar_muted`. The chorus doesn't replace the jangle, it buries it kindly: strums arrive on top, the arps get tucked underneath, a counter-line and a sparkle layer join — the song gets thicker, not different. And the outro brings the figure back alone, proving it was the song all along. The verse harmony carries the melancholy: **I–vi–iii–IV** is the axis, minor chords against a major tonic with no resolution to brightness.
+It's an arpeggiated clean-guitar figure — usually 16ths, usually built from the song's verse chords — that starts the track alone and functions as its identity card. There's no verified clean-electric GM patch in the toolkit, so the jangle lives on `pluck` (bright, picked, takes delay beautifully) or `triangle` arps (glassier, synth-adjacent); strums go to `gm_acoustic_guitar_steel`. The chorus doesn't replace the jangle, it buries it kindly: strums arrive on top, the arps get tucked underneath, a counter-line and a sparkle layer join — the song gets thicker, not different. And the outro brings the figure back alone, proving it was the song all along. The verse harmony carries the melancholy: **I–vi–iii–IV** is the axis, minor chords against a major tonic with no resolution to brightness.
 
 ## The layers
 
 - **Jangle guitar** — `pluck`, 16th arps (`[g3 c4 e4 c4]*4` per bar), `room(.25)`, and a dotted-8th-ish `delay(".2:.19:.3")` so the figure circles behind itself. Pan slightly off-center.
-- **Strum guitar** — `gm_acoustic_guitar_muted`, entering only in choruses, chords driven by `.struct("[x ~ x x ~ x x ~]")`: the syncopated strum sits on top of the straight arps.
+- **Strum guitar** — `gm_acoustic_guitar_steel`, entering only in choruses, chords driven by `.struct("[x ~ x x ~ x x ~]")`: the syncopated strum sits on top of the straight arps.
 - **Counter-line guitar** — `triangle` in choruses, sparse quarter-note phrases (`[c5@2 ~] [d5 c5]`), answering the vocal; its own delay makes it shimmer.
 - **Bass** — `gm_acoustic_bass`, and critically **linear**: it walks between chord roots (`c2 b2 a2`, passing `cs3`/`fs3` tones) instead of pumping roots; the walk is where the song's craft hides.
 - **Drums** — backbeat kit with a pushy kick (`bd ~ ~ bd`), rim ghosts in verses, crashes reserved for choruses, and **tom-heavy fills** (`[ht mt lt ht]`) — snare rolls are banned by taste.
 - **Sparkle** — `gm_music_box` doubling the arp's top notes an octave up, quiet (`.gain(.12)`), choruses and outro only.
+
+## Sample kit
+
+- **Jangle guitar** — `pluck` takes delay beautifully and stays the default; when the piece wants a real clean electric, `gm_electric_guitar_clean` exists in the soundfont set — use it for chorus strums and keep `pluck` for the arps.
+- **Strum** — `gm_acoustic_guitar_steel`; `gm_acoustic_guitar_nylon` for the softer, Mellotron-era variant.
+- **Bass** — `gm_acoustic_bass` walking linearly (the craft layer); `gm_electric_bass_finger` when the band plugs in for the final chorus.
+- **Drums** — default kit, rim ghosts, tom fills; no machine bank — indie drums are a room.
+- **Sparkle** — `gm_music_box`, or VCSL `glockenspiel`/`kalimba` for real metal/wood resonance in the same register.
+- No pack needed — the preloaded tiers cover indie rock. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 
@@ -95,7 +104,7 @@ const strums = arrange(
   [8, silence],
   [8, chorusStrum],
   [4, note("[c4,e4,g4]@4").gain(.4)], // let the last chord ring
-).sound("gm_acoustic_guitar_muted").room(.25)
+).sound("gm_acoustic_guitar_steel").room(.25)
 
 // ── counter-line — triangle, sparse answers, echoing in its own delay ──
 const counterA = note("<[c5@2 ~] [d5 c5] [bb4@2 ~] [c5 bb4] [e5@2 d5] [c5 g4] [a4 b4] [d5@4]>").gain(.3)

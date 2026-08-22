@@ -13,6 +13,16 @@ A "version" is the instrumental B-side of a reggae single — the same rhythm tr
 - **Melodica / vocal lead** — `gm_flute` (the Augustus Pablo voice) with `.room(.5)` and a dotted-8th delay; phrases end early and let the echo finish them.
 - **Dub effects** — the arrangement layer: `.delay(".34:.45:.4")` throws on the skank and percussion, `.jux(rev)` for width, `.lpf(saw.range(400,2200).slow(4))` sweeps that open and close the tune like a curtain.
 
+## Sample kit
+
+- **Drums** — default kit: `bd` + `rim` one-drop, `hh`/`sh` space. No machine bank — the kit should sound like a room. Roots flavor: VCSL `conga`/`bongo`/`clave`/`agogo` sparse hits, one per bar at most.
+- **Skank** — `gm_electric_guitar_muted` (the chop); a `piano`/`steinway` skank is the equally idiomatic keys version. Alternate them by section.
+- **Bubble** — `gm_drawbar_organ`; `gm_percussive_organ` for a tighter, barkier bubble.
+- **Bass** — `sine` with the round ADSR (dub-correct); `gm_electric_bass_finger` when the line wants flatwound growl.
+- **Melodica** — `gm_flute` works, but `gm_harmonica` (or VCSL `harmonica`) is the actual reed-against-keys voice of Augustus Pablo.
+- **Dub texture** — Dirt `space`/`wind` behind the version sections; everything else is delay and filters.
+- No pack needed — the preloaded tiers cover reggae and dub. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Simple, minor-leaning, and mostly two chords — the bass does the traveling. Key of A minor:
@@ -72,7 +82,7 @@ setcpm(76 / 4) // one cycle = one bar of 4/4
 const onedrop = sound("~ ~ ~ ~ [bd,rim] ~ ~ ~").gain(.8)
 const hats = sound("hh*8").gain("[.35 .18 .3 .18 .4 .18 .3 .18]")
 const stepper = sound("bd ~ bd ~ bd ~ bd ~") // chorus: steppers — kick on every beat
-const percDelay = sound("perc ~ ~ cb ~").delay(".34:.42:.4") // the engineer's throw
+const percDelay = sound("tb ~ ~ cb ~").delay(".34:.42:.4") // the engineer's throw
 const kitVerse = stack(onedrop, hats, sound("sh*8").gain(.08))
 const kitChorus = stack(stepper, sound("~ ~ ~ ~ rim ~ ~ ~"), hats, sound("sh*8").gain(.1))
 const kitDub = stack(onedrop, hats.gain(.2), percDelay)

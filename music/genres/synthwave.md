@@ -15,6 +15,14 @@ Gated reverb is a 1980s drum trick (think big snare on era-defining pop records)
 - **Lead** — `sawtooth` melody, halves and quarters (patient, singable, "daytime glove" phrasing — think thriller-era pop hooks rather than shredding), `lpf` 2600–2800, dotted-8th delay (`delay(".25:.375:.3")`), doubled an octave down in the final chorus.
 - **Fills** — `mt lt` tom pairs, `[ht mt lt ht]` runs, accelerating `sd` rolls into the final chorus. Retro banks only: this genre lives in `RolandTR707`/`RolandTR808` territory.
 
+## Sample kit
+
+- **Kit** — `RolandTR808` + `RolandTR707` ✓ (the era's actual machines); `.bank("LinnLM1")`/`.bank("LinnDrum")` for the early-80s variant, `.bank("SimmonsSDS5")` toms for the arena fills.
+- **Snare gate** — 707 snare + `room(.95).release(.01)`: the genre's name tag, unchanged.
+- **Bass & leads** — synths, correctly: `sawtooth` motor, `triangle` arps, dotted delays.
+- **The DX color** — `gm_epiano1` for the one electric-piano ballad moment every synthwave album owes itself; `gm_lead_5_charang` for the sharper sync-lead variant.
+- No pack needed — the preloaded tiers cover synthwave. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Synthwave is minor-key diatonic with almost no borrowed anything — the neon comes from the sounds, so the chords stay clean and loop. In A minor:

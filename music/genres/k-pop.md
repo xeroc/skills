@@ -14,6 +14,15 @@ The killing part is a specific, named thing in K-pop production: the hook-within
 - **Bass** — `sawtooth`, filtered to around 900 Hz. Verses: lazy quarter-note roots. Hooks: the 8th-note pump — `ply` on whole-bar roots is the cheapest way to build it. It ducks to the kick.
 - **Choir/vocal pads** — `gm_voice_oohs` for the bridge's sung-warmth section and any aah bed under the final chorus.
 
+## Sample kit
+
+- **Kit** — default kit as the base; `.bank("RolandTR909")` for hook polish (the file's own move), `.bank("RolandTR808")` when verses go full trap. The double backbeat (`cp` stacked on `sd`) is bank-independent.
+- **Hook synths** — `supersaw` wide open ✓; `gm_brass_section` stabs for the dance-break's big-room hits, `gm_synth_bass_1` for a rounder hook bass.
+- **Bridge/ballad** — `gm_synth_strings_1` ✓; `gm_string_ensemble_1` for the orchestral variant, VCSL `steinway` when the bridge wants a real piano.
+- **Rap bed** — `gm_electric_guitar_muted`/`pluck` ✓; `gm_slap_bass_1` for the funk-sample dialect of the rap bed.
+- **Vocal pads** — `gm_voice_oohs` ✓.
+- No pack needed — the preloaded tiers cover K-pop's hybrid palette. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 K-pop harmony is functional pop harmony with two signature moves: the relative-minor/major flip between verse and chorus, and borrowed or modal color landing exactly on an 8-bar boundary. In the worked key (C minor verses / Eb major hook / F major final):

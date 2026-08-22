@@ -1,5 +1,6 @@
 ---
 name: seo-optimizer
+description: Automate technical SEO implementation in code — meta tags, JSON-LD schema, sitemap submission via Google Search Console API, robots.txt checks, canonical tags, alt text, and noindex rules. Use when the user asks to implement, wire up, or automate on-page SEO tasks in an app. Differentiator from seo-audit — this skill builds the automation, it does not audit rankings.
 ---
 
 ## ✅ Programmatic SEO Tasks (to automate in your skill)

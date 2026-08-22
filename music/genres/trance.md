@@ -21,6 +21,14 @@ The classic strudel trance sketch — the one that gets pasted around — is six
 - **Top / offbeat open hat** — the "tss" on the offbeat 8ths. Without it, it's techno; with it, it's trance.
 - **Pad** — sustained chords under the breakdown, the only layer allowed to be slow.
 
+## Sample kit
+
+- **Kit** — default kit or `.bank("RolandTR909")` for the canonical supersaw-era drums; the offbeat `oh` is the genre's fingerprint either way.
+- **Bass & riff** — `supersaw` rolling bass, acid-env'd `sawtooth` riff: synths, no samples — this is correct for the genre.
+- **Offbeat stabs** — `sawtooth`; `gm_lead_2_sawtooth` is a preloaded alternative with a slightly softer grain.
+- **Breakdown pad** — `gm_synth_strings_1` (or `gm_string_ensemble_1` for a more orchestral lift), `attack` 2+, `room(.9)`.
+- No pack needed — the preloaded tiers cover trance. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Minor-key four-chord loops, two bars per chord, running the entire track — the chords are a circle, not a journey. In A minor (the example's key):

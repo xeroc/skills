@@ -12,7 +12,14 @@ Pick one loop — kick, rumble, one percussion figure, maybe one stab — and ke
 - **Hats** — offbeat 8ths `"[~ hh]*4"` plus flat, quiet 16ths `hh*16`. Zero swing. Open hats only at the peak.
 - **One perc loop** — `rim(3,8)` euclid, or a `{cb ~ sh}%3` polymeter. This is the *only* syncopated element in the whole track; everything else is grid.
 - **The one stab** — a single note (`a3`) or a minor-third pair (`[a3,c4]`), `sawtooth`, `lpf(500)`, short decay, appearing every 4–8 bars. Discipline: one stab. A second melodic idea is a different genre.
-- **Noise and air** — the `fx` sound at low gain with a perlin-filtered sweep, or hats sped up as a riser. Techno's "melody" is usually filtered noise.
+- **Noise and air** — the `wind`/`space` Dirt textures at low gain with a perlin-filtered sweep, or hats sped up as a riser. Techno's "melody" is usually filtered noise.
+
+## Sample kit
+
+- **Kit** — `.bank("RolandTR909")`; the rumble trick (kick `room(1).lpf(140)`) is bank-independent. `.bank("RolandTR606")` for acid-adjacent rawness.
+- **Stab** — `sawtooth` + `lpf(500)`, one note, discipline; no sample improves on the synth here.
+- **Air** — Dirt `wind`/`space` through a drifting `lpf`; `east` taiko (`east:6`–`8`) for industrial-lean peaks, one hit per 8 bars.
+- No pack needed — techno is machines on purpose. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 

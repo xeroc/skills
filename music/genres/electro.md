@@ -12,6 +12,13 @@ The trap is thinking "prominent" = loud kick and snare, full stop. What actually
 - **Bass** — in electro this is often rhythmic as much as harmonic — a bassline with its own syncopated pattern, sometimes locked to the kick (sidechained), sometimes deliberately playing _against_ it for tension.
 - **Percussion ear-candy** — shakers, rim clicks, foley, vocal chops, glitch stutters — layered in and out to keep the ear engaged without changing the core groove.
 
+## Sample kit
+
+- **Kit** — default kit in the example; the genre upgrade is `.bank("RolandTR808")` (electro's canonical boom) or `.bank("OberheimDMX")` (the hip-hop electro lineage). Pattern the bank across sections for era-shifts.
+- **Bass** — `sawtooth`/`square` + `lpenv` (the synth is the point); `gm_synth_bass_1` for a rounder, sampled-90s variant.
+- **Ear-candy** — `sh` `rim` `cb` `misc` (default kit); VCSL `bongo`/`clave` for the Latin-electro dialect; Dirt `space`/`wind` for the held-breath bars.
+- No pack needed — the preloaded tiers cover electro. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Minimal by design — electro inherits techno's harmonic economy but swaps the drone for a riff. The bass states a syncopated minor figure and the harmony is whatever that riff implies; changes, when they happen at all, are two-chord vamps. In F minor (the example's key):
@@ -168,7 +175,7 @@ const perc = arrange(
     sound("rim(3,8)").gain(.32).pan(sine.slow(8).range(.3, .7)), // static notes, moving image
     sound("<~ ~ cb ~>").gain(.15), // cowbell every 4th bar only
   )],
-  [2, stack(sound("rim(3,8)").gain(.3), sound("<fx ~>").gain(.2))], // one airy fx marks the held breath
+  [2, stack(sound("rim(3,8)").gain(.3), sound("<wind ~>").gain(.2))], // one airy fx marks the held breath
   [4, sound("rim(3,8)").gain(.2)],
   [8, stack(sound("rim(3,8)").gain(.35), shaker)], // shakers join the drop
   [8, stack(

@@ -12,6 +12,15 @@ Verses carry narrative; the refrain or chorus is the fixed stone you keep return
 - **Optional color** — `gm_flute` a low octave under the melody, `gm_music_box` for a music-box arrangement variant, `gm_banjo` when it tips toward old-time. These are garnish; the guitar-fiddle-voice triangle is the meal.
 - **No drums** — the default folk ensemble has no percussion at all; meter comes from the guitar pattern. If you need the session feel, one foot stomp is the ceiling: `sound("bd ~ ~").gain(.22)` in 3/4, nothing more.
 
+## Sample kit
+
+- **Guitar** — `pluck` for fingerpicking (the default, delay-free and honest); `gm_acoustic_guitar_steel` for the strummed second guitar; `gm_acoustic_guitar_nylon` for the soft British-isles variant.
+- **Fiddle** — `gm_fiddle` ✓ (brighter and folkier than `gm_violin` — the right call); VCSL `folkharp` is the Celtic-color alternative for the instrumental verse.
+- **Bass** — `gm_acoustic_bass`, only when the band shows up.
+- **Color** — `gm_flute`, `gm_music_box`, `gm_banjo`; VCSL `harmonica` and `kalimba` for the borrowed-instrument verse.
+- **Percussion ceiling** — one foot stomp (`bd ~ ~` at low gain); VCSL `tambourine` is the one permitted upgrade for the session feel.
+- No pack needed — the preloaded tiers cover folk. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Two families, and knowing which one a song belongs to is most of the harmonizing. **Major-key diatonic**: the workhorses are I–V–vi–IV (in D: D–A–Bm–G) and I–vi–IV–V (D–Bm–G–A); verses are often just I with occasional V (D … A … D), saving the full four-chord loop for the refrain. **Modal**: dorian songs sit on a minor tonic with the major IV below it (Am–G, drone on a), mixolydian songs sit on major I with the bVII above it (D–C–G) — in both cases one or two chords for the whole song, and the melody does the moving. Melodies are mostly **pentatonic** (`n("0 1 2 4 5").scale("D:major:pentatonic")` gives you d e fs a b — note the strudel spelling, never `#`), which is why they survive generations of unaccompanied singing. Canonical progressions, roman and spelled in D:

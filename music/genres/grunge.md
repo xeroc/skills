@@ -12,6 +12,15 @@ The verse is quiet — an arpeggiated or single-note clean guitar, a bass that's
 - **Drums** — verses: kick on 1, `rim` backbeat, 8th hats, all at gain .4 or less. Choruses: heavy 2-and-4 snare, kick with a 16th push (`bd ~ bd ~ bd ~ [bd bd]`), open hats, crash on the downbeat. Fills are tom crescendos, not snare rolls.
 - **Vocals** — `gm_voice_oohs`, low and bored in verses (`d4` and below), anguished at the top of choruses (`d5` region), the final chorus doubled an octave down.
 
+## Sample kit
+
+- **Drums** — default kit at both extremes: `rim` + soft 8th hats when quiet, `sd` + `oh` + `cr` when loud. No machine bank — grunge drums are a room, not a clock.
+- **Clean guitar** — `pluck` through `lpf(2200)` for the tired arpeggios; `gm_acoustic_guitar_steel` when the verse needs a warmer, more physical body.
+- **Fuzz** — `gm_overdriven_guitar` + `shape(.6)`, the door slamming; `gm_distortion_guitar` reserved for the final chorus.
+- **Bass** — `gm_electric_bass_finger`: woolly and forward, the lead instrument of the quiet sections. Synth fallback: `sawtooth` + `lpf(600)`.
+- **Vocals** — `gm_voice_oohs`, bored and low in verses, anguished at the top of choruses.
+- No pack needed — the preloaded tiers cover grunge. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Key of D throughout (drop-D feel: everything visits the low `d2`). Vocabulary: power dyads, and borrowed chords doing the sour lifting — bVI (Bb), bVII (C), bIV (Gb), bV (Ab), and the minor iv. The flat-fourth and flat-fifth slides are the genre's fingerprints; they resolve nowhere politely.
@@ -122,7 +131,7 @@ const bass = arrange(
   [4, note("<g1*8 g1*8 gb1*8 a1*8>").gain(.7)], // the climb
   [8, bassC.gain(.75)],
   [4, note("d1@4").gain(.7)],
-).sound("sawtooth").lpf(600)
+).sound("gm_electric_bass_finger").lpf(600)
 $: bass
 
 // ── drums — rims when quiet, crashes when loud; the flip needs no warning fill ──

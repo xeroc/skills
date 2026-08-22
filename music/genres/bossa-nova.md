@@ -10,12 +10,21 @@ The other quiet secret is tempo discipline: bossa sits at a walking 120–130 BP
 
 ## The layers
 
-- **Nylon guitar** — `gm_acoustic_guitar_muted` (or `pluck` for a rounder attack), split into two lanes: the thumb on root and fifth (`note("<[c2 ~ ~ ~ c2 ~ ~ ~] ...>")` on beats 1 and 3) and the chord lane shadowing the bossa clave (hits on 2 and 3, variations on the 2-side). This instrument carries the whole style — build it first and it will survive every subtraction.
+- **Nylon guitar** — `gm_acoustic_guitar_nylon` (or `pluck` for a rounder attack), split into two lanes: the thumb on root and fifth (`note("<[c2 ~ ~ ~ c2 ~ ~ ~] ...>")` on beats 1 and 3) and the chord lane shadowing the bossa clave (hits on 2 and 3, variations on the 2-side). This instrument carries the whole style — build it first and it will survive every subtraction.
 - **Brushes/cross-stick** — `rim` doubling the 2-3 bossa clave: `<[~ ~ rim ~ rim ~ ~ ~] [rim ~ ~ rim ~ ~ rim ~]>` (hits on 2, 3 | 1, 2&, 4), quiet, dry.
 - **Brush swish** — `sh` on offbeat eighths at whisper gain (`s("[~ sh]*4")`), a little `room` for air. It reads as brush noise, not as a hi-hat — keep it under everything.
 - **Surdo-style kick** — `bd` muffled with an `lpf`, on 1 and 3, gain around .2. One pulse per two beats, felt more than heard.
 - **Melody** — `gm_flute` for the Getz-lineage breathy phrasing (a voice in the real world). Sparse, starts off the beat, ends phrases early, and leaves bars empty. The melody is a guest in the guitar's home.
 - **Color** — optionally `piano` for a counter-line or `gm_synth_strings_1` at very low gain for the bridge's one step up in warmth. Anything more and you've written lounge.
+
+## Sample kit
+
+- **Nylon guitar** — `gm_acoustic_guitar_nylon` (percussive chuck) or `gm_acoustic_guitar_nylon` (warmer, more Jobim); `pluck` as the round-attack fallback. Always two lanes: thumb + chord hand.
+- **Percussion** — VCSL latin core is preloaded: `conga` `bongo` `cabasa` `agogo` (the Brazilian agogô) `tambourine` `guiro` — pick `:k` variants for tone/slaps. The cross-stick `rim` clave and the `sh` swish stay default-kit.
+- **Brushes option** — the Dirt `jazz` set (`jazz:7` brushed snare, `jazz:0` BD) when the arrangement wants brushes instead of sticks.
+- **Melody** — `gm_flute` (Getz-lineage breath) or `gm_tenor_sax` (the actual Getz); soft attacks, early releases.
+- **Keys/color** — `piano` counter-lines (`steinway` for a real grand); `gm_synth_strings_1` at whisper gain for the bridge only.
+- No pack needed — the preloaded tiers cover bossa. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 
@@ -81,10 +90,10 @@ setcpm(124 / 4) // one cycle = one 4/4 bar
 
 // ── the guitar: thumb on 1 and 3, chords shadowing the 2-3 bossa clave (2, 3 | 1, 2&, 4) ──
 // A sections: Cmaj7 – Dm7 – G7b9 – Cmaj7 (x2) | B section: Em7 – A7 – Dm7 – G7
-const gtrBass = note("<[c2 ~ ~ ~ c2 ~ ~ ~] [d2 ~ ~ ~ d2 ~ ~ ~] [g1 ~ ~ ~ g1 ~ ~ c2] [c2 ~ ~ ~ c2 ~ ~ ~]>").sound("gm_acoustic_guitar_muted").gain(.6)
-const gtrTop = note("<[~ ~ [e4,g4,b4] ~ [e4,g4,b4] ~ ~ ~] [~ ~ [f4,a4,c5] ~ [f4,a4,c5] ~ ~ ~] [~ ~ [f4,ab4,b4] ~ [f4,ab4,b4] ~ ~ [e4,g4,b4]] [~ ~ [e4,g4,b4] ~ [e4,g4,b4] ~ ~ ~]>").sound("gm_acoustic_guitar_muted").gain(.48).cut(2)
-const gtrBassB = note("<[e2 ~ ~ ~ e2 ~ ~ ~] [a1 ~ ~ ~ a1 ~ ~ ~] [d2 ~ ~ ~ d2 ~ ~ ~] [g1 ~ ~ ~ g1 ~ ~ c2]>").sound("gm_acoustic_guitar_muted").gain(.6)
-const gtrTopB = note("<[~ ~ [g4,b4,e5] ~ [g4,b4,e5] ~ ~ ~] [~ ~ [e4,g4,cs5] ~ [e4,g4,cs5] ~ ~ ~] [~ ~ [f4,a4,c5] ~ [f4,a4,c5] ~ ~ ~] [~ ~ [f4,a4,b4] ~ [f4,a4,b4] ~ ~ [e4,g4,b4]]>").sound("gm_acoustic_guitar_muted").gain(.48).cut(2)
+const gtrBass = note("<[c2 ~ ~ ~ c2 ~ ~ ~] [d2 ~ ~ ~ d2 ~ ~ ~] [g1 ~ ~ ~ g1 ~ ~ c2] [c2 ~ ~ ~ c2 ~ ~ ~]>").sound("gm_acoustic_guitar_nylon").gain(.6)
+const gtrTop = note("<[~ ~ [e4,g4,b4] ~ [e4,g4,b4] ~ ~ ~] [~ ~ [f4,a4,c5] ~ [f4,a4,c5] ~ ~ ~] [~ ~ [f4,ab4,b4] ~ [f4,ab4,b4] ~ ~ [e4,g4,b4]] [~ ~ [e4,g4,b4] ~ [e4,g4,b4] ~ ~ ~]>").sound("gm_acoustic_guitar_nylon").gain(.48).cut(2)
+const gtrBassB = note("<[e2 ~ ~ ~ e2 ~ ~ ~] [a1 ~ ~ ~ a1 ~ ~ ~] [d2 ~ ~ ~ d2 ~ ~ ~] [g1 ~ ~ ~ g1 ~ ~ c2]>").sound("gm_acoustic_guitar_nylon").gain(.6)
+const gtrTopB = note("<[~ ~ [g4,b4,e5] ~ [g4,b4,e5] ~ ~ ~] [~ ~ [e4,g4,cs5] ~ [e4,g4,cs5] ~ ~ ~] [~ ~ [f4,a4,c5] ~ [f4,a4,c5] ~ ~ ~] [~ ~ [f4,a4,b4] ~ [f4,a4,b4] ~ ~ [e4,g4,b4]]>").sound("gm_acoustic_guitar_nylon").gain(.48).cut(2)
 
 // ── brushes: cross-stick on the clave, swish on the offbeats, muffled kick on 1 and 3 ──
 const stick = s("<[~ ~ rim ~ rim ~ ~ ~] [rim ~ ~ rim ~ ~ rim ~]>").gain(.3)

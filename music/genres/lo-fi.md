@@ -13,6 +13,18 @@ A settle is the audible moment the groove becomes drunken and the listener stops
 - **Melody** — sparse piano phrases, `@`-elongated notes, long rests, an echo (`delay` with modest feedback) so each phrase decays into the room. Four notes over eight bars is a correct amount.
 - **Air** — small `room` on everything except the crackle; the glue is a shared short delay and the fact that everything is filtered. If a layer sounds crisp, `lpf` it until it doesn't.
 
+## Sample kit
+
+- **Drums** — default kit works (round `bd` + roomy `sd` + dusty `hh`). The upgrade is the `crate` pack — dusty, song-named one-shots that sound lifted rather than programmed:
+  ```js
+  samples('github:eddyflux/crate'); // crate_bd crate_sd(54!) crate_hh crate_cp crate_rim crate_sh crate_clave …
+  ```
+  First play may be silent while the pack loads — run again. License unknown: fine for playground/foreground, keep default-kit names as the fallback for background beds.
+- **Keys** — `piano` standard; `steinway`/`fmpiano` (VCSL) when the room needs a real grand or a felt one; `gm_music_box` for twinkle.
+- **Bass** — `gm_acoustic_bass` under `lpf(500)`, roots plus one passing note.
+- **Crackle bed** — constructed, not sampled: quiet filtered `hh` ticks (see layers). Works regardless of packs.
+- **Trip-hop leanings** — `github:sonidosingapura/rochormatic` carries named breaks (`kompira`, `ritachao`, `karmacoma`) that chop beautifully at 70–85 bpm. Likely sampled material — foreground only.
+
 ## Harmony
 
 The vocabulary is jazz 7th/9th chords voiced mid-range and moved slowly — one chord per bar, sometimes one per two bars. The color chords are maj7, m9, and dom9; the emotional move is always a borrowed minor subdominant. In C:
@@ -76,6 +88,7 @@ If you feel the urge to add a drop, a big fill, or a key change, the correct lo-
 // the settle: a four-bar loop that becomes a room. dust, wobble, and space do the arranging.
 // form: intro 4 | loop 8 | +melody 8 | variation 8 | strip 4 | full 8 | outro 4 — energy never spikes
 setcpm(76 / 4) // one cycle = one bar of 4/4
+samples('github:eddyflux/crate'); // dusty one-shot kit; first play may be silent while it loads — run again
 
 // ── the loop: Dm9 G9 C^9 Am9, one chord per bar, warm and closed ──
 const keys = chord("<Dm9 G9 C^9 Am9>")
@@ -91,10 +104,10 @@ const bass = note("<[d2 ~ ~ ~] [g2 ~ ~ a2] [c2 ~ ~ ~] [a2 ~ ~ ~]>")
   .swing(.05)
 
 // ── drums: kick around 1 and 3, roomy snare on 2 and 4, swung dusty hats ──
-const kick = sound("[bd ~ ~ ~] [~ ~ bd ~] [bd ~ ~ bd] [~ ~ ~ ~]").gain(.75).lpf(400) // round, felt more than heard
-const snare = sound("~ sd ~ sd").gain(.45).room(.4)
-const ghosts = sound("~ rim ~ ~ ~ rim ~ rim").gain(.12) // side-stick ghosts between the backbeats
-const hats = sound("hh*8").gain("[.18 .32]*4").swing(.14).hpf(5000).degradeBy(.15) // dust in the hats
+const kick = sound("[crate_bd ~ ~ ~] [~ ~ crate_bd ~] [crate_bd ~ ~ crate_bd] [~ ~ ~ ~]").gain(.75).lpf(400) // round, felt more than heard
+const snare = sound("~ crate_sd ~ crate_sd").gain(.45).room(.4)
+const ghosts = sound("~ crate_rim ~ ~ ~ crate_rim ~ crate_rim").gain(.12) // side-stick ghosts between the backbeats
+const hats = sound("crate_hh*8").gain("[.18 .32]*4").swing(.14).hpf(5000).degradeBy(.15) // dust in the hats
 
 // ── melody: four notes a minute — the space is the part ──
 const melody = note("<[e5@3 ~] [d5 ~ b4] [~ c5@3] [~ ~ a4 ~]>")

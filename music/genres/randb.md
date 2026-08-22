@@ -13,6 +13,15 @@ The vamp is a gospel device smuggled into pop: loop a warm progression (IV–V�
 - **Lead vocal** — wordless `gm_voice_oohs` carries the melody: restrained in verses, an octave up in choruses, chromatic 16th runs in the vamp. The `.swing(.1)` and a small `delay` are what stop it sounding clinical.
 - **Choir pad** — `gm_voice_oohs` on long chords (`.attack(.4).release(1.1).room(.6)`) answering the lead, wide with `.jux(rev)`. Enters at choruses; blooms fully in the vamp.
 
+## Sample kit
+
+- **Keys — the real Rhodes** — `gm_epiano1` replaces the filtered-piano fake Rhodes wholesale: same warmth treatment (`.lpf(1800)`, `.attack(.02)`, `.room(.35)`) on an actual tine soundfont. `gm_epiano2` is the brighter Wurlitzer-flavored sibling.
+- **Muted guitar comp** — `pluck` (softened with `.release(.12).cut(1)`); `gm_electric_guitar_muted` is the plugged-in version of the same D'Angelo skank.
+- **Sub bass** — `sine` with long ADSR (correct); `gm_synth_bass_1` for the rounder 90s variant.
+- **Drums** — default kit, half-time, dragged; `.bank("RolandTR808")` when the production goes trap-adjacent.
+- **Voices** — `gm_voice_oohs` lead + choir, as layered.
+- No pack needed — the preloaded tiers cover R&B. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Everything is 7ths, 9ths, and 11ths; plain triads read as a different genre. Key of E♭:
@@ -81,7 +90,7 @@ const keys = arrange(
   [4, chord("<Cm9 Fm9>").anchor("eb4").voicing().gain(.3)], // bridge: ii-v into the hush
   [16, chord("<Ab^9 Bb9 Eb^9 Cm9>").anchor("eb4").voicing().gain(.4)], // the vamp loop
   [4, chord("<Eb^9 ~>").anchor("eb4").voicing().gain(.25)],
-).sound("piano").lpf(1800).attack(.02).room(.35).swing(.1)
+).sound("gm_epiano1").lpf(1800).attack(.02).room(.35).swing(.1)
 
 // ── muted guitar comp — offbeat 8ths, the skank under everything ──
 const comp = chord("<Eb^7 Cm9>").anchor("bb4").voicing().struct("[~ x] [~ x] [~ x] [~ x]")

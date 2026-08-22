@@ -1,3 +1,8 @@
+---
+name: litprog-skill
+description: Transform a codebase into a literate program — a single .lit.md document that weaves to a PDF via Pandoc and tangles back into the original source files. Use when the user mentions "literate programming", ".lit.md", "weave", "tangle", or wants code rebuilt as a human-readable narrative.
+---
+
 # Literate Programming
 
 Transform a codebase into a literate program: a document written for human comprehension that also generates the original source code.

@@ -13,7 +13,14 @@ A half-time drop: kick on 1, layered snare on 3, hats still running at 140 on to
 - **Wobble bass** — `sawtooth` at `d2`, `lpf(140)` with `lpq(9)` resonance, and the movement from the filter envelope: `.lpenv(7).lpa(.01).lpd(.18)`. Retrig per note; vary `lpenv` depth per bar for growl shape.
 - **Melody** — `gm_music_box`, `pluck`, or `piano`: delicate, minor, carries the intro and the breakdown — the thing the drop will demolish.
 - **Pad** — `gm_synth_strings_1`, dark voicings, `attack` 1+, under intro and breakdown.
-- **Perc fills** — `rim` triplet runs and `perc` one-shots at section borders only.
+- **Perc fills** — `rim` triplet runs and `misc` one-shots at section borders only.
+
+## Sample kit
+
+- **Kit** — `.bank("RolandTR909")` kick+snare with the `cp` layer; `.bank("RolandTR808")` for the subbier variant. Half-time marker is one layered snare — earn it.
+- **Wobble & sub** — synths, correctly: `sawtooth` + `lpenv/lpq` for the growl, `sine` for the sub. No sample does this better.
+- **Melody** — `gm_music_box`/`pluck`/`piano`; `vibraphone_soft` (VCSL) for a glassier breakdown voice.
+- **Pack option (low confidence)** — `github:terrorhank/samples` carries ready-made wobble basses and a `gothenburg03_*` kit; verify by ear before building on it, fallback names in `references/SAMPLE-CATALOG.md`.
 
 ## Harmony
 

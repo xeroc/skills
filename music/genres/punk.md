@@ -12,6 +12,14 @@ It is the chorus nobody needs to be taught. The hook is chantable monosyllables 
 - **Drums** — the d-beat: `[bd ~ sd ~ bd bd sd ~]`. Kick on 1, snare on 2, kick-kick on 3, snare on 4; the `bd bd sd ~` tail is the fingerprint. Snare gain high with a little `room`, a crash on section downbeats, and a tom fill `[ht mt lt ht]` as the only permitted decoration.
 - **Vocals** — `gm_voice_oohs` is the closest gang-vocal approximation: verse is a sneered single line, chorus is the shout, thickened with `.superimpose(x => x.transpose(-12).gain(.5))` so every line sounds like ten people.
 
+## Sample kit
+
+- **Drums** — default kit, no machine bank: punk wants a live room. `bd sd hh oh cr` + `[ht mt lt]` fills; try `sd:1`/`sd:2` for a fatter crack. Trash aesthetic if required: layer `.bank("CasioVL1")` (bd hh sd only).
+- **Guitars** — `gm_overdriven_guitar` is the workhorse; `gm_distortion_guitar` for hardcore leanings. The solo uses the same sound, an octave up.
+- **Bass** — `gm_electric_bass_pick` with `lpf(700)`: the P-bass-with-pick thud that doubles the guitar roots. Synth fallback: `sawtooth` + `lpf(700)`.
+- **Vocals** — `gm_voice_oohs`, gang-doubled an octave down.
+- No pack needed — the preloaded tiers cover punk completely. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Vocabulary: major and minor triads stripped to their fifths — dyads, not full chords. Sevenths are a firing offense. Borrowed bVI and bVII do most of the color work, and the ambiguity between relative major and minor lets one chord loop read as hopeless or triumphant depending on how it's shouted.
@@ -91,7 +99,7 @@ const bass = arrange(
   [1, note("a1*8")],
   [8, vBass], [8, cBass], [8, vBass], [8, cBass], [8, bBass], [8, cBass],
   [1, note("a1@4")],
-).sound("sawtooth").lpf(700).gain(.6)
+).sound("gm_electric_bass_pick").lpf(700).gain(.6)
 $: bass
 
 // ── drums — the d-beat: kick 1, snare 2, kick+kick 3, snare 4. "bd bd sd ~" is the fingerprint ──

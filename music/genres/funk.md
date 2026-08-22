@@ -10,8 +10,17 @@ James Brown's directive ("on the One") means the downbeat is the anchor of an ot
 - **Hats & percussion** — straight 16ths with a velocity pattern accenting the offbeat 8ths, `cb` cowbell on the offbeats, `tb` tambourine 8ths joining the full sections, `sh` for the top sheen.
 - **Bass** — `pluck` with `.lpf(1300)`, playing a 16th-note figure around the root with octave pops (`superimpose` an octave up at low gain = the slap). The bass is the second lead; it answers the kick.
 - **Guitar (the chank)** — `gm_electric_guitar_muted` playing one note (the root) on a syncopated 16th pattern full of holes, `.cut(1)` so each stroke chokes the last. This is the metronome of the band.
-- **Clav** — `square` synth, `.decay(.06).sustain(0)`, playing staccato 16th dyads on the 9th and b7 — the percussive keyboard layer that answers the guitar.
+- **Clav** — `gm_clavinet`, `.decay(.06).sustain(0)`, playing staccato 16th dyads on the 9th and b7 — the percussive keyboard layer that answers the guitar. (`square` synth + short envelope is the lo-fi fallback.)
 - **Horns** — `gm_trumpet` section stabs (a `D9` `chord()` anchored high) landing on the One with answers on the pushes, an octave-down double for the tenor weight. `gm_tenor_sax` takes single-note answers where the trumpets leave space.
+
+## Sample kit
+
+- **Kit** — `.bank("AkaiLinn")` (dry 80s snap); `.bank("EmuSP12")`/`.bank("AkaiMPC60")` for the grittier golden-age variants, `.bank("RolandTR707")` for the boogie edge.
+- **Clav — the genre's keyboard** — `gm_clavinet`, always; no synth argument beats the real soundfont for "Superstition" duty.
+- **Bass** — the slap: `gm_slap_bass_1` for genuine thumb-and-pluck attack, `gm_slap_bass_2` for the brighter set; the `pluck` + octave-`superimpose` trick remains the rounder, less cartoony fallback.
+- **Chank guitar** — `gm_electric_guitar_muted` ✓; add `vowel("<a e>")` for the wah dialect.
+- **Horns** — `gm_trumpet` stabs + `gm_tenor_sax` answers; `gm_brass_section` when the section plays as one body, `gm_muted_trumpet` for the sly answers.
+- No pack needed — the preloaded tiers cover funk. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 

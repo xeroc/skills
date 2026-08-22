@@ -13,9 +13,18 @@ The third character is the voice. Perreo vocals don't float over the beat — th
 - **Kick** — `bd`, ideally `.bank("RolandTR808")` for the sub-forward thump: `"bd ~ ~ bd ~ ~ bd ~ ~ ~ ~ ~ ~ ~ ~ ~"` (1, 1a, 2&) with a little `shape` for grit. This is the layer that gets the sidechain — chain `.duckorbit("2:3").duckdepth(.8).duckattack(.16)` on it so the sub and percussion duck under every hit.
 - **Snare** — `sd`: `"~ ~ ~ ~ ~ ~ sd sd ~ ~ sd sd ~ ~ sd ~"`. The doubles are the genre's fingerprint — two 16ths back to back, twice, then the lone 4& pickup. Played alone as its 8th-note skeleton (`~ ~ ~ sd ~ sd sd ~`) it works as the "ghost" version for intros and breakdowns.
 - **Sub bass** — `sine`, notes in the 50–80 Hz zone (c2, ab1, bb1, eb2 in C minor). Roots only, long release, follows the kick loosely. The relationship between sub and kick — ducked, never competing — is the mix.
-- **Percussion candy** — `sh*16` at whisper gain for motion, a `cb` hit every other bar, `perc` fills degraded with `degradeBy` at section ends. Everything sits low; the dembow owns the mid.
+- **Percussion candy** — `sh*16` at whisper gain for motion, a `cb` hit every other bar, `misc` fills degraded with `degradeBy` at section ends. Everything sits low; the dembow owns the mid.
 - **Hook lead** — `gm_flute` for the whistle-flute lineage (or a `triangle`/`sawtooth` synth for the modern Tainy sound). Sparse minor-pentatonic phrases with bars of nothing between them — space reads as luxury here, busyness reads as cheap.
 - **Voices** — `gm_voice_oohs` chopped as a response layer behind the hook. Reggaeton is vocal music first; even instrumental, leave holes where a voice would answer.
+
+## Sample kit
+
+- **Kit** — `.bank("RolandTR808")` kick + default `sd` for the dembow doubles; layer a `.bank("RolandTR909")` clap on the backbeat for the reggaetón-pop polish.
+- **Latin accents — the VCSL upgrade** — sparse `conga`/`clave`/`agogo` hits (one per 2–4 bars) sit under the dembow without crowding the mid; `guiro` for the old-school salsa-nodding intros.
+- **Sub** — `sine` at 50–80 Hz ✓, ducked under the kick; no sample does this better.
+- **Hook lead** — `gm_flute` (whistle lineage) or `triangle`/`sawtooth` (modern); `gm_ocarina` is a surprisingly good whistle-flute cousin.
+- **Voices** — `gm_voice_oohs` chopped as the response layer.
+- No pack needed — the preloaded tiers cover reggaeton. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 
@@ -86,7 +95,7 @@ const beat = arrange(
   [8, stack(dembow, s("sh*16").gain(.1), s("<~ ~ cb ~ ~ ~ ~ ~>").gain(.18))],    // hook: candy on top
   [8, dembow],
   [8, stack(dembow, s("sh*16").gain(.1), s("<~ ~ cb ~ ~ ~ ~ ~>").gain(.18))],
-  [4, stack(snareGhost, s("perc*8").degradeBy(.6).gain(.2))],                    // outro: dissolve back to ghost
+  [4, stack(snareGhost, s("misc*8").degradeBy(.6).gain(.2))],                    // outro: dissolve back to ghost
 )
 
 // ── sub: sine, roots only, follows the kick loosely — the space IS the arrangement ──

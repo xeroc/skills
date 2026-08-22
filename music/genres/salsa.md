@@ -10,13 +10,23 @@ The riff itself is built from chord tones, syncopated against the clave (figures
 
 - **Clave** — `rim` as the woodblock, playing the two-bar 3-2 son clave `<[rim ~ ~ rim ~ ~ rim ~] [~ ~ rim ~ rim ~ ~ ~]>`. This is the timeline every other part answers to; when a layer's rhythm agrees with the clave it feels right, and when it fights the clave it feels wrong even to listeners who can't name why.
 - **Campana** — `cb` on the quarters (`cb*4`), the cowbell that rides on top of coros and doubles down in mambos. It is the cheapest energy dial in the idiom: add the bell and the band gets bigger without getting louder.
-- **Congas** — the marcha, two bars of interlocked slaps and open tones: `<[lt ~ ht mt ~ ht lt ht] [lt ~ ht mt ~ ht ht ht]>`, with `lt` as the low tumba, `mt` the conga, `ht` the slap. `perc(3,8)` on top gives the rolling three-against-eight accents a good conguero sprinkles over the basic groove.
+- **Congas** — the marcha, two bars of interlocked slaps and open tones: `<[lt ~ ht mt ~ ht lt ht] [lt ~ ht mt ~ ht ht ht]>`, with `lt` as the low tumba, `mt` the conga, `ht` the slap. `conga(3,8)` on top gives the rolling three-against-eight accents a good conguero sprinkles over the basic groove.
 - **Timbales** — `rd` as the cáscara, the shell/ride pattern `rd ~ ~ rd ~ ~ rd ~ rd ~ ~ rd ~ ~ rd ~` (sixteenths on 1, 1a, 2&, 3, 3a, 4& — the African "standard pattern" the whole Caribbean inherited). `sd` and `oh` are the fills, bell accents, and crash markers at section boundaries.
 - **Maracas** — `sh*8`, constant eighths with a velocity shape like `[.45 .22 .3 .22 .4 .22 .3 .26]` so the clave strokes pop out of the stream instead of a flat hiss.
 - **Piano montuno** — the `piano` sample. Repeated octave dyads and guide-tone figures locked to the clave — one rhythmic cell, re-pitched per chord, not composed lines. For block stabs, `chord("<Cm7 Fm7 G7>").anchor("g4").voicing()` in the right register is the fast path.
 - **Bass tumbao** — `gm_acoustic_bass`. One or two notes a bar: root on beat 2, the ponche near the barline, and beat 1 left empty — the silence on the downbeat is what makes the anticipation on the far side of it swing.
 - **Horns** — `gm_trumpet` stating the moña, `gm_tenor_sax` doubling an octave down for weight. Unison on the first pass; if the mambo repeats, let the tenor drop to a harmony line.
 - **Coro** — `gm_voice_oohs` as the chorus singing its two-bar response, with a `gm_trumpet` pregón improvising into the gaps — the call-and-response that carries everything between the verse and the mambo.
+
+## Sample kit
+
+- **Congas — the real thing** — VCSL `conga` replaces the tom simulation, variants grouped by drum: `:0–:9` conga (mid), `:10–:19` quinto (high), `:20+` tumba (low); probe adjacent indices for slap vs open strokes and write the marcha as `<[conga:20 ~ conga:10 conga:4 …]>`. `bongo` sits on top if the arrangement wants it. Tom-based `lt/mt/ht` marcha is the verified fallback.
+- **Clave & bells** — `clave:0` is a real wood clave (upgrade over `rim`); `cowbell` for campana (or default `cb`); `agogo` and `guiro` for extra Latin percussion voices.
+- **Timbales** — no dedicated sample: `rd` cáscara with `sd`/`oh` fills remains the idiom.
+- **Montuno** — `piano`, or `steinway` for a real grand; octave dyads + guide tones as in the layers.
+- **Bass** — `gm_acoustic_bass` tumbao.
+- **Horns** — `gm_trumpet` + `gm_tenor_sax` (the moña stack); `gm_brass_section` when the section speaks as one body.
+- No pack needed — the preloaded tiers cover salsa. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 
@@ -85,7 +95,7 @@ const campana = s("cb*4").gain(.3)
 
 // ── congas: two-bar marcha (lt = tumba, mt = conga, ht = slap) + rolling accents ──
 const congas = s("<[lt ~ ht mt ~ ht lt ht] [lt ~ ht mt ~ ht ht ht]>").gain(.55)
-const roll = s("perc(3,8)").gain(.28).pan(.7)
+const roll = s("conga(3,8)").gain(.28).pan(.7)
 
 // ── maracas: constant 8ths, shaped so the clave strokes pop ──
 const maracas = s("sh*8").gain("[.45 .22 .3 .22 .4 .22 .3 .26]")

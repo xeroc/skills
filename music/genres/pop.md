@@ -45,6 +45,15 @@ Same principle as the jazz cadenza: the size of the payoff is proportional to ho
 - **Sketch the arrangement as a energy graph before writing notes** — verse low, pre-chorus rising, chorus high, bridge either drops way down or goes sideways harmonically, final chorus highest.
 - **Record a rough demo and listen for the arc** — does the bridge actually feel different, or is it just the same loop with different words?
 
+## Sample kit
+
+- **Kit by era** — default kit (now); `.bank("LinnLM1")`/`.bank("LinnDrum")` for the gated-80s variant, `.bank("RolandTR808")` for trap-pop verses, `.bank("RolandTR909")` for the house-pop final chorus.
+- **Keys** — `piano` ✓; `gm_epiano1` when the verse wants Rhodes warmth, `gm_synth_strings_1` for the final-chorus lift.
+- **Bass** — `sawtooth` filtered ✓; `gm_synth_bass_1` for the rounder, sampled-90s pocket.
+- **Guitars (optional)** — `gm_acoustic_guitar_steel` strums for the singer-songwriter bridge, `gm_electric_guitar_muted` for the funk-pop skank.
+- **Ear candy** — `cp` claps stacked on backbeats, one `cr` per section change; VCSL `glockenspiel`/`kalimba` for the childlike-magic bridge color.
+- No pack needed — the preloaded tiers cover pop's whole era range. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Example
 
 ```

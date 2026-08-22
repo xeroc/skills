@@ -10,6 +10,16 @@ The last four bars of a 12-bar chorus are V7 – IV7 – I7 – (I7 or V7). Bar 
 - **Chicago blues (1950s band, 96–116 bpm)** — `gm_piano` comps 7th and 9th voicings with triplet-flavored stabs; `gm_harmonica` takes the lead (small `room`, a touch of `shape` so it sounds cupped and reedy rather than clean); `gm_electric_guitar_clean` (or `gm_overdriven_guitar` for the later south-side sound) plays shuffle figures an octave below the piano; `gm_acoustic_bass` walks four quarters to the bar; and a small kit shuffles — ride or hi-hat in triplets, snare on 2 and 4, kick on 1 (and sometimes 3), never four-on-the-floor.
 - **Texas / west-coast jump (110–128 bpm)** — same engine, horns added: `gm_tenor_sax` sections playing riff figures in octaves, piano moved to boogie tenths, bass walking harder. This is where blues tips into early rock and roll.
 
+## Sample kit
+
+- **Guitars** — `gm_acoustic_guitar_nylon` (Delta), `gm_electric_guitar_clean` → `gm_overdriven_guitar` (Chicago, by era); `gm_acoustic_guitar_steel` for the country-blues middle.
+- **Harmonica — the voice of the genre** — `gm_harmonica` cupped with `shape` and `room`; VCSL `harmonica`/`harmonica_vib` are the recorded upgrades with real breath in the tone.
+- **Piano** — `gm_piano` comping; `steinway`/`fmpiano` (VCSL) for a real grand or a felted one in the slow numbers.
+- **Bass** — `gm_acoustic_bass` walking quarters ✓; `gm_electric_bass_finger` for the post-1957 band.
+- **Drums** — default kit shuffling; Dirt `jazz` brushes for the slow 12/8 numbers (`jazz:7` snare, `jazz:0` kick).
+- **Horns** — `gm_tenor_sax` sections for the jump dialect; `gm_trumpet` when it tips to New Orleans.
+- No pack needed — the preloaded tiers cover blues. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 The default chord quality is the **domant 7th on I, IV and V** — not because it needs to resolve, but because the flat 7 rubs against the major triad and that friction is the sound. The 12-bar form in A, spelled out: `A7 A7 A7 A7 | D7 D7 A7 A7 | E7 D7 A7 E7` — that last E7 is the turnaround. With the quick change: `A7 D7 | A7 A7 | D7 D7 | A7 A7 | E7 D7 | A7 E7`. In strudel that's one pattern: `chord("<A7 A7 A7 A7 D7 D7 A7 A7 E7 D7 A7 E7>")` with one chord per bar. Canonical progressions, roman and spelled:

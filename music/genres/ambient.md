@@ -14,8 +14,16 @@ The failure modes are all rhythmic in disguise: a loop that repeats, a layer tha
 - **Sparkle** — `gm_music_box`, `pluck`, or single `piano` notes; very sparse (a handful per minute), `degradeBy(.3)`–`.5)` for grain, one `delay` and lots of `room`.
 - **Voices** — `gm_voice_oohs` low in the mix; wordless breath is the genre's human element.
 - **Line instrument** — `gm_flute` long tones, one note per minute or slower; the closest thing to a melody the genre allows, and it should never phrase to a barline.
-- **Air** — the `fx` sound at gain .04 with `lpf(perlin.range(400, 1800))`: the sound of the room itself, always moving, never repeating.
+- **Air** — the `wind` sound at gain .04 with `lpf(perlin.range(400, 1800))`: the sound of the room itself, always moving, never repeating.
 - **Pulse (optional)** — one soft `triangle` blip every few bars, off the strong beats. Never a kit; the moment it grooves, you've written downtempo.
+
+## Sample kit
+
+- **Drones & pads** — `sine`/`triangle`/`supersaw` + `gm_synth_strings_1`; `gm_pad_warm`/`gm_pad_halo`/`gm_pad_bowed` are preloaded alternatives with slower, softer grains.
+- **Sparkle — the VCSL upgrade** — `wineglass` `wineglass_slow` `kalimba` `glockenspiel` `harp` `folkharp`: real resonance instead of synthesized twinkle, pitched multisamples so `note()` stays true.
+- **Line instrument** — `gm_flute`; VCSL `recorder_alto_sus` for a breathier, less classical line.
+- **Air** — Dirt `wind`/`space`/`crow`: rooms, weather, and the occasional bird, all preloaded.
+- No pack needed — the preloaded tiers cover ambient doctrine. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 
@@ -107,7 +115,7 @@ $: note("<g5 ~ ~ ~ c6 ~ ~ ~ ~ ~ e6 ~ ~ ~ ~ ~>")
   .room(1).delay(".9:.3:.45")
 
 // ── air — the room itself: filtered noise wandering, aperiodic ──
-$: sound("fx").gain(.045)
+$: sound("wind").gain(.045)
   .lpf(perlin.range(400, 1800))
   .pan(sine.slow(11).range(.2, .8))
   .room(1)

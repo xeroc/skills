@@ -13,6 +13,14 @@ Process music: the rule is the piece. Reich phases (two tape loops, then two pia
 - **Drone** — `sine` on the root (or root + fifth), sustained: gravity, not a bassline. Felt, not heard.
 - **The swell (optional)** — `gm_clarinet` or `gm_synth_strings_1` taking a resulting melody at the process peak, one long crescendo, then gone.
 
+## Sample kit
+
+- **The mallet upgrade** — minimalism's signature voices are preloaded VCSL multisamples: `marimba` (Music for 18 Instruments), `vibraphone` (+`_soft`), `glockenspiel` — swap the `piano` pulse river for one of these and the genre snaps into focus. `note()` is sample-accurate on all of them.
+- **Counterpoint voice** — `gm_clarinet` ✓ (the Reich choice); `sax`/`saxello` (VCSL) for the jazzier Downtown variant, `recorder_alto_sus` for the early-music dialect.
+- **Pulse floor** — `piano`/`pluck` in dead-even 8ths as written; `fmpiano` (felted) when the piece should whisper.
+- **Drone & swell** — `sine` drone; `gm_synth_strings_1` swell, or VCSL `pipeorgan_quiet` for the sacred-minimal drift.
+- No pack needed — the preloaded tiers cover minimalism better than any other genre. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Almost no harmony — a chosen pitch set held for the whole piece; "harmony" is where the cell happens to be standing. The example's set is the A-minor pentatonic subset A C D E G over an A aeolian gravity:

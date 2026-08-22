@@ -13,7 +13,20 @@ The build usually lives in half-time or in filtered atmosphere — pads, a vocal
 - **Sub bass** — `sine` on long root notes, `attack(.01).sustain(.85)`, following the chord loop. In drop2 it often starts moving — root–octave 8ths — as the track's single escalation.
 - **Reese** — `supersaw` lowpassed to 200–800Hz with the filter crawling (`lpf(saw.range(200, 800).slow(4))`): the dark/techstep signature, movement without notes.
 - **Liquid keys** — `piano` chords and `gm_synth_strings_1` pads, 9ths and 7ths, pushed on offbeats, drenched in `room` and a dotted delay. The lush pole.
-- **Atmos** — the `fx` sound way back in `room(1)`, or a `gm_flute`/`gm_voice_oohs` figure — DnB intros live on atmosphere.
+- **Atmos** — Dirt `space`/`wind` textures way back in `room(1)`, or a `gm_flute`/`gm_voice_oohs` figure — DnB intros live on atmosphere.
+
+## Sample kit
+
+- **Kit** — `.bank("RolandTR909")` two-step with 909/808 kick choice per pole; the 707 snare (`.bank("RolandTR707")`) is a DnB classic. Ghost euclids + hats stay default.
+- **Real breaks — the genre's own tool** — `github:Bubobubobubobubo/Dough-Amen`: 80 chopped-ready breaks, BPM-tagged (`amen1` runs 135–178; grab the ones near 174):
+  ```js
+  samples('github:Bubobubobubobubo/Dough-Amen'); // first play may be silent while it loads — run again
+  $: s("amen1:13").loopAt(1).chop(8)                  // the break as the lead instrument
+  $: s("amen3:0").splice(8, "<0 1 2 3 4 5 6 7>")      // re-sequenced slices
+  ```
+  Layer a synthetic `bd` under for weight; license unknown — foreground/playground use. `github:yaxu/clean-breaks` adds the `amen` original plus 28 funk breaks.
+- **Sub & reese** — synths, correctly: `sine` sub, `supersaw` reese with a crawling `lpf`.
+- **Liquid keys** — `piano`/`steinway`, `gm_synth_strings_1`; atmosphere from Dirt `space`/`wind`.
 
 ## Harmony
 

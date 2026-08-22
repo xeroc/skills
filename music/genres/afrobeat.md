@@ -10,12 +10,22 @@ The other pillar is the horns: Fela's trumpet and the tenor/baritone saxes play 
 
 - **Bells** — `cb` carrying the standard pattern in 16ths: `"cb ~ ~ cb ~ ~ cb ~ cb ~ ~ cb ~ ~ cb ~"` (hits on 1, 1a, 2&, 3, 3a, 4&). This is the 12/8 timeline of West African music flattened onto the 4/4 grid, and it's the layer the whole groove hangs from.
 - **Shakers** — `sh*16` with a shaped gain pattern like `[.16 .3 .1 .22 .16 .3 .1 .22 .16 .3 .1 .22 .16 .3 .1 .26]` so the stream swings in threes against the guitars' twos.
-- **Congas** — `perc` and `lt` in a two-bar groove like `<[perc ~ lt perc ~ lt perc ~] [perc ~ lt perc ~ lt lt perc]>`, plus `{perc ~ lt}%3` — a three-cycle polymeter — for the deep-water sections where you want the floor to drift and re-sync.
-- **Rhythm guitar** — `gm_acoustic_guitar_muted` on pure offbeat 16ths: `note("a4").struct("~ x ~ x ~ x ~ x ~ x ~ x ~ x ~ x")` with `cut` for the percussive chop. One note, forever — it's a drum that happens to have a pitch.
-- **Tenor guitar** — the second guitar, `gm_acoustic_guitar_muted` or `pluck`, playing a two-bar high ostinato in eighths — a pentatonic cell that winds around the rhythm guitar's offbeats. The interlock of these two parts is the genre's signature texture.
+- **Congas** — `conga` and `lt` in a two-bar groove like `<[conga ~ lt conga ~ lt conga ~] [conga ~ lt conga ~ lt lt conga]>`, plus `{conga ~ lt}%3` — a three-cycle polymeter — for the deep-water sections where you want the floor to drift and re-sync.
+- **Rhythm guitar** — `gm_electric_guitar_muted` on pure offbeat 16ths: `note("a4").struct("~ x ~ x ~ x ~ x ~ x ~ x ~ x ~ x")` with `cut` for the percussive chop. One note, forever — it's a drum that happens to have a pitch.
+- **Tenor guitar** — the second guitar, `gm_electric_guitar_muted` or `pluck`, playing a two-bar high ostinato in eighths — a pentatonic cell that winds around the rhythm guitar's offbeats. The interlock of these two parts is the genre's signature texture.
 - **Keys** — `piano` stabs, `chord("<Am7 D9>").anchor("a4").voicing()`, hit on a syncopation like `"x ~ ~ x ~ ~ ~ ~"` once or twice a bar. Rhodes in the real world; the piano sample carries the role.
 - **Bass** — `triangle` with a touch of `shape` and an `lpf` — the lead instrument. A melodic two-bar ostinato in eighths with syncopated pickups, repeated with total conviction. Fela's basslines sing; write them like a riff, not a root service.
 - **Horns** — `gm_trumpet` asking, `gm_tenor_sax` answering (often an octave down). Two-bar riffs and sustained chord stabs traded between them; they play in sections, they rest in sections.
+
+## Sample kit
+
+- **Congas** — VCSL `conga` over the tom simulation: `:0–:9` conga (mid), `:10–:19` quinto (high), `:20+` tumba (low); probe neighboring indices for stroke characters. `{conga:10 ~ conga:20}%3` keeps the polymeter trick with real skins.
+- **Bells & shakers** — `cb` carries the standard pattern; `agogo` (VCSL) is the West African-derived alternative; `cabasa` reads as shekere when `sh` feels too hissy.
+- **Keys — the organ upgrade** — `gm_percussive_organ` is Fela's bubble; `gm_drawbar_organ` for the full-spectrum version. Piano stabs work, but organ is the idiom.
+- **Bass** — `gm_electric_bass_finger`: Fela's bass was electric, melodic, and mixed forward. Synth fallback: `triangle` + `shape(.25)` + `lpf`.
+- **Guitars** — `gm_electric_guitar_muted` for both interlocking parts.
+- **Horns** — `gm_trumpet` asks, `gm_tenor_sax` answers, `gm_baritone_sax` adds the low weight on repeats.
+- No pack needed — the preloaded tiers cover afrobeat. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 
@@ -36,7 +46,7 @@ Modal and static — one or two chords, vamps that run for entire sections. The 
 - **Bass ostinato** (two bars of 8ths) — `[a2 ~ a2 ~ ~ a2 c3 ~] [a2 ~ e2 g2 a2 ~ g2 e2]`.
 - **Keys stab** (one bar of 8ths) — `x ~ ~ x ~ ~ ~ ~`.
 
-Feel devices: the bass states the downbeat more than anyone else (everything else syncopates around it); the guitars never land where the bell lands; horn riffs begin on offbeats so they lean into the groove; and the polymeter layer (`{perc ~ lt}%3`) is a spice for late sections, not a base layer — add it once the straight interlock has fully hypnotized.
+Feel devices: the bass states the downbeat more than anyone else (everything else syncopates around it); the guitars never land where the bell lands; horn riffs begin on offbeats so they lean into the groove; and the polymeter layer (`{conga ~ lt}%3`) is a spice for late sections, not a base layer — add it once the straight interlock has fully hypnotized.
 
 ## Structure
 
@@ -72,8 +82,8 @@ setcpm(108 / 4) // one cycle = one 4/4 bar
 // ── percussion floor: the bell carries the 12/8 feel flattened into 16ths ──
 const bell = s("cb ~ ~ cb ~ ~ cb ~ cb ~ ~ cb ~ ~ cb ~").gain(.3) // 1, 1a, 2&, 3, 3a, 4& — the standard pattern
 const shekere = s("sh*16").gain("[.16 .3 .1 .22 .16 .3 .1 .22 .16 .3 .1 .22 .16 .3 .1 .26]")
-const congas = s("<[perc ~ lt perc ~ lt perc ~] [perc ~ lt perc ~ lt lt perc]>").gain(.4)
-const pmeter = s("{perc ~ lt}%3").gain(.3) // 3-cycle polymeter for the deep-water section
+const congas = s("<[conga ~ lt conga ~ lt conga ~] [conga ~ lt conga ~ lt lt conga]>").gain(.4)
+const pmeter = s("{conga ~ lt}%3").gain(.3) // 3-cycle polymeter for the deep-water section
 
 const perc = arrange(
   [8, stack(bell.gain(.22), shekere.gain(.12))],                            // intro: skeleton only
@@ -98,12 +108,12 @@ const bass = arrange(
   [8, bassA],
   [8, bassA],
   [4, note("<[a2 ~ ~ ~ ~ ~ ~ ~] [~ ~ ~ ~ ~ ~ ~ ~]>")], // step off on the tonic
-).sound("triangle").shape(.25).lpf(700).gain(.6)
+).sound("gm_electric_bass_finger").lpf(900).gain(.7)
 
 // ── guitars: the interlocking pair — offbeat 16ths vs a high two-bar ostinato ──
-const rGtr = note("a4").struct("~ x ~ x ~ x ~ x ~ x ~ x ~ x ~ x").sound("gm_acoustic_guitar_muted").gain(.28).cut(3).pan(.35)
-const tGtrA = note("<[a4 c5 d5 c5 a4 c5 d5 g4] [a4 c5 d5 e5 d5 c5 a4 c5]>").sound("gm_acoustic_guitar_muted").gain(.32).cut(4).pan(.65)
-const tGtrB = note("<[d4 fs4 a4 fs4 d4 fs4 a4 c4] [d4 fs4 a4 b4 a4 fs4 d4 fs4]>").sound("gm_acoustic_guitar_muted").gain(.32).cut(4).pan(.65)
+const rGtr = note("a4").struct("~ x ~ x ~ x ~ x ~ x ~ x ~ x ~ x").sound("gm_electric_guitar_muted").gain(.28).cut(3).pan(.35)
+const tGtrA = note("<[a4 c5 d5 c5 a4 c5 d5 g4] [a4 c5 d5 e5 d5 c5 a4 c5]>").sound("gm_electric_guitar_muted").gain(.32).cut(4).pan(.65)
+const tGtrB = note("<[d4 fs4 a4 fs4 d4 fs4 a4 c4] [d4 fs4 a4 b4 a4 fs4 d4 fs4]>").sound("gm_electric_guitar_muted").gain(.32).cut(4).pan(.65)
 
 const gtrs = arrange(
   [8, silence],
@@ -123,7 +133,7 @@ const keys = arrange(
   [8, chord("<Am7 Am7 Am7 Am7>").anchor("a4").voicing().struct("x ~ ~ x ~ ~ ~ ~")],
   [8, silence],
   [4, silence],
-).sound("piano").gain(.3).room(.3)
+).sound("gm_percussive_organ").gain(.3).room(.3)
 
 // ── horns: trumpet asks, tenor answers — riffs and stabs, never through-composed lines ──
 const riffAsk = note("<[a4 ~ c5 d5 ~ e5 ~ d5] [c5 ~ a4 ~ g4 ~ a4 ~]>")

@@ -1,5 +1,6 @@
 ---
 name: angle-pitch
+description: Build and review angel-investor pitch decks — the slide-by-slide blueprint for founder-market fit, moat, traction, use of funds, and delivery. Use when the user mentions "angel pitch", "pitch deck", "investor deck", "investor presentation", or asks what angel investors want to see.
 ---
 
 ## What a Pitch deck should look like

@@ -14,7 +14,15 @@ Eight to sixteen bars where the kick is pulled and replaced by the track's most 
 - **Bass** — `sawtooth` through `lpf(700)`–`lpf(900)` (or `sine` for deep house) playing offbeat 8ths or root–octave 16ths, always in the gaps the kick leaves, always ducked by the kick with `duckorbit` — the pump is as much a part of the bassline as the notes are.
 - **Chord stabs** — 7th/9th chords as short `sawtooth` hits — short `decay`, `sustain(0)`, a touch of `room` reads as organ — or `piano` for the New York variant. Syncopated placement on the "and"s matters more than the voicing.
 - **Pad** — `gm_synth_strings_1` or `supersaw`, `attack` 1+, `release` 2+, `room(.8)`. The breakdown's floor.
-- **Vocal texture** — `misc`/`fx` chops or `gm_voice_oohs` low in the mix — atmosphere first, lyric second.
+- **Vocal texture** — `misc` chops or `gm_voice_oohs` low in the mix — atmosphere first, lyric second.
+
+## Sample kit
+
+- **Kit** — `.bank("RolandTR909")` throughout: the 909 kick is the genre's kick. `.bank("RolandTR707")` for the vintage/Chicago character, `.bank("RolandTR808")` never for the kick.
+- **Organ stabs — the idiom upgrade** — `gm_drawbar_organ` (deep/garage) or `gm_percussive_organ` (bright, jackin') replaces the filtered-sawtooth stab: short `decay(.1).sustain(0)`, syncopated on the "and"s. `piano` remains the New York variant.
+- **Bass** — `sawtooth` under `lpf(700–900)` (synth-correct); `gm_synth_bass_1` for a rounder sampled feel in deep house.
+- **Pad** — `gm_synth_strings_1` or `supersaw`, long attack/release, `room(.8)`.
+- No pack needed — the preloaded tiers cover house completely. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 

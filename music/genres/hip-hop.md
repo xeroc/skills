@@ -13,6 +13,18 @@ A break is a short, usually one- or two-bar drum groove lifted from a funk or so
 - **Ghost snares & percussion** — whispered `sd` hits at gain .1–.15 between the backbeats, `sh` at gain .03 as vinyl air. You should barely hear them and immediately miss them when muted.
 - **Ear candy** — a reversed stab (`speed(-1)`) that swells into a hook, a delay throw on the last hit of a phrase, a clap layer that shadows the snare in the chorus only.
 
+## Sample kit
+
+- **Kit** — `.bank("RolandTR808")` is the default skeleton sound. Character alternates: `.bank("EmuSP12")` / `.bank("AkaiMPC60")` for grittier boom-bap, `.bank("LinnLM1")` / `.bank("OberheimDMX")` for the 80s.
+- **Real breaks** — the genre's foundation as samples: `github:yaxu/clean-breaks` carries the canonical loops by name —
+  ```js
+  samples('github:yaxu/clean-breaks'); // funkydrummer apache think impeach amen useme …
+  $: s("funkydrummer").loopAt(2).gain(.5) // layer under the skeleton, or chop(8)/splice(8, "…") it
+  ```
+  First play may be silent while the pack loads — run again. **Copyrighted recordings: foreground/playground use only**, never background-music deliverables. `github:eddyflux/crate` supplies dusty one-shot alternatives (see lo-fi).
+- **Sub** — `sine` synth, roots only. For 808-decay variants without a pack: full Dirt-Samples adds the `808bd` tuning series (`BD0000`→`BD7575`).
+- **Sample/melody sources** — `pluck` soul loops, `piano`/`steinway` Rhodes-and-strings chops, `gm_music_box`, `gm_flute`.
+
 ## Harmony
 
 Chord vocabulary is whatever the chopped record implies: minor 7ths, minor 9ths, and major 7ths on bVI and bVII dominate. Melodies are almost always minor pentatonic — in F minor that's F–A♭–B♭–C–E♭ — with the occasional dorian D♮ as color. Canonical loops, in F minor:

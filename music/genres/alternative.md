@@ -11,8 +11,17 @@ Mechanically: one new layer enters per bar (or per two bars), each louder or bri
 - **Pad** — `gm_synth_strings_1`, `attack(1.2)` or slower, `room(.9)`: the floor that's always almost audible; it blooms, it never attacks.
 - **Bass** — `triangle` root pulses, sparse (`a1 ~ ~ a1`), more felt than followed; when it moves, it's an event.
 - **Drums** — verses: kick push `bd ~ ~ bd` + rim backbeat + 8th hats. Swells: `sh*16`, tom 8ths, snare 8ths entering bar by bar. Choruses: half-time with open hats and a crash per bar. Bridge: six-pulse bars.
-- **Air** — `sound("fx")` through a drifting `lpf(saw.range(300,2400).slow(4))`: the breath that grows; reversed (`speed(-1)`) for the drop-out bar.
+- **Air** — `sound("wind")` through a drifting `lpf(saw.range(300,2400).slow(4))`: the breath that grows; reversed (`speed(-1)`) for the drop-out bar.
 - **Voice** — `gm_voice_oohs`, high and wide, entering late; it's a texture that occasionally words.
+
+## Sample kit
+
+- **Clean guitar** — `pluck` + delay (the lead); `gm_electric_guitar_clean` when the arpeggio needs a real electric body.
+- **Strum** — `gm_overdriven_guitar` at modest gain under `lpf(2500)`; big but rounded.
+- **Pad** — `gm_synth_strings_1`; `gm_pad_warm`/`gm_pad_bowed` for slower, less orchestral blooms.
+- **Bass** — `triangle` pulses (felt-not-followed, synth-correct); `gm_electric_bass_finger` for the plugged-in variant.
+- **Air** — Dirt `wind` through the drifting filter; `space` for the deeper breakdowns.
+- No pack needed — the preloaded tiers cover alternative. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 
@@ -51,7 +60,7 @@ intro (figure alone) 4 | verse 8 | swell 4 | chorus 8 | verse 8 | swell 4 | chor
 - **The 7/8 ostinato** — `.slow(7/8)` on a 7-note figure over straight 4/4 kit; they realign every 7 bars, so a 7-bar section ends resolved. One per song.
 - **sus2/add9 modal vocabulary** — `[a2,b2,e3]` shapes and no dominant sevenths; home stays provisional, which is the mood.
 - **Filter drift as emotion** — `lpf(saw.range(300,2400).slow(4))` or `perlin.range(...)` on pads and air; the same chord opens and closes like weather.
-- **The drop-out bar** — one bar of pad (and reversed `fx`) before the final chorus: silence as the cheapest amplification there is.
+- **The drop-out bar** — one bar of pad (and reversed `wind`) before the final chorus: silence as the cheapest amplification there is.
 
 ## Practice approach
 
@@ -170,19 +179,19 @@ const drums = arrange(
 )
 $: drums
 
-// ── air — fx noise through a drifting filter; reversed for the drop-out ──
+// ── air — wind noise through a drifting filter; reversed for the drop-out ──
 const air = arrange(
   [12, silence],
-  [4, sound("fx").gain(.1)],
-  [8, sound("fx").gain(.06)],
+  [4, sound("wind").gain(.1)],
+  [8, sound("wind").gain(.06)],
   [8, silence],
-  [4, sound("fx").gain(.1)],
-  [8, sound("fx").gain(.06)],
+  [4, sound("wind").gain(.1)],
+  [8, sound("wind").gain(.06)],
   [8, silence],
   [7, silence],
-  [1, sound("fx").speed(-1).gain(.12)], // the inhale before the final chorus
-  [12, sound("fx").gain(.08)],
-  [4, sound("fx").gain(.05)],
+  [1, sound("wind").speed(-1).gain(.12)], // the inhale before the final chorus
+  [12, sound("wind").gain(.08)],
+  [4, sound("wind").gain(.05)],
 ).lpf(saw.range(300, 2400).slow(4))
 $: air
 

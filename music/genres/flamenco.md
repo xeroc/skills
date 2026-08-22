@@ -10,11 +10,20 @@ The twelve-beat cycle changes how you compose: a phrase isn't "four bars," it's 
 
 - **Palmas** — `cp` on the accent skeleton `"cp ~ ~ cp ~ ~ cp ~ cp ~ cp ~"` (12, 3, 6, 8, 10). Real palmas come in corps: layer a second `cp` with `.off(1/48, x => x.gain(.3).pan(.75))` for the second pair of hands arriving a hair late — the slight spread is what makes claps read as people instead of a metronome.
 - **Cajón** — `bd` for the deep tones (counts 12 and 6) and `sd` for the slaps clustered around the 8–10 tail, escalating during escobilla (dance/footwork) sections to near-continuous slaps.
-- **Guitar — rasgueado** — `gm_acoustic_guitar_muted`. Chord bursts written as nested brackets: `[[a3,c4,e4] [a3,c4,e4] [a3,c4,e4]]` is the chord strummed three times inside one count (a triplet flutter) — the outer bracket keeps the burst inside its count instead of stretching the grid. Short decay keeps them percussive; this is the engine of the comp.
+- **Guitar — rasgueado** — `gm_acoustic_guitar_nylon`. Chord bursts written as nested brackets: `[[a3,c4,e4] [a3,c4,e4] [a3,c4,e4]]` is the chord strummed three times inside one count (a triplet flutter) — the outer bracket keeps the burst inside its count instead of stretching the grid. Short decay keeps them percussive; this is the engine of the comp.
 - **Guitar — thumb** — the same instrument walking the chord roots on the accents: `note("a2 ~ ~ g2 ~ ~ f2 ~ e2 ~ e2 ~")`. The thumb states the harmony so the rasgueado can be pure rhythm.
 - **Guitar — falsetas** — picado (picked single-note) runs in E phrygian: `note("[e4,a4] ~ b4 ~ c5 b4 a4 ~ g4 ~ f4 ~")`. Double-stops of a fourth, descending lines that close on an accent — these are the "verses" of the guitar.
 - **Cante** — `gm_voice_oohs` for the sung line: spare, wailing phrases in the phrygian scale that dwell on one or two notes and resolve into the remate. Real cante is the lead; treat this lane as the melody and give it the top of the mix.
 - **Jaleo accents** — occasional `oh` or `rim` hits as the shouts and encouragement that pepper a performance — sparse, unexpected, panned off-center.
+
+## Sample kit
+
+- **Cajón — the real thing** — VCSL `cajon`: two strokes (`hit1`/`hit2`) recorded at dynamics pp→fff with round-robins; probe `:k` indices — soft ones for comping, the hard ones land remates. The `bd`/`sd` simulation is the verified fallback.
+- **Palmas** — `cp` states the skeleton; VCSL `clap` (4 human round-robins) is the corps layer — use it for the `.off(1/48, …)` second pair of hands, where a machine clap would read as flange.
+- **Guitar** — `gm_acoustic_guitar_nylon` for rasgueado percussiveness; `gm_acoustic_guitar_nylon` for falsetas and thumb lines when the piece wants warmth over attack.
+- **Cante** — `gm_voice_oohs`; keep it spare and top-of-mix.
+- **Jaleo** — `oh`/`rim` shouts; a quietly doubled `clave` (VCSL) can mark counts without adding drum-machine flavor. No castanets exist in any preloaded set — don't reach for them.
+- No pack covers real flamenco (palmas secas, true rasgueado) — the preloaded tiers are the honest palette. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 
@@ -83,8 +92,8 @@ const cajonHeavy = s("bd sd sd sd bd sd sd sd bd sd sd sd").gain(.55) // escobil
 
 // ── guitar comp: the Andalusian cadence rides the accents — Am 12 · G 3 · F 6 · E 8 ──
 // rasgueado = nested brackets: the chord strummed three/four times inside ONE count (grid stays 12)
-const rasg = note("[[a3,c4,e4] [a3,c4,e4] [a3,c4,e4]] ~ ~ [[g3,b3,d4] [g3,b3,d4] [g3,b3,d4]] ~ ~ [[f3,a3,c4] [f3,a3,c4] [f3,a3,c4]] ~ [[e3,gs3,b3,e4] [e3,gs3,b3,e4] [e3,gs3,b3,e4] [e3,gs3,b3,e4]] ~ [gs3,b3,e4] ~").sound("gm_acoustic_guitar_muted").gain(.5)
-const thumb = note("a2 ~ ~ g2 ~ ~ f2 ~ e2 ~ e2 ~").sound("gm_acoustic_guitar_muted").gain(.68)
+const rasg = note("[[a3,c4,e4] [a3,c4,e4] [a3,c4,e4]] ~ ~ [[g3,b3,d4] [g3,b3,d4] [g3,b3,d4]] ~ ~ [[f3,a3,c4] [f3,a3,c4] [f3,a3,c4]] ~ [[e3,gs3,b3,e4] [e3,gs3,b3,e4] [e3,gs3,b3,e4] [e3,gs3,b3,e4]] ~ [gs3,b3,e4] ~").sound("gm_acoustic_guitar_nylon").gain(.5)
+const thumb = note("a2 ~ ~ g2 ~ ~ f2 ~ e2 ~ e2 ~").sound("gm_acoustic_guitar_nylon").gain(.68)
 
 // ── falsetas: picado single-note runs in E phrygian (e f g a b c d), closing on accents ──
 const falseta1 = note("[e4,a4] ~ b4 ~ c5 b4 a4 ~ g4 ~ f4 ~")
@@ -97,7 +106,7 @@ const guitar = arrange(
   [2, cat(falseta3, falseta2)],       // a breather between verses
   [4, stack(rasg, thumb)],           // escobilla: same comp, the cajón brings the energy
   [2, note("<[e4 f4 g4 a4 b4 c5 d5 e5 d5 ~ ~ ~] [[e2,e3,gs3,b3,e4] ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~]>")], // remate: run up, then the E rings
-).sound("gm_acoustic_guitar_muted").gain(.55).room(.2)
+).sound("gm_acoustic_guitar_nylon").gain(.55).room(.2)
 
 // ── cante: the voice — spare, wailing, resolving into the remate ──
 const cante = arrange(

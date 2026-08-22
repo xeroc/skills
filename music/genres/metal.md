@@ -13,6 +13,15 @@ A metal riff is rhythm first and pitch second. The engine is the contrast betwee
 - **Drums** — kick welded to the riff rhythm (`bd bd ~ bd …` matching the gallop), double kick `bd*16` for the payoff, half-time backbeat `bd ~ ~ ~ sd ~ ~ ~`, ride 8ths `rd*8`, crash `cr` on section entrances, tom gallops `[ht mt lt]` into changes.
 - **Atmosphere** — `gm_synth_strings_1` with `attack(1)` or slower, blooming under intros and breakdowns; one dread chord per appearance, no more.
 
+## Sample kit
+
+- **Drums** — default kit, machine-tight and dry; the gallop welds kick to chug. Epic/doom layer: `east:6`–`east:8` (taiko) as war drums under intros; `anvil` for industrial accents.
+- **Chug** — `gm_electric_guitar_muted` with `decay(.09).sustain(0)`: the palm mute is the envelope.
+- **Open / lead** — `gm_overdriven_guitar`; escalate to `gm_distortion_guitar` when the riff demands violence.
+- **Bass** — `gm_electric_bass_pick` doubling the riff an octave down, still under `lpf(500)`. Synth fallback: `sawtooth` + `lpf(500)`.
+- **Atmosphere** — `gm_synth_strings_1` slow-attack dread; `timpani`/`timpani_roll` for symphonic weight.
+- No pack needed — the preloaded tiers cover metal. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Vocabulary: power dyads, sus2 voicings `[e2,fs2,b2]`, tritone dyads, and harmonic minor's raised 7th (in E minor that's `ds` — spelled, never `#`). Key of E minor for everything below, because the low open E string is the genre's home address.
@@ -116,7 +125,7 @@ const bass = arrange(
   [8, note("e1 e1 e1 e1 e1 e1 e1 e1")],
   [8, note("e1*8")],
   [4, note("e1*8")],
-).sound("sawtooth").lpf(500).gain(.55)
+).sound("gm_electric_bass_pick").lpf(500).gain(.55)
 $: bass
 
 // ── strings — slow-attack dread in the intro, bloom under the breakdown ──

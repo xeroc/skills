@@ -14,6 +14,15 @@ After chorus two, instead of a third verse the band plays one: the fiddle states
 - **Banjo** — `gm_banjo` when the song tips bluegrass: rolling 8ths, huge forward drive, usually reserved for one section so it reads as a gear change.
 - **Drums** — the **train beat**: kick on 1 and 3, snare galloping in 8ths with the accents landing on 2 and 4. In strudel: `stack(sound("bd ~ bd ~"), sound("sd*8").gain("[.16 .1 .55 .12 .16 .1 .55 .12]"))`. Ballads swap to a soft 4/4 with `rim` instead of the snare backbeat.
 
+## Sample kit
+
+- **Tick-tack** — `gm_electric_guitar_muted` ✓ (GM has no acoustic-muted; the muted electric is the sound anyway).
+- **Strum & bass** — `gm_acoustic_guitar_steel` glue; `gm_electric_bass_pick` (modern) / `gm_acoustic_bass` (western); `gm_slap_bass_1` when it tips rockabilly.
+- **Pedal steel fake** — `gm_electric_guitar_clean` + grace-pair bends, as layered; there is no steel patch anywhere in the preloaded sets — don't go looking.
+- **Fiddle & banjo** — `gm_fiddle` ✓, `gm_banjo` ✓, both exactly right.
+- **Drums** — default kit train beat; VCSL `cowbell`/`woodblock` for the novelty-number percussion, `tambourine` for the two-step variant.
+- No pack needed — the preloaded tiers cover country. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Country harmony is honest to a fault: **plain triads on I, IV and V**, major keys, few sevenths (and a seventh is a hint, not a function). In A the whole vocabulary is A, D and E; in G it's G, C and D. Canonical progressions, roman and spelled in A:

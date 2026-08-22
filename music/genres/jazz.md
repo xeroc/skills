@@ -167,6 +167,16 @@ Pick the form based on what you want the piece to _do_: AABA if you want a humma
 5. **Get it in front of players** — jazz compositions often get refined through the rhythm section's interpretation. Real feedback from a live take reveals what's actually working.
 6. Revise ruthlessly — cut anything that doesn't serve the melody, the groove, or the emotional arc.
 
+## Sample kit
+
+- **Keys** — `piano` is the default comping instrument; VCSL upgrades: `steinway`/`kawai` (richer grands, still `note()`-accurate), `fmpiano` (felt, for 3am ballads). `gm_epiano1` when the tune wants a Rhodes.
+- **Drums — brushes** — the Dirt `jazz` set is a real brushed kit, picked by index: `jazz:0` BD · `jazz:7` SN · `jazz:3` HH · `jazz:4` OH · `jazz:5`/`jazz:6` percussion pieces. The ballad answer.
+- **Drums — sticks** — default kit with `rd` swing ride, `hh` chicks, feathered `bd`, ghost `sd`: the medium-up machine that the example uses.
+- **Bass** — `gm_acoustic_bass`, the upright; walking quarters with chromatic approaches.
+- **Horns** — `gm_tenor_sax` (ballad default), `gm_alto_sax`, `gm_soprano_sax`, `gm_muted_trumpet` (the whisper), `gm_trumpet`/`gm_brass_section` for shout choruses.
+- **Color** — `vibraphone` / `vibraphone_soft` (VCSL, pitched) for vibes ballads; `gm_flute` for cool-school unisons.
+- No pack needed — the preloaded tiers cover jazz. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Example
 
 ```

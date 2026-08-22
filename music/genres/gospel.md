@@ -7,11 +7,20 @@ The vamp is a loop, usually I–vi–IV–V or a variation, played at full arran
 ## The layers
 
 - **Piano** — `piano`, and it's the engine, not a comping instrument. Left hand walks in octaves: dotted-beat roots in 6/8 (`[c2 ~ ~]`), stride octaves on the quarters in 4/4 (`[c2 c3]` per bar). The right hand either doubles the organ's stabs or plays answer figures. If the piano stops driving, the whole style collapses into slow jam.
-- **Organ** — the Hammond feel. There's no verified GM organ sound, so build it: `sawtooth` chord stabs with `shape(.3)` for the growl, `lpf` around 1700, sustained with a medium release. Stabs sit on the beats in verses and push onto the ands (`struct("x ~ ~ x ~ x")`) in shouts; in the vamp the stab rate doubles.
+- **Organ — the Hammond** — `gm_drawbar_organ` is the real thing: chord stabs with `shape(.3)` for the growl and `lpf` around 1700. (`gm_percussive_organ` is the brighter, gospel-rock variant; a sustained `sawtooth` stab is the lo-fi fallback.) Stabs sit on the beats in verses and push onto the ands (`struct("x ~ ~ x ~ x")`) in shouts; in the vamp the stab rate doubles.
 - **Bass** — `gm_acoustic_bass`, walking quarters in 4/4 (roots, fifths, and scale approaches into the next chord), dotted whole-bar roots in 6/8. It walks into every section change — the last two quarters before a new section are a walk-up.
 - **Drums** — `bd` pocket with pushes, `sd` backbeat with ghost figures, and the two congregation sounds: `tb` tambourine on every eighth (the genre's name tag — it can enter as early as bar 1 and never leaves) and `cp` handclaps stacked on 2 and 4 in shouts and vamps. `oh` opens when the spirit moves, `rim` ghosts in ballad verses.
 - **Choir** — `gm_voice_oohs`: sustained chords in verses, backbeat answer hits in shouts (`struct("~ x ~ x")`), and call-and-response in the vamp — the leader's line high and exposed, the choir's chord answer on beat 3.
 - **Optional preacher line** — `gm_trumpet` for a lead line that speaks in short phrases between choir answers; use it once, or not at all.
+
+## Sample kit
+
+- **Piano** — `piano` driving ✓; VCSL `steinway` for the real sanctuary grand.
+- **Organ** — `gm_drawbar_organ` (the Hammond), `gm_percussive_organ` for shouts; crescendo via `attack` and full-manual `room`.
+- **Bass** — `gm_acoustic_bass` walking ✓; `gm_electric_bass_finger` when the band modernizes.
+- **Congregation** — `tb` tambourine (the name tag) + `cp` claps; VCSL `tambourine` and `clap` are the human round-robin upgrades for close-up mixes.
+- **Choir & preacher** — `gm_voice_oohs` call-and-response ✓, `gm_trumpet` preacher line, `gm_choir_aahs` for the full-bench moment.
+- No pack needed — the preloaded tiers cover gospel. (Full options: `references/SAMPLE-CATALOG.md`.)
 
 ## Harmony
 

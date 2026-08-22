@@ -8,6 +8,14 @@ Sonata form is the genre's big engine. The **exposition** states theme 1 in the 
 
 The orchestra maps to GM names cleanly, by function: **strings are the body** — `gm_string_ensemble_1` for massed sustain (pads at low gain, `attack` and `release` long), solo lines on `gm_violin`, inner counterpoint on `gm_viola`, and the bass line on `gm_cello` (add `gm_contrabass` doubling an octave down, or `superimpose(x => x.transpose(-12))`, for weight in tuttis). **Winds answer and double** — `gm_flute` (lyrical seconds themes), `gm_oboe` and `gm_clarinet` (mid-color doublings), `gm_bassoon` (bass support and staccato wit). **Brass is structural punctuation** — `gm_french_horn` for sustained harmony that isn't pointing at itself, `gm_trumpet` and `gm_trombone` reserved for climaxes and codas (use sparingly; a trumpet that plays in the exposition has nowhere to go). **Timpani** — `gm_timpani` exists and is good; the lo-fi fallback is `rd` with long release as a roll and a low `bd` as a single tuned hit, but prefer the real patch with `note()` spelling the tuning (c2, g2). **Keyboards by era** — `gm_harpsichord` for baroque continuo and classical-period Alberti accompaniments, `gm_piano` for romantic chamber textures. **Color** — `gm_orchestral_harp` for arpeggiated transitions, `gm_pizzicato_strings` for scherzo lightness, `gm_choir_aahs` for the sacred pad. The scoring rule that matters: **orchestration is structure** — the same theme restated by a different section counts as a formal event; plan who plays what per section before writing a single note of counterpoint.
 
+## Sample kit
+
+- **Strings/winds/brass** — the `gm_*` orchestra as mapped above; `gm_pizzicato_strings` and `gm_orchestral_harp` for the color moments.
+- **Keyboard** — `gm_piano` sketches; VCSL `steinway` for the concerto-movement reality, `harpsichord` (VCSL, or `gm_harpsichord`) for continuo, `pipeorgan_loud`/`pipeorgan_quiet` (±`_pedal`) for the sacred works.
+- **Percussion** — `gm_timpani` for the cadence punctuation; VCSL `timpani`/`timpani_roll`, `tubularbells`, `gong`, `triangles`, `cymbals`→`clash` for the real recorded versions.
+- **Choir** — `gm_choir_aahs`, `gm_voice_oohs` for the requiem moments.
+- No pack needed — between GM and VCSL the preloaded tiers cover the common-practice palette. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Functional harmony with goal-directed voice leading: chords are labeled by what they do, not what they are. The cadence vocabulary: **ii–V–I** (in C: Dm–G–C) is the engine; **ii6–V7–I** (Dm first inversion, G7, C) is its polished form — bass d–g–c, clean and final. Canonical progressions, roman and spelled in C major:

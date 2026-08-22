@@ -1,5 +1,8 @@
+---
 name: wake-on-lan
 description: Wake-on-LAN management for local network machines. Use when you need to wake up sleeping computers on the local network using magic packets. Supports managing multiple machines, checking their status, and sending wake commands with configurable timeouts and network settings.
+---
+
 
 ## Quick Start
 

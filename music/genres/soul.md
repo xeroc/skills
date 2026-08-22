@@ -14,6 +14,16 @@ The lift is arrangement, not composition: the chords may only move up a step, bu
 - **Lead** — `gm_tenor_sax` as the singer's shadow: restrained, melodic, phrased across the bar line, saving the runs (4-note 16th flourishes) for the lift and vamp.
 - **Horns** — `gm_trumpet` stabs on the two pulse beats (`struct("x ~ ~ x ~ ~")`) with an octave-down double, entering only in the lift.
 
+## Sample kit
+
+- **Piano** — `piano`; VCSL `steinway` when the ballad wants a real grand under the voice.
+- **Bass** — `gm_acoustic_bass` (the upright, correct); `gm_electric_bass_finger` when the band goes Memphis.
+- **Drums** — default kit, 6/8 skeleton; Dirt `jazz:7` brushed snare for the quietest verses.
+- **Tambourine** — `tb` (uzu) doubling to `tb*12` in the lift; VCSL `tambourine` is the skinned alternative for close-up sections.
+- **Lead & choir** — `gm_tenor_sax` shadow, `gm_voice_oohs` choir; `gm_flute` for the Sweet-Atlanta variant of the lead.
+- **Horns** — `gm_trumpet` + octave-down double; `gm_brass_section` for the full lift.
+- No pack needed — the preloaded tiers cover soul. (Full options: `references/SAMPLE-CATALOG.md`.)
+
 ## Harmony
 
 Diatonic warmth with one borrowed tear-jerker. Key of C:

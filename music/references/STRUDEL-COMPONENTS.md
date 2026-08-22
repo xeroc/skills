@@ -4,14 +4,14 @@ Everything the Strudel REPL (strudel.cc) can do, extracted by category from the 
 
 ## 1. Sound sources
 
-Drum map (default bank, tidal-drum-machines naming): `bd` kick · `sd` snare · `rim` rimshot · `cp` clap · `hh` closed hat · `oh` open hat · `cr` crash · `rd` ride · `ht`/`mt`/`lt` toms. Percussive extras: `sh` shaker/maraca · `cb` cowbell · `tb` tambourine · `perc` · `misc` · `fx`.
+Drum map (default bank = uzu-drumkit): `bd` kick · `sd` snare · `rim` rimshot · `cp` clap · `hh` closed hat · `oh` open hat · `cr` crash · `rd` ride · `ht`/`mt`/`lt` toms · `cb` cowbell · `tb` tambourine · `sh` shaker · `brk` · `misc`. (No default `perc`/`fx` — those are bank suffixes only.)
 
 - Sample variants: `s("hh:0 hh:1 hh:2")` or `n("0 1 [4 2] 3*2").sound("jazz")` — `:k`/`n` selects the sample file; numbers wrap around.
-- Drum machines: `.bank("RolandTR909")` — also `RolandTR808`, `RolandTR707`, `AkaiLinn`, `RhythmAce`, `CasioRZ1`, `ViscoSpaceDrum`. Bank can be patterned: `.bank("<RolandTR808 RolandTR909>")`.
+- Drum machines: `.bank("RolandTR909")` — 71 banks preloaded (RolandTR808/909/606/707/727, LinnLM1/LM2/LinnDrum, OberheimDMX, EmuSP12, AkaiMPC60, KorgMinipops, BossDR550, CasioRZ1/VL1, RhythmAce, SimmonsSDS5, ViscoSpaceDrum, YamahaRX5/RY30 …), all with standardized `_bd _sd _hh …` suffixes; no bank has every suffix. Bank can be patterned: `.bank("<RolandTR808 RolandTR909>")`. Bank↔genre table: `references/SAMPLE-CATALOG.md`.
 - Melodic synths (built-in): `sawtooth` · `square` · `triangle` · `sine` · `supersaw` (detuned saw stack).
-- Sampled instruments: VCSL set incl. `piano`, `pluck`; General MIDI soundfont names as `gm_*` (e.g. `gm_acoustic_bass`, `gm_acoustic_guitar_muted`, `gm_tenor_sax`, `gm_synth_strings_1`, `gm_xylophone`, `gm_voice_oohs`, `gm_accordion`).
-- Sound switching vs stacking: `.sound("piano gm_guitar")` alternates per event; `.sound("piano, gm_guitar")` plays both.
-- Custom samples: `samples({...}, 'https://...')`, `samples('github:user/repo')`, or a `strudel.json`; pitched maps `{'g3': 'file.wav'}`.
+- Sampled instruments (all preloaded, `note()`-playable): VCSL acoustics (~128: `steinway kawai fmpiano harp folkharp harmonica vibraphone marimba xylophone glockenspiel kalimba conga bongo clave guiro cabasa cajon agogo tambourine darbuka timpani gong woodblock clap snare_hi snare_low …`) — pitched multisamples are note-accurate, percussion entries pick hits via `n`; GM soundfonts (125 `gm_*`: `gm_acoustic_guitar_nylon gm_electric_guitar_muted gm_overdriven_guitar gm_distortion_guitar gm_acoustic_bass gm_slap_bass_1 gm_clavinet gm_drawbar_organ gm_percussive_organ gm_brass_section gm_tenor_sax gm_flute gm_sitar gm_taiko_drum …`); Dirt subset textures (`jazz` brushed kit by index 0–7, `east` taiko/shime, `space wind crow insect metal casio numbers`); `mridangam` solkattu syllables; `piano` (+ `.piano()` helper).
+- Sound switching vs stacking: `.sound("piano gm_acoustic_guitar_steel")` alternates per event; `.sound("piano, gm_acoustic_guitar_steel")` plays both.
+- Custom samples: `samples({...}, 'https://...')`, `samples('github:user/repo')`, or a `strudel.json`; pitched maps `{'g3': 'file.wav'}`. Community packs: only the vetted T2 table in `references/SAMPLE-CATALOG.md` — first play may be silent (lazy load); background beds stay on preloaded sounds.
 
 ## 2. Pitch and tonal
 
