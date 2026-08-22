@@ -10,14 +10,14 @@ Compose music as Strudel code, in any genre, for background or foreground listen
 ## Output contract (non-negotiable)
 
 - Deliver **exactly one** self-contained fenced ```js code block.
-- It must run on paste into the <https://strudel.cc> workshop: press **ctrl+enter** (or the play button) to hear it. The REPL preloads default samples — no setup code needed. An optional `samples('github:…')` preamble (top of the block, before any `$:` lane) may load a vetted community pack — shortcuts only from `references/SAMPLE-CATALOG.md`, with a T0/T1 fallback named for every pack sound. Lazy loading makes the first play of a pack silent: loops self-heal next cycle; for fixed-duration pieces say "press ctrl+enter twice" in the note.
+- It must run on paste into the <https://strudel.cc> workshop: press **ctrl+enter** (or the play button) to hear it. The REPL preloads default samples — no setup code needed. An optional `samples('github:…')` preamble (top of the block, before any `$:` lane) may load a vetted community pack — shortcuts only from `references/sample-catalog.md`, with a T0/T1 fallback named for every pack sound. Lazy loading makes the first play of a pack silent: loops self-heal next cycle; for fixed-duration pieces say "press ctrl+enter twice" in the note.
 - Never emit encoded URLs, `initStrudel`, HTML scaffolds, or "click this link".
 - After the code block, add a short plain-text note: what to listen for (2–3 bullets tied to the brief) and 1–2 obvious dials to tweak (tempo, gain of a layer, filter).
 - On iteration: if the _sound_ changes, update the code block only. If the _brief_ changes (new key, new mood, new structure), update `MUSIC.md` first, then the code.
 
 ## Workflow
 
-1. **Locate the brief.** Read `MUSIC.md` from the working directory (or the path the user gives). If it exists: compose from it. If not: run the interview below, then read `references/MUSICMD-SPEC.md` and write the `MUSIC.md` before composing anything.
+1. **Locate the brief.** Read `MUSIC.md` from the working directory (or the path the user gives). If it exists: compose from it. If not: run the interview below, then read `references/musicmd-spec.md` and write the `MUSIC.md` before composing anything.
 2. **Interview** (only when no `MUSIC.md` exists). Ask, waiting for answers:
    1. What does this accompany, and where does it play? (video, lobby, app, on-hold…)
    2. Give one _specific_ reference — a song, artist, album, or a place-and-moment ("hotel lobby at 7am"). Reject adjective-only answers; adjectives describe a region, a reference describes a point.
@@ -25,7 +25,7 @@ Compose music as Strudel code, in any genre, for background or foreground listen
    4. Loop forever, or fixed duration? If fixed: how many seconds and what sections?
    5. Constraints: must it sit under a voice-over? Any sound to absolutely avoid?
       Then draft `MUSIC.md` per the spec, show it, save it after approval.
-3. **Research the sound.** Real composers don't memorize all theory — they research what each piece needs. If the brief (or the user) names a genre, read `genres/<slug>.md` from the library below **first** — it carries that genre's sound palette with concrete Strudel sound names, a **Sample kit** section (defaults → preloaded upgrades → optional pack), canonical harmony, groove skeletons, song form, and a worked paste-ready example. Pick sounds by tier with `references/SAMPLE-CATALOG.md`: T0 default names → T1 preloaded upgrades (drum-machine `.bank()`s, VCSL acoustics, `gm_*` soundfonts, the Dirt texture subset) → T2 community packs only where T0/T1 lacks the timbre. If a user names an artist or song, deconstruct it into sonic DNA (next section) before composing. If neither source answers what the brief needs, research the web (playbook at the bottom).
+3. **Research the sound.** Real composers don't memorize all theory — they research what each piece needs. If the brief (or the user) names a genre, read `genres/<slug>.md` from the library below **first** — it carries that genre's sound palette with concrete Strudel sound names, a **Sample kit** section (defaults → preloaded upgrades → optional pack), canonical harmony, groove skeletons, song form, and a worked paste-ready example. Pick sounds by tier with `references/sample-catalog.md`: t0 default names → T1 preloaded upgrades (drum-machine `.bank()`s, VCSL acoustics, `gm_*` soundfonts, the Dirt texture subset) → T2 community packs only where T0/T1 lacks the timbre. If a user names an artist or song, deconstruct it into sonic DNA (next section) before composing. If neither source answers what the brief needs, research the web (playbook at the bottom).
 4. **Extract 2–4 principles.** Before writing any code, write the composition brief: key, BPM, feel, and the 2–4 principles that define this piece (chord language, rhythmic feel, texture, form). More than 4 over-constrains into mechanical output; fewer than 2 is vague. Simple genres (punk, ambient) need only 2; complex ones (jazz, progressive) may need 4. Worked examples:
    - **Lo-fi hip-hop**: (1) jazz-influenced chords — m9, m7♭5, 7♭9 — with Dorian color; (2) laid-back drums at 70–90 BPM, ghost snares, slightly-behind-the-beat feel; (3) sparse pentatonic melody with lots of space, drenched in reverb/delay.
    - **EDM drop**: (1) four-on-the-floor kick with off-beat hats at 128 BPM; (2) minor key, often just two chords, heavy bass; (3) energy contrast — stripped breakdown into full drop.
@@ -40,16 +40,16 @@ Compose music as Strudel code, in any genre, for background or foreground listen
 
 Six dimensions — force through all of them; musical identity lives in their interaction, not in any one:
 
-| Dimension | Ask |
-|---|---|
-| Rhythmic foundation | Drum character (kit composition, backbeat placement, ghost notes, fill style), tempo, subdivision (8ths/16ths/triplets), swing amount, bass technique and its relationship to the kick (locked / complementary / independent). |
-| Harmonic architecture | Chord density (triads → 7ths → 9ths/11ths/13ths), modal inflections (Dorian 6th, Mixolydian ♭7), harmonic rhythm (bars per chord), melodic contour and range, dissonance tolerance. |
-| Instrumental techniques | Playing styles per layer (fingerpicked, muted chank, slapped, brushed), effects chains (drive type, delay, modulation), timbre choices (neck vs bridge brightness). |
-| Production aesthetics | Room/reverb depth (dry-intimate to cavernous), stereo width, dynamic range (compressed vs live), frequency balance (scooped, bass-forward, airy), which element sits loudest. |
-| Genre fusion | Primary base (≈60%), secondary influence (≈30%), accent flavor (≤10%) — and which layers carry which influence (drums from A, harmony from B), or temporal split (genre X verses, genre Y choruses). |
-| Energy architecture | Section map, dynamic range, peak placement (early / late / multiple), build-and-release pattern, emotional trajectory (single state / journey / oscillation). |
+| Dimension               | Ask                                                                                                                                                                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Rhythmic foundation     | Drum character (kit composition, backbeat placement, ghost notes, fill style), tempo, subdivision (8ths/16ths/triplets), swing amount, bass technique and its relationship to the kick (locked / complementary / independent). |
+| Harmonic architecture   | Chord density (triads → 7ths → 9ths/11ths/13ths), modal inflections (Dorian 6th, Mixolydian ♭7), harmonic rhythm (bars per chord), melodic contour and range, dissonance tolerance.                                            |
+| Instrumental techniques | Playing styles per layer (fingerpicked, muted chank, slapped, brushed), effects chains (drive type, delay, modulation), timbre choices (neck vs bridge brightness).                                                            |
+| Production aesthetics   | Room/reverb depth (dry-intimate to cavernous), stereo width, dynamic range (compressed vs live), frequency balance (scooped, bass-forward, airy), which element sits loudest.                                                  |
+| Genre fusion            | Primary base (≈60%), secondary influence (≈30%), accent flavor (≤10%) — and which layers carry which influence (drums from A, harmony from B), or temporal split (genre X verses, genre Y choruses).                           |
+| Energy architecture     | Section map, dynamic range, peak placement (early / late / multiple), build-and-release pattern, emotional trajectory (single state / journey / oscillation).                                                                  |
 
-Sound names (see `references/SAMPLE-CATALOG.md` for the full tiered catalog): T0 defaults — drums `bd sd hh oh cp rim cr rd ht mt lt cb tb sh misc`, melodic `piano pluck sawtooth triangle sine square supersaw`. There is no default `hc`, `perc`, `fx`, or `crackle` — `perc`/`fx` exist only as drum-machine bank suffixes. Prefer T1 upgrades (banks, VCSL, `gm_*`) before any T2 pack. If a name errors in the REPL, swap it — don't ship unverified names.
+Sound names (see `references/sample-catalog.md` for the full tiered catalog): T0 defaults — drums `bd sd hh oh cp rim cr rd ht mt lt cb tb sh misc`, melodic `piano pluck sawtooth triangle sine square supersaw`. There is no default `hc`, `perc`, `fx`, or `crackle` — `perc`/`fx` exist only as drum-machine bank suffixes. Prefer T1 upgrades (banks, VCSL, `gm_*`) before any T2 pack. If a name errors in the REPL, swap it — don't ship unverified names.
 
 One-sentence DNA, when a quick summary is needed: `[rhythmic approach] + [harmonic character] + [instrumental signature] + [production aesthetic]` — e.g. "syncopated post-punk drumming over minor modal progressions, angular clean guitar with chorus effect, dry room recording with bass-forward mix".
 
@@ -65,23 +65,24 @@ Universal constraints first: **all pitched parts in the same key** (verify again
 
 - **Registers** (MIDI): bass 36–71 (octaves 2–3; octave 1 disappears on small speakers), pads 55–80, melody 67–84.
 - **Keys**: write out the scale before composing. C major: c d e f g a b. C natural minor: c d eb f g ab bb. Minor keys use the natural minor _except_ V is major (harmonic minor's raised 7th) when dominant pull is wanted — background music usually avoids that pull entirely.
-Gotchas that break patterns: `<a b>` is alternation, never a chord; chords use commas inside brackets. Sharps are `fs4` / `cs4` — never `f#4`. Flats are `bb4` / `eb4`. Octave numbers: `c4` = middle C = MIDI 60. Engine bugs to design around: `.add(n)` / arithmetic on note-name patterns silently no-ops (known issue — use `.transpose(n)` instead); `.transpose()` silently drops events for sharp-spelled notes (`fs`, `cs`, `gs`, `df`) — respell to flats (`gb`, `db`, `ab`) in lanes you transpose; the default voicing dictionary silences `maj7`/`maj9` chord symbols — write `^7`/`^9` (e.g. `chord("<Db^7>")`).
+  Gotchas that break patterns: `<a b>` is alternation, never a chord; chords use commas inside brackets. Sharps are `fs4` / `cs4` — never `f#4`. Flats are `bb4` / `eb4`. Octave numbers: `c4` = middle C = MIDI 60. Engine bugs to design around: `.add(n)` / arithmetic on note-name patterns silently no-ops (known issue — use `.transpose(n)` instead); `.transpose()` silently drops events for sharp-spelled notes (`fs`, `cs`, `gs`, `df`) — respell to flats (`gb`, `db`, `ab`) in lanes you transpose; the default voicing dictionary silences `maj7`/`maj9` chord symbols — write `^7`/`^9` (e.g. `chord("<Db^7>")`).
 - **Scale and mode colors** (offsets vs major):
 
-| Scale/mode | Notes vs major | Color | Home |
-|---|---|---|---|
-| Ionian (major) | 1 2 3 5 6 (all natural) | bright, resolved | pop, country |
-| Aeolian (natural minor) | ♭3 ♭6 ♭7 | sad, serious | pop/rock minor |
-| Dorian | ♭3 ♭7 (natural 6) | cool minor, hopeful | funk vamps, modal jazz, lo-fi |
-| Mixolydian | ♭7 | bright with an edge | rock, blues, funk |
-| Lydian | ♯4 | floating, dreamy | film, ambient |
-| Phrygian | ♭2 ♭3 ♭6 ♭7 | dark, Spanish | flamenco, metal |
-| Harmonic minor | ♭3 ♭6, ♮7 | exotic, dramatic | classical, neoclassical metal |
-| Major pentatonic | 1 2 3 5 6 | open, safe | folk, country, melodies |
-| Minor pentatonic | 1 ♭3 4 5 ♭7 | raw, riff-ready | blues, rock, soul |
-| Blues | minor pent + ♯4/♭5 | the cry | blues, rock |
+| Scale/mode              | Notes vs major          | Color               | Home                          |
+| ----------------------- | ----------------------- | ------------------- | ----------------------------- |
+| Ionian (major)          | 1 2 3 5 6 (all natural) | bright, resolved    | pop, country                  |
+| Aeolian (natural minor) | ♭3 ♭6 ♭7                | sad, serious        | pop/rock minor                |
+| Dorian                  | ♭3 ♭7 (natural 6)       | cool minor, hopeful | funk vamps, modal jazz, lo-fi |
+| Mixolydian              | ♭7                      | bright with an edge | rock, blues, funk             |
+| Lydian                  | ♯4                      | floating, dreamy    | film, ambient                 |
+| Phrygian                | ♭2 ♭3 ♭6 ♭7             | dark, Spanish       | flamenco, metal               |
+| Harmonic minor          | ♭3 ♭6, ♮7               | exotic, dramatic    | classical, neoclassical metal |
+| Major pentatonic        | 1 2 3 5 6               | open, safe          | folk, country, melodies       |
+| Minor pentatonic        | 1 ♭3 4 5 ♭7             | raw, riff-ready     | blues, rock, soul             |
+| Blues                   | minor pent + ♯4/♭5      | the cry             | blues, rock                   |
 
-  Formulas if you need them: major W-W-H-W-W-W-H; natural minor W-H-W-W-H-W-W.
+Formulas if you need them: major W-W-H-W-W-W-H; natural minor W-H-W-W-H-W-W.
+
 - **Progression vocabulary by genre** (numerals; spell in the target key):
   - Pop: `I–V–vi–IV` and rotations (`vi–IV–I–V`, `I–vi–IV–V` "50s"). One chord per bar, four-chord loop.
   - Jazz: `ii–V–I` (the sentence of jazz); chains `iii–vi–ii–V–I`; tritone-sub the V (♭II7 → I) for chromatic pull.
@@ -91,6 +92,7 @@ Gotchas that break patterns: `<a b>` is alternation, never a chord; chords use c
 - **Voicing**: 4–5 note chords with extensions (`[c3,e3,g3,b4,d5]` = Cmaj9) beat triads at the same gain — warmer, more cinematic. Voice-lead by common tones between chords; keep the top note moving stepwise. If the bass covers the root, upper chords may go rootless.
 - **Harmonic rhythm**: decide bars-per-chord and hold it per section — 1–4 bars for ambient/funk vamps/loops, 1 bar for pop, 2 chords per bar for bebop. Changing it is itself an arrangement move.
 - **Modulation** (foreground): relative major/minor is free; lift to IV for a final chorus; swap aeolian for its parallel Dorian to brighten a minor vamp.
+- **Tension & release** — the engine of emotional movement: introduce dissonance against the bass, delay, then resolve by half steps into consonance on a downbeat. Core moves: V7→I with strict voice leading (3rd up ½ to the root, 7th down ½ to the 3rd, common tones held), the 4–3 suspension to delay, ♭9 or secondary dominants to intensify, bass stepping down a 5th into the release, dissonance buried in middle voices. A **foreground tool** — beds float instead (Background-music core). Full theory + Strudel translations: `references/tension-release.md`.
 
 ### Melody
 
@@ -122,7 +124,7 @@ Gotchas that break patterns: `<a b>` is alternation, never a chord; chords use c
 - **Frequency lanes**: one element per lane — sub <80 Hz (kick _or_ bass, never both), 80–250 bass warmth, 250–500 body/mud risk, 500 Hz–2 kHz core/harshness risk, 2–4 kHz presence (voice-over territory — stay out if one plays), >4 kHz air. Two layers fighting → filter or pan one away.
 - **Contrast between sections** via density, register, and timbre — not just volume. Cheapest move: add or remove one layer per section.
 - **Dynamics tiers** (gain): foreground drums 0.3–0.9 (ghosts low, accents high), pads/chords 0.3–0.5 (sit back), melody 0.5–0.8 (expressive). Background caps ~0.6. ppp→fff maps roughly 0.05→1.0; use the full range rather than four notches of mf.
-- **Tension curve**: build by adding layers, opening filters (`.lpf(saw.range(300, 4000).slow(8))`), rising lines, accelerating rolls; release by stripping to a breakdown or resolving harmony. Silence right before the loudest hit.
+- **Tension curve**: build by adding layers, opening filters (`.lpf(saw.range(300, 4000).slow(8))`), rising lines, accelerating rolls; release by stripping to a breakdown or resolving harmony. Silence right before the loudest hit. For _harmonic_ tension/release — V7 cadences, suspensions, modulation arcs — see `references/tension-release.md`.
 - **Spatial depth**: dry = forward, more `room` = further back; pan answering phrases opposite each other; give lush lanes their own `.orbit()` so reverbs don't fight.
 
 ### Humanization
@@ -165,7 +167,7 @@ s("bd ~ sd ~"); // drums
 n("0 2 4 6").scale("C:minor").s("pluck"); // scale degrees -> guaranteed in key
 ```
 
-Sound names (full catalog: `references/SAMPLE-CATALOG.md`): T0 defaults — drums `bd sd hh oh cp rim cr rd ht mt lt cb tb sh misc`, melodic `piano pluck sawtooth triangle sine square supersaw`. Above that, preloaded and paste-safe: 71 drum-machine `.bank()`s, ~128 VCSL acoustics (`conga steinway vibraphone cajon …`), 125 `gm_*` soundfonts (`gm_distortion_guitar gm_acoustic_bass gm_percussive_organ …`), the Dirt texture subset (`jazz` brushes, `east` taiko, `space wind …`), and `mridangam` solkattu. Community packs via `samples('github:…')` only from the catalog's T2 table. If a name errors in the REPL, swap it — don't ship unverified names.
+Sound names (full catalog: `references/sample-catalog.md`): T0 defaults — drums `bd sd hh oh cp rim cr rd ht mt lt cb tb sh misc`, melodic `piano pluck sawtooth triangle sine square supersaw`. Above that, preloaded and paste-safe: 71 drum-machine `.bank()`s, ~128 VCSL acoustics (`conga steinway vibraphone cajon …`), 125 `gm_*` soundfonts (`gm_distortion_guitar gm_acoustic_bass gm_percussive_organ …`), the Dirt texture subset (`jazz` brushes, `east` taiko, `space wind …`), and `mridangam` solkattu. Community packs via `samples('github:…')` only from the catalog's T2 table. If a name errors in the REPL, swap it — don't ship unverified names.
 
 Mini-notation (always in **double quotes**):
 
@@ -182,6 +184,19 @@ Mini-notation (always in **double quotes**):
 | `(p,s)`     | Euclidean                                    | `"bd(3,8)"`               |
 
 Gotchas that break patterns: `<a b>` is alternation, never a chord; chords use commas inside brackets. Sharps are `fs4` / `cs4` — never `f#4`. Flats are `bb4` / `eb4`. Octave numbers: `c4` = middle C = MIDI 60; one octave = 12 semitones.
+
+**Patterns are plain strings — never template literals.** Counter-intuitive: Strudel code _looks_ like JavaScript, but it is not entirely. Pattern strings (notes, chords, drums) are consumed by the mini-notation **parser**, which does not evaluate JavaScript inside them — a backtick string with `${}` is not interpolated into a working pattern; it breaks (and template-literal patterns also trip the workshop's transpiler). Hard rules:
+
+- **No template literals, no `${}`, anywhere near a pattern.** Patterns are plain string literals in single or double quotes (double quotes, per the convention above).
+- **Write repeated patterns with variations out explicitly** — never generate them with a function:
+  - ✗ `` const slot = v => `[[${v}]@3 ~ [${v}] [${v}] [${v}]@2]` ``
+  - ✓ `"[c,e,g]@3 ~ [c,e,g] [c,e,g] [c,e,g]@2"`
+- **Combine pattern sections with `+` concatenation**: `"[c,e,g]@3 " + "[f,a,c]@3 " + "[g,b,d]@3"`.
+- **Timing with `.slow(n)`**, not programmatic duration math — a pattern spanning 2 bars of 4/4 gets `.slow(2)`.
+- **Complex rhythms use native mini-notation** (`@n`, `~`, `[]`, `*n`, `(3,8)`) written directly in the string — never assembled from JavaScript string pieces.
+- **A helper function, if truly needed, returns a plain string** built with `+` — never with `${}` interpolation.
+- **When in doubt, write it out** — an explicit pattern is always safer than a generated one.
+- **Pre-delivery scan**: any backtick string containing `${}` → replace it with the written-out pattern before the code leaves the page.
 
 Tempo — 4/4 math: `setcps(BPM/120)` or `setcpm(BPM/4)` (one cycle = one bar). Set it once at the top. Other meters: 3/4 → three beats per cycle with `setcpm(BPM/3)`; 6/8 → six eighth-events per cycle.
 
@@ -214,7 +229,7 @@ sine.range(0.2, 0.8).slow(13)     // continuous, mechanical
 .transpose(-5) .rev() .jux(rev) .slow(2).fast(2) .swing(.08) .late(0.01)
 ```
 
-For anything else (drum machines, chord symbols, voicing engine, filter envelopes, sidechain ducking, risers, arp engines), read `references/STRUDEL-COMPONENTS.md` — every idiom there is verified.
+For anything else (drum machines, chord symbols, voicing engine, filter envelopes, sidechain ducking, risers, arp engines), read `references/strudel-components.md` — every idiom there is verified.
 
 ## Verification boundary (non-negotiable)
 
@@ -228,6 +243,7 @@ Do NOT, even when general harness rules demand runtime proof of non-trivial work
 - drive a browser to strudel.cc to play the piece.
 
 The runtime check is the user's paste into the workshop (ctrl+enter). If the user reports a REPL error, fix the named idiom — almost always a sound name or a chord symbol — and re-deliver. The only machine check ever permitted is a ready-made script shipped inside this skill under `scripts/`; if none is present, there is none.
+
 ## Transposition
 
 When moving a piece to a different key: compute the interval in semitones (C→E♭ = +3), shift every note by it, keep enharmonic spelling consistent (flat keys use flats: `eb`, `bb`; sharp keys use sharps: `cs`, `fs`), then re-verify every note belongs to the target scale. Roman-numeral progressions transpose for free — that's why briefs use them.
@@ -248,9 +264,11 @@ When moving a piece to a different key: compute the interval in semitones (C→E
 - [ ] Groove has a skeleton (pulse → kick → backbeat → subdivision → ghosts) and a decided swing amount.
 - [ ] Every layer owns a frequency lane and a pan; sections contrast by density/register/timbre.
 - [ ] Humanization present: accent patterns or `?`, varied lengths, no wall of equal notes.
+- [ ] Tension/release handled deliberately: foreground pieces build dissonance, delay the resolution, land it on a downbeat with the bass moving a 4th/5th into the release; background beds float (no strong dominant resolution).
 
 **Syntax**
 
+- [ ] No template literals or `${}` in any pattern — every pattern is a plain quoted string; repetitions written out explicitly, not generated by helper functions.
 - [ ] Mini-notation in double quotes; brackets/parens balanced.
 - [ ] Chords use commas (`[c,e,g]`); no `<…>` used as a chord.
 - [ ] Sharps written `fs4` not `f#4`; every sound name in the T0 list, T1 catalog, or the genre's Sample kit — or declared by a `samples()` preamble from the T2 table; no `hc`/`perc`/`fx`/`crackle` as bare defaults.
@@ -268,32 +286,33 @@ Fail anything → fix, re-check. Then deliver per the output contract.
 
 Each genre file follows the same shape — the genre's "equivalent moment" (its emotional centerpiece), layers with concrete Strudel sound names, harmony with spelled progressions, rhythm & feel with mini-notation skeletons, structure with bar counts and energy ratings, technique list, and one complete worked Strudel example. Read the matching file before composing in that genre; steal its example as the starting skeleton.
 
-| Family | Genres (`genres/<slug>.md`) |
-|---|---|
-| Electronic/Dance | `house` · `techno` · `dubstep` · `drum-and-bass` · `ambient` · `electro` · `trance` |
-| Rock | `punk` · `metal` · `grunge` · `indie-rock` · `alternative` |
-| Rhythmic/Groove | `hip-hop` · `randb` · `funk` · `soul` · `reggae` |
-| Traditional/Roots | `jazz` · `blues` · `folk` · `country` · `classical` · `minimal` |
-| Latin/World | `salsa` · `reggaeton` · `afrobeat` · `bossa-nova` · `flamenco` |
-| Other | `pop` · `k-pop` · `lo-fi` · `synthwave` · `gospel` |
+| Family            | Genres (`genres/<slug>.md`)                                                         |
+| ----------------- | ----------------------------------------------------------------------------------- |
+| Electronic/Dance  | `house` · `techno` · `dubstep` · `drum-and-bass` · `ambient` · `electro` · `trance` |
+| Rock              | `punk` · `metal` · `grunge` · `indie-rock` · `alternative`                          |
+| Rhythmic/Groove   | `hip-hop` · `randb` · `funk` · `soul` · `reggae`                                    |
+| Traditional/Roots | `jazz` · `blues` · `folk` · `country` · `classical` · `minimal`                     |
+| Latin/World       | `salsa` · `reggaeton` · `afrobeat` · `bossa-nova` · `flamenco`                      |
+| Other             | `pop` · `k-pop` · `lo-fi` · `synthwave` · `gospel`                                  |
 
 When composing in a genre whose file doesn't exist yet, research it (playbook below) and build the brief from the same five elements every genre file answers: key/scale conventions, chord language, rhythmic feel, texture/instrumentation, and form/energy curve.
 
 ## Research playbook (when you don't know — don't guess)
 
-| Missing | Search |
-|---|---|
-| Genre's typical chords | `"{genre}" common chord progressions` |
-| Scale/mode the genre uses | `"{genre}" scales modes used` |
-| Drum pattern | `"{genre}" drum pattern programming` |
-| BPM range | `"{genre}" typical BPM tempo` |
-| A specific reference song | `"{song}" chords key BPM analysis` |
-| Strudel feature | `strudel.cc {feature}` — then the components catalog |
-| A voicing | Reason from intervals: root + semitone offsets |
+| Missing                   | Search                                               |
+| ------------------------- | ---------------------------------------------------- |
+| Genre's typical chords    | `"{genre}" common chord progressions`                |
+| Scale/mode the genre uses | `"{genre}" scales modes used`                        |
+| Drum pattern              | `"{genre}" drum pattern programming`                 |
+| BPM range                 | `"{genre}" typical BPM tempo`                        |
+| A specific reference song | `"{song}" chords key BPM analysis`                   |
+| Strudel feature           | `strudel.cc {feature}` — then the components catalog |
+| A voicing                 | Reason from intervals: root + semitone offsets       |
 
 ## References
 
-- `references/MUSICMD-SPEC.md` — the MUSIC.md format specification. **Read before creating or editing any MUSIC.md.**
-- `references/SAMPLE-CATALOG.md` — the tiered sound catalog: T0 defaults, T1 preloaded upgrades (71 drum-machine banks, ~128 VCSL acoustics, 125 `gm_*` soundfonts, Dirt textures, mridangam), T2 community packs with licensing flags and fallbacks, plus loading mechanics. **Read when picking sounds for any piece.**
-- `references/MUSICMD-EXAMPLE.md` — one fully annotated worked example (background loop): brief, MUSIC.md, and the Strudel code it produced.
-- `references/STRUDEL-COMPONENTS.md` — the complete Strudel component catalog by category: sound sources (drum map, banks, synths, gm instruments), pitch/tonal (scales, chord symbols, voicings), full mini-notation, time ops, conditionals, pattern effects, audio effects, signals, mixer/ducking, REPL features — plus a composites section of 20+ genre-ready idioms (Euclidean grooves, polymeter stacks, supersaw, acid envelope macro, sidechain pump, off-echo, arp engine, chord-walking roll, riser stack, coprime ambient drift, song form, frame-accurate placement). **Read when you need a component and the genre file doesn't name it.**
+- `references/musicmd-spec.md` — the MUSIC.md format specification. **Read before creating or editing any MUSIC.md.**
+- `references/sample-catalog.md` — the tiered sound catalog: T0 defaults, T1 preloaded upgrades (71 drum-machine banks, ~128 VCSL acoustics, 125 `gm_*` soundfonts, Dirt textures, mridangam), T2 community packs with licensing flags and fallbacks, plus loading mechanics. **Read when picking sounds for any piece.**
+- `references/musicmd-example.md` — one fully annotated worked example (background loop): brief, MUSIC.md, and the Strudel code it produced.
+- `references/strudel-components.md` — the complete Strudel component catalog by category: sound sources (drum map, banks, synths, gm instruments), pitch/tonal (scales, chord symbols, voicings), full mini-notation, time ops, conditionals, pattern effects, audio effects, signals, mixer/ducking, REPL features — plus a composites section of 20+ genre-ready idioms (Euclidean grooves, polymeter stacks, supersaw, acid envelope macro, sidechain pump, off-echo, arp engine, chord-walking roll, riser stack, coprime ambient drift, song form, frame-accurate placement). **Read when you need a component and the genre file doesn't name it.**
+- `references/tension-release.md` — harmonic tension & release: terminology (cadence, suspension, chromaticism, tonal journey), interval physics, V7→I voice leading, delay/intensify devices (sus, ♭9, secondary dominants, borrowed chords), 8–16 bar modulation arcs, placement rules (bass motion, middle-voice burial, downbeat landing), worked cadence example. **Read when composing foreground pieces or anything that needs emotional movement.**
