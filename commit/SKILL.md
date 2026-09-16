@@ -1,38 +1,35 @@
 ---
 name: commit
-description: use when committing to a git repository. smart commit with bean context and conventional commit format
+description: use when committing to a git or jujutsu (jj) repository. smart commit with bean context and conventional commit format. detects plain git vs jj (.jj) and follows the matching workflow
 ---
 
----
+Generate a commit message based on pending changes and bean context. Message
+construction is identical for git and jj — only context gathering and the
+final execution differ.
 
-Generate a commit message based on staged changes and bean context.
+## Step 1: Detect VCS & Gather Context
 
-## Step 1: Gather Context
+Check the repo root for a `.jj/` directory:
+
+- `.jj/` present (even if colocated with `.git/`) → follow
+  [references/jj.md](references/jj.md) — gather context with `jj` and never
+  run mutating git commands
+- only `.git/` → follow [references/git.md](references/git.md)
+
+The reference file provides the exact commands for the pending diff, current
+branch/change, recent commit style, and how to execute the commit (for jj:
+when to use `jj describe` vs `jj new`).
+
+Additionally check current bean context (both VCSs):
 
 ```bash
-# What's staged?
-git diff --cached --stat
-git diff --cached --name-only
-
-# What branch are we on?
-git branch --show-current
-
-# Recent commits for style reference
-git log --oneline -5
-
-# Current bean context (if any in-progress)
 beans list --status in-progress --json 2>/dev/null | head -5
 ```
 
 ## Step 2: Analyze Changes
 
-Read the staged diff to understand what changed:
-
-```bash
-git diff --cached
-```
-
-Categorize the change:
+Read the pending diff (staged changes for git; working-copy change `@` for
+jj — see the reference file for the command) and categorize the change:
 
 - `feat` - new feature
 - `fix` - bug fix
@@ -43,8 +40,8 @@ Categorize the change:
 - `perf` - performance improvement
 - `style` - formatting, whitespace
 
-If any files from ./beans/ are staged, use their content to provide context for
-the commit message.
+If any files from ./beans/ are part of the change, use their content to
+provide context for the commit message.
 
 ## Step 3: Identify Scope
 
@@ -89,7 +86,6 @@ Rules:
 ### Example commit message
 
 ```
-
 feat(auth): implement proactive JWT token refresh mechanism
 
 - Add refresh check to auth middleware
@@ -99,17 +95,15 @@ feat(auth): implement proactive JWT token refresh mechanism
 Refs: <bean-id>
 ```
 
-## Step 7: Execute (on confirmation)
+## Step 6: Execute (on confirmation)
 
-Once user picks or provides message:
-
-```bash
-git commit -m "<message>"
-```
+Once the user picks or provides a message, execute with the VCS-specific
+command from the reference file (git.md / jj.md).
 
 If user says "1" or "option 1", use that option directly.
 
 ## Important Notes
 
-- do NOT prefix the category in the subject line with an emoji. `pre-commit`
-  will be automatically called and take care of this consistency!
+- do NOT prefix the category in the subject line with an emoji — this applies
+  to git and jj alike (plain git: `pre-commit` enforces it automatically;
+  under jj hooks don't run, so keep it manually)
