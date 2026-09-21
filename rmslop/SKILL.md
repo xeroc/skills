@@ -22,7 +22,7 @@ This includes:
 
 ### "Quietly" and Other Magic Adverbs
 
-Overuse of "quietly" and similar adverbs to convey subtle importance or understated power. AI reaches for these adverbs to make mundane descriptions feel significant. Also includes: "deeply", "fundamentally", "remarkably", "arguably".
+Overuse of "quietly" and similar adverbs to convey subtle importance or understated power. AI reaches for these adverbs to make mundane descriptions feel significant. Also includes: "deeply", "fundamentally", "remarkably", "arguably", and the standalone construction "unusually well [X]".
 
 **Avoid patterns like:**
 
@@ -42,7 +42,7 @@ Used to be the most infamous AI tell. "Delve" went from an uncommon English word
 
 ### "Tapestry" and "Landscape"
 
-Overuse of ornate or grandiose nouns where simpler words would do. "Tapestry" is used to describe anything interconnected. "Landscape" is used to describe any field or domain. Other offenders: "paradigm", "synergy", "ecosystem", "framework".
+Overuse of ornate or grandiose nouns where simpler words would do. "Tapestry" is used to describe anything interconnected. "Landscape" is used to describe any field or domain. Other offenders: "paradigm", "synergy", "ecosystem", "framework", "load-bearing" (for important), "gated" (for restricted or conditional). Although some words cycle out of fashion for the models, new ones get introduced e.g. load-bearing, gated, paradigm.
 
 **Avoid patterns like:**
 
@@ -59,6 +59,22 @@ Replacing simple "is" or "are" with pompous alternatives like "serves as", "stan
 - "The building serves as a reminder of the city's heritage."
 - "Gallery 825 serves as LAAA's exhibition space for contemporary art."
 - "The station marks a pivotal moment in the evolution of regional transit."
+
+### Synonym Cycling
+
+Refusing to repeat the same noun twice, cycling through synonyms for one referent instead. A dashboard becomes an interface, then a portal, then the analytics hub, all in the same paragraph. Just use one word, stop flexing your vocabulary, it's pointless and you're losing the reader.
+
+**Avoid patterns like:**
+
+- "the dashboard ... the interface ... the portal ... the analytics hub"
+
+### "Where It Actually Lives"
+
+Framing the true location or source of something as a physical inhabitance, as a stand-in for a direct answer.
+
+**Avoid patterns like:**
+
+- "where the complexity actually lives"
 
 ---
 
@@ -144,19 +160,28 @@ Using "from X to Y" constructions where X and Y aren't on any real scale. In leg
 - "From the singularity of the Big Bang to the grand cosmic web."
 - "From problem-solving and tool-making to scientific discovery, artistic expression, and technological innovation."
 
+### Comma-Clipped Trailing Phrase
+
+A short tail hung off a comma to close a sentence instead of landing the point directly. Either a clipped clause finishing the thought sideways or sometimes it's a bare noun or short phrase tacked on as an afterthought. Increasingly common.
+
+**Avoid patterns like:**
+
+- "above the content, and save."
+- "asked forty times, mentoring."
+
 ---
 
 ## Paragraph Structure
 
 ### Short Punchy Fragments
 
-Excessive use of very short sentences or sentence fragments as standalone paragraphs for manufactured emphasis. RLHF training has pushed models toward "writing for readability" aimed at the lowest common denominator: one thought per sentence, no mental state-keeping required. It's an inhuman style. No real person writes first drafts this way because it doesn't match how humans think or speak.
+Excessive use of very short sentences or sentence fragments as standalone paragraphs for MANUFACTURED EMPHASIS. RLHF training has pushed models toward "writing for readability" aimed at the lowest common denominator: one thought per sentence, no mental state-keeping required. It's an inhuman style and no real person writes first drafts this way because it doesn't match how humans think or speak.
 
 **Avoid patterns like:**
 
 - "He published this. Openly. In a book. As a priest."
 - "These weren't just products. And the software side matched. Then it professionalised. But I adapted."
-- "Platforms do."
+- "Flaky tests. A twenty-minute build. Waiting two days for review. A staging environment that's broken half the time."
 
 ### Listicle in a Trench Coat
 
@@ -173,7 +198,7 @@ Numbered or labeled points dressed up as continuous prose. The model writes what
 
 ### "Here's the Kicker"
 
-False suspense transitions that promise a revelation but deliver a point that did NOT need the buildup. The model uses these phrases to manufacture drama before an otherwise unremarkable observation LOL. Also includes: "Here's the thing", "Here's where it gets interesting", "Here's what most people miss", "Here's the starting point", "Here's the deal".
+False suspense transitions that promise a revelation but deliver a point that did NOT need the buildup. The model uses these phrases to manufacture drama before an otherwise completely unremarkable observation LOL. Also includes: "Here's the thing", "Here's where it gets interesting", "Here's what most people miss", "Here's the starting point", "Here's the deal".
 
 **Avoid patterns like:**
 
@@ -227,8 +252,18 @@ Everything is the most important thing ever. AI inflates the stakes of every arg
 **Avoid patterns like:**
 
 - "This will fundamentally reshape how we think about everything."
+- "the next decade of software won't look like a smarter version of today. It will look like something entirely new"
 - "will define the next era of computing"
-- "something entirely new"
+
+### Compulsive Counting
+
+Ever since we bullied models for not being able to count they have been building toward this moment. Models are super excited to share their newfound ability to count by stating the exact number of items before listing them, as if getting the count right were itself the achievement.
+
+**Avoid patterns like:**
+
+- "Five things we wish to discuss"
+- "Two joints, one beam rated for the load, one measurement and one calculation is enough to answer all four."
+- "Four reasons why this will work"
 
 ### "Let's Break This Down"
 
@@ -252,7 +287,7 @@ Attributing claims to unnamed authorities instead of being specific. AI loves to
 
 ### Invented Concept Labels
 
-AI clusters invented compound labels that sound analytical without being grounded. It appends abstract problem-nouns (paradox, trap, creep, divide, vacuum, inversion) to domain words — "supervision paradox", "acceleration trap", "workload creep" — and uses them as if they're established, rigorously defined terms. They function as rhetorical shorthand: name a thing, skip the argument. Multiple such labels in the same piece is a strong signal of AI slop.
+AI clusters invented compound labels that sound analytical without being grounded. It appends abstract problem-nouns (paradox, trap, creep, divide, vacuum, inversion) to domain words -- "supervision paradox", "acceleration trap", "workload creep" -- and uses them as if they're established, rigorously defined terms. They function as rhetorical shorthand: name a thing, skip the argument. Multiple such labels in the same piece is a strong signal of AI slop.
 
 **Avoid patterns like:**
 
@@ -260,19 +295,82 @@ AI clusters invented compound labels that sound analytical without being grounde
 - "the acceleration trap"
 - "workload creep"
 
+### Quotable One-Liners
+
+A standalone line made to sound quotable but carries no actual information, essentially pure slide bait. The line is built to be pulled out and read alone (with zero context) as if it were wisdom. Read the examples and tell me what they actually mean. NOTHING.
+
+**Avoid patterns like:**
+
+- "Story points are a planning tool with no fixed unit."
+- "Every metric that rewards volume punishes leverage."
+- "When everything gets maximum emphasis, nothing has any."
+
+### Forced Figurative Language
+
+A forced simile or coined metaphor reached for because it sounds clever rather than because it clarifies anything. Nobody would use this in real life. Some models take it further and take a word from your prompt and repurpose it as a metaphor for something totally unrelated.
+
+**Avoid patterns like:**
+
+- "Using them as a productivity measure is like tracking your weight loss with a scale that you also control the calibration on."
+
+### Appeal to Familiarity
+
+Asserting canonical or well-known status for a claim, without evidence, to borrow the weight of consensus: "a classic", "famously", "notoriously", "as we all know". The unnamed authority is the reader's own supposed prior knowledge instead of an outside expert.
+
+**Avoid patterns like:**
+
+- "A classic,"
+
+### Promotional Language
+
+Almost all AI writing now reads like marketing copy or a travel brochure instead of factual prose, attempting to sell the subject instead of describing it.
+
+**Avoid patterns like:**
+
+- "an all-in-one solution that unlocks unprecedented productivity for teams of any size"
+- "a seamless experience that elevates every part of your workflow"
+
+### Collaborative Communication
+
+Who is we? Why does a document that I authored but formatted need its "I"s switched to "we"s? Very contextual, some authors genuinely use we, but it does signal a loss of personal voice, especially in personal material.
+
+**Avoid patterns like:**
+
+- "We're now equipped to handle whatever comes next."
+- "This gives us a much clearer picture of what's really going on."
+- "As we move forward, our focus shifts to execution."
+
 ---
 
 ## Formatting
 
 ### Em-Dash Addiction
 
-Compulsive overuse of em dashes for dramatic pauses, parenthetical asides and pivot points. A human writer might use 2-3 per piece (and naturally); AI will use 20+.
+Compulsive overuse of em dashes for dramatic pauses, parenthetical asides and pivot points. A human writer might use 2-3 per piece (and naturally); AI will use a lot more.
 
 **Avoid patterns like:**
 
 - "The problem -- and this is the part nobody talks about -- is systemic."
 - "The tinkerer spirit didn't die of natural causes -- it was bought out."
 - "Not recklessly, not completely -- but enough -- enough to matter."
+
+### Title Case Headings
+
+Capitalising every word in a heading instead of just the first word and proper nouns.
+
+**Avoid patterns like:**
+
+- "Understanding The Impact Of Modern Technology On Society"
+
+### "Where / What / Why" Headers
+
+Headings built on a Wh-word, now the default shape the model reaches for whenever it has to name a section, whether an article heading or a slide title. A serious tell on its own, independent of what the content under the heading actually says.
+
+**Avoid patterns like:**
+
+- "Where the market is stuck today"
+- "What we do differently"
+- "What it's worth to you"
 
 ### Bold-First Bullets
 
@@ -297,6 +395,63 @@ Use of unicode arrows (->), smart/curly quotes, and other special characters tha
 ---
 
 ## Composition
+
+### Reasoning Leak
+
+Unpromptedly narrating what the text or the model itself is doing, deciding, planning, or about to do, instead of just doing it and producing the output. The reader gets a voiceover of the writing's own moves and the model's deliberation. Literal chain-of-thought residue that has no place in the final output, serving solely to pollute and bloat the content.
+
+**Avoid patterns like:**
+
+- "What that changes in the design is smaller than it might appear, and what it changes is worth being precise about."
+- "I want to be exact about my own role here."
+- "I should be clear that none of this fell on me."
+
+### Premise Stacking
+
+A point (often, but not only, a question) preceded by a paragraph of its own evidence, so by the time the model spits it out it has already been made two or three times over. Increasingly common and very much linked to reasoning leaks.
+
+**Avoid patterns like:**
+
+- "Is next-day delivery available in this region, and what's the current rollout status? One internal doc says it launched in the spring. Another says it's still being tested. A teammate mentioned it was paused in a message last month. Every other region has a clear answer, and if this one doesn't, that's a conversation with the partner rather than something we can fix ourselves." (Now imagine if this was simply: Is next-day delivery available in this region?)
+
+### Preamble (Announce-Then-Answer)
+
+Opening with what the output is about to do, a preface to the point, or a restatement of the prompt, instead of delivering the point. Includes structural announcers that name the count or shape of what follows ("Two constraints shape the design"), throat-clearing frames ("The more important point is..."), and paraphrasing the question back. The sentence sets up the answer instead of being the answer. Sits in the signposting family with compulsive counting (states the number) and enumerated-prose (the "The first... The second..." delivery); this is the announcer that precedes them.
+
+**Avoid patterns like:**
+
+- "Two constraints shape the design."
+- "Two continuations are worth supporting, and they serve different situations."
+- "The more important point is where the decision itself sits."
+
+### Belaboring the Unnecessary
+
+Stating a minor or uncontroversial point just to defend it as if anticipating an objection nobody was going to raise.
+
+**Avoid patterns like:**
+
+- "We are setting this out in full rather than quietly changing the recommendation, because the failure mode is the reason it matters."
+- "I don't mean any of that as cynicism about players."
+- "We would rather not put a number on the load the beam can carry until the material testing is complete, because the figure is set almost entirely by three factors that sit with the supplier rather than with us."
+
+### The Tie-Back
+
+Closing by restating the answer and looping it back to the original question, instead of stopping once the answer is given. The reply has already delivered the point, then bolts a summary of itself back onto the ask ("So, to answer your question, X does Y").
+
+**Avoid patterns like:**
+
+- "So, to answer your question: yes, the employee can be added to the app."
+- "In short, this gives you everything you need to ship."
+- "To bring it back to what you asked, the design runs on both systems."
+
+### Self-Echo
+
+The model reuses one of its own words or phrases from earlier in the same document as if paying it off, when it's really the same narrow vocabulary surfacing again under sustained topic pressure.
+
+**Avoid patterns like:**
+
+- "quietly become the real source of truth ... nothing you've ever believed can quietly disappear"
+- "wearing the same italics ... wearing a different costume"
 
 ### Fractal Summaries
 
@@ -339,12 +494,20 @@ Making a single argument and restating it in 10 different ways across thousands 
 
 ### Content Duplication
 
-Repeating entire sections or paragraphs verbatim within the same piece. This happens when the model loses track of what it has already written, especially in longer pieces. A dead giveaway of unedited AI output. Less common nowadays.
+Repeating entire sections or paragraphs verbatim within the same piece. This happens when the model loses track of what it has already written, especially in longer pieces. A dead giveaway of unedited AI output. Less common nowadays thanks to 1M context windows.
 
 **Avoid patterns like:**
 
 - "The same section appeared twice, word-for-word identical."
 - "Paragraph 3 and paragraph 17 are the same sentence reworded"
+
+### Never-Ending Conclusion
+
+The ending stacks clause after clause instead of landing one point, like the model is reluctant to actually stop.
+
+**Avoid patterns like:**
+
+- "But you can't optimize what you're mismeasuring, and a wrong metric is worse than no metric because it actively steers. If you only change one thing: stop measuring individuals by output volume, start measuring the system's ability to deliver working software, and ask your engineers what's in the way. The last one is free, and it will tell you more in an afternoon than a quarter of velocity charts."
 
 ### The Signposted Conclusion
 
