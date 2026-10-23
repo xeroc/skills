@@ -55,6 +55,20 @@ hermes cron create "30m" "one-shot reminder in 30 min"   # one-shot delay
 
 Hermes-unique: **zero-token mode** (run a script, deliver stdout verbatim — use for watchdogs), **chaining** (`context_from` pipes one job's output into the next), **self-terminating loops**, and **loop safety** (scheduled sessions cannot create more cron jobs — don't schedule from inside a scheduled job). Each run is a fresh session: the prompt must carry all context.
 
+## Human-in-the-loop approval loop (draft → propose → approve → act)
+
+For scheduled work whose final action is public or permanent (social posts, emails, payments): the scheduled run drafts and proposes; the human approves; the act happens later in a DIFFERENT session. The run itself must never perform the final action.
+
+- **Job prompt carries a hard rule**: "never call <final action> in this run". The run ends by (a) writing a pending-artifact file — timestamp, draft, rationale, the exact command to execute, approval state — and (b) sending a proposal message to the human's DM.
+- **Delivery**: set the job's delivery to local/no-auto-delivery and send the proposal explicitly via `send_message`. Call `send_message action='list'` first and copy the exact target string it prints (labels contain emoji and spacing; a bare platform name can land in a group instead of the DM).
+- **Cross-session glue**: the approval reply arrives in a session that knows nothing about the run. Persist a short memory entry naming the pending file and the act command — memory is injected into every session, the run's context is not. The proposal message itself must state the reply vocabulary ("send = post · skip = discard · or send edits") so the human knows what to type.
+- **Verify the trigger**: after a manual run-now, check the job record (`last_run_at`/`last_status`) AND the expected artifact file. If neither moves within a few minutes, execute the pipeline steps by hand in the current session — that validates every command and still delivers the proposal on time.
+- **Idempotency**: a late-firing duplicate run overwrites the pending file. Make "latest file wins" the rule and tell the human so a second proposal isn't confusing.
+- **Emoji approval & the Telegram reactions dead-end**: a 👍/👎 *reply* to the proposal is the lightest approval vocabulary — replies quote the proposal and route through normal message handling. True Telegram *reactions* on the message do NOT work: the Hermes gateway polls all update types (so the events arrive) but registers no reaction handler and silently drops them; the `telegram: reactions:` config flag only toggles the bot's own outbound processing indicators (👀/✅). Never promise reaction-driven flows. Details and the source-line evidence: `references/approval-loop-example.md`.
+- **Consent boundary on secrets**: never read or extract platform tokens/credentials from env files, config, or credential stores to build a feature — even one the user asked for — without explicit consent. This user denied a bot-token extraction and an opaque piped one-liner mid-flow. After a denial: stop, don't rephrase or reroute to the same outcome; report and offer alternatives. Keep terminal commands plain and single-purpose — they get reviewed.
+
+Worked example (scheduled X/Twitter drafting with Telegram approval): `references/approval-loop-example.md`.
+
 ## Heartbeat pattern
 
 One fast recurring tick gates many slower per-task checks: the tick reads a task list + per-task `last_run` timestamps and only acts on tasks that are due. In Hermes use a recurring job (zero-token mode when nothing's due); in Camp A use a while-sleep loop. Define active-hours, and stay silent when nothing is due — no empty noise.

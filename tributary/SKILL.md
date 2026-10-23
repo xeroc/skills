@@ -1,7 +1,7 @@
 ---
 name: tributary
 description: "Tributary — Solana recurring payment protocol. Covers program architecture (Rust/Anchor), SDK (TypeScript), composable pull payments, Lighthouse integration, and React frontend integration. Use when working on the Tributary codebase, designing features, writing specs, or integrating Tributary into apps."
-version: 2.0.0
+version: 2.1.0
 triggers:
   - tributary
   - tributary.so
@@ -38,15 +38,19 @@ User -> Create UserPayment (owner/mint)
 | UserPayment      | `["user_payment", owner, mint]`               | 382B       | Per-user/mint tracker, policy counter                       |
 | PaymentPolicy    | `["payment_policy", user_payment, policy_id]` | 586B       | Individual payment rule (Subscription/Milestone/PayAsYouGo) |
 | ReferralAccount  | `["referral", gateway, code]`                 | 200B       | 3-level referral chain (zero_copy)                          |
-| PaymentsDelegate | `["payments"]`                                | PDA signer | CPI authority for token transfers                           |
+| ComposablePolicy | `["composable_policy", user_payment, policy_id]` | — | Programmable pull policy: optional validation + forward hooks (live) |
+| ValidationPda    | `["composable_validation", composable_policy]` | ≤512B data | Lighthouse assertion storage for composable pulls |
+| PaymentsDelegate | `["payments"]`                                | PDA signer | LEGACY global delegate — deprecated; the UserPayment PDA is the delegate now |
 
 ### PolicyType Enum (129 bytes: 1 discriminator + 128 payload)
 
 All variants padded to exactly 128 bytes. Nested inside PaymentPolicy.
 
 - **Subscription**: amount, auto_renew, max_renewals, payment_frequency, next_payment_due
-- **Milestone**: 4x (amount, timestamp), current_milestone, release_condition bitmap, escrow_amount
+- **Milestone**: 4x (amount, timestamp), current_milestone, release_condition bitmap, escrow_amount — escrow_amount is bookkeeping over the existing token delegation, not a vault: no escrow account exists in the PDA set, and execution is a single CPI transfer from the user's token account. Copy takeaway: describe milestones as release-gating, never as custody "escrow" (two consecutive tweet drafts had to route around this ambiguity — 2026-10-18). The ban extends to the identifier itself: the field is literally named `escrow_amount`, and public copy must not print it — describe it semantically ("one number recording what the policy owes"), as the 2026-10-22 draft did. CF-015 invariant (`programs/tributary/src/policies/milestone.rs`): creation enforces `escrow_amount >= sum` of the active milestone amounts, so an undercounting policy never exists — honest-by-construction metadata for off-chain indexers/auditors doing total-liability accounting.
 - **PayAsYouGo**: max_amount_per_period, max_chunk_amount, period_length_seconds, current_period tracking
+- **OneTime**: fixed amount, fires exactly once, then completes. Full gateway lifecycle (pausable, deletable, composable hooks) — a real policy, not the standalone transfer instruction
+- **UpTo**: single-use, time-bound authorization to pull up to a max; settled amount is caller-supplied at execute. The x402 `upto` primitive — settle what was used, once
 
 ### PaymentFrequency Variants
 
@@ -58,7 +62,18 @@ Daily, Weekly, Monthly, Quarterly, SemiAnnually, Annually, Custom(u64)
 - Gateway fee: configurable bps (up to 10,000)
 - Gross mode (default): fees deducted from amount
 - Net mode (feature flag): fees added on top
-- Referral rewards: subset of gateway fee, 3-tier distribution
+- Referral rewards: subset of gateway fee, 3-tier distribution (mechanics below)
+
+### Referral Chain Mechanics (verified in source 2026-10-21)
+
+Opt-in per gateway (feature flag 0x01). Two-stage split of the gateway fee:
+
+1. `referral_allocation_bps` (max 2500) carves a referral pool OUT of the gateway fee; the gateway keeps the rest.
+2. `referral_tiers_bps` (must sum to 10000, e.g. [5000, 3000, 2000]) splits the pool across MAX_REFERRAL_CHAIN_DEPTH = 3 levels. Tier bps are shares of the pool, not of the fee.
+
+The payer's ReferralAccount `referrer` field binds the chain; topology is validated on-chain: `chain[i].referrer == chain[i+1].key` (a real ancestor chain, not arbitrary accounts), no self-reference (`CircularReferralChain`), and any chain shorter than 3 must terminate at `Pubkey::default()`. Invalid topology reverts. Distribution runs inside BOTH `execute_payment` and `transfer` — rewards settle in the same instruction as the payment. Source: `programs/tributary/src/shared/referral.rs` (extracted from utils.rs per audit finding M1).
+
+No live gateway usage known as of 2026-10-21 — copy stays capability-voiced ("a gateway can carve"), never usage-voiced.
 
 ### Feature Flags (PaymentGateway.feature_flags u8)
 
@@ -73,7 +88,7 @@ Daily, Weekly, Monthly, Quarterly, SemiAnnually, Annually, Custom(u64)
 - 0b0100: Owner must sign
 - 0b1000: Recipient must sign
 
-### Instructions (17 total)
+### Instructions (17 regular + 4 composable + 2 admin)
 
 1. Initialize — create ProgramConfig
 2. CreatePaymentGateway — business onboarding
@@ -93,21 +108,25 @@ Daily, Weekly, Monthly, Quarterly, SemiAnnually, Annually, Custom(u64)
 16. ExecutePayment — gateway signer OR owner OR recipient (PAYG only)
 17. TransferTokens — standalone transfer with fee deduction
 
+Composable: CreateComposablePolicy, ExecuteComposable, DeleteComposablePolicy, ChangeComposableStatus
+Admin: ChangeProgramAuthority, SetEmergencyPause
+
 ### Key Design Decisions
 
 - User does NOT sign CreatePaymentPolicy or CreateUserPayment (fee_payer does)
 - Manual close with CLOSE_DISCRIMINATOR (not Anchor's default close)
 - policy_id is monotonic per UserPayment (never reused)
+- Separate counters: PaymentPolicy IDs come from `created_policies_count`, ComposablePolicy IDs from `created_composable_count` — independent counters; a regular policy #1 and a composable #1 coexist on one UserPayment
 - Emergency pause blocks all execute_payment calls
 - Transfer hook mints are rejected at UserPayment creation
 
-## Composable Pull Payments (Next Phase)
+## Composable Pull Payments (LIVE on Mainnet)
 
-Extends Tributary beyond simple SPL transfer to arbitrary CPI routing. Pulled tokens route into whitelisted programs (swap, LP, invest, etc.). See `references/composable-pull-architecture.md` for the full design and architecture comparison.
+Shipped. A pull may be gated by any allowlisted on-chain condition (Lighthouse assertions today: balance thresholds, oracle ranges, account-state checks) and routed through any allowlisted forward program (Meteora DLMM swaps today, more allowlisted over time). Permissionless execution via parameter-constrained schedulers. Validation failure is a clean revert — no partial execution, no funds moved. See `references/composable-pull-architecture.md` for the design and architecture comparison.
 
 ### Key Insight: Separate Account Type for Composable Policies
 
-The composable pull layer should use its own account type (`ComposablePolicy`) with a common header, separate from the existing `PaymentPolicy`. Reasons:
+The composable pull layer uses its own account type (`ComposablePolicy`) with a common header, separate from the existing `PaymentPolicy` — shipped exactly this way. Reasons:
 
 1. **Padding tax** — Adding a composable variant to PolicyType would need >128 bytes for forward config + Lighthouse assertion params. Bumping VARIANT_SIZE increases rent for ALL existing policies.
 2. **Conditions are a separate dimension** — Lighthouse assertions (oracle prices, balance thresholds, Merkle proofs) can apply to ANY policy type. Nesting them in the enum is combinatorial.
@@ -185,8 +204,14 @@ pnpm run lint:fix      # Auto-fix linting
 anchor test            # Run Solana program tests
 cd sdk && pnpm run build  # Build SDK
 cd app && pnpm run dev    # Start dev server
-make prep              # Setup Solana toolchain (v1.18.20, Anchor 0.31.0)
+make prep              # Switch avm to Anchor 1.2.0 (Agave 3.1.10); builds emit sBPFv3 (ADR-0035)
+make verify-sbf        # Assert every built ELF is sBPFv3 (readelf e_flags 0x3, SIMD-0500 guard)
+make test_surfpool     # Full suite (Rust + jest) against a running Surfpool instance
 ```
+
+### Repo Search
+
+search_files/ripgrep does not surface this tree, and a full-tree grep times out (target/ build artifacts). Grep a narrow subdir — `grep -ril <term> programs/tributary/src --include=*.rs` — or read modules directly by import path (a `shared::referral` import in execute_payment.rs → `programs/tributary/src/shared/referral.rs`).
 
 ## Code Style
 
@@ -201,6 +226,8 @@ make prep              # Setup Solana toolchain (v1.18.20, Anchor 0.31.0)
 
 - `references/composable-pull-architecture.md` — Composable pull payment design, Solana Foundation comparison, Lighthouse integration analysis
 - AGENTS.md — Build/test commands, code style, architecture overview
+- CONTEXT.md — domain glossary / ubiquitous language; read order for new agents: CONTEXT.md → AGENTS.md → apps/docs/adr/
+- apps/docs/adr/ — numbered ADRs, the authority on rationale (ADR-0018 fee split, ADR-0035 sBPFv3)
 - METEORA.md — DLMM integration spec (execute_delegate_to_program)
 - "Composable Pull Payments on Solana.md" — Article draft with use cases and funding rationale
 - PROJECT.md — Full project summary
