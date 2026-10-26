@@ -31,6 +31,768 @@ patching"), fixed by a one-line dedup patch. Always read the returned
 diff for a doubled word at the seam, then read back after patching to
 confirm placement.
 
+## Cost-scaling original + DM attempt (Accord run, 2026-10-26T08:30)
+
+- Fifteenth-plus consecutive zero-reply-target Accord run. New rejects this
+  pass: dee_e6 Oct 26 05:29 f=42 (TermiX/AACP promo essay — names the answer
+  in paragraph two, reply section an engagement farm, every reply tags the
+  product; the 0xRiRoyal "what dispute resolution does aacp offer" ask is a
+  competitor-internal ask = jaouad2d class), 2ctv Oct 22 f=46 (asks Accord's
+  exact question "who decides when an AI agent deserves to get paid?", then
+  answers it with @termix_ai's four-state AACP = exact LeonWgmii shape),
+  tgd_duu Oct 25 f=40 (names TermiX as the answer), 0xPritom Oct 25 f=391
+  and MuriscoOfficial Oct 23 f=83 (termix-praise class, off-limits).
+  Standing rejects reconfirmed: pcryptowoman Oct 7, Kleros brand necros
+  (Argentina f=288, Jan 2021 Vitalik), handeh777, JannatSariha, s1/s2 =
+  xer0c own posts + Aug-era essay wave (SchwoZ12, When_50SOL, gregwrites_yy).
+- Posting-state: from:xer0c since:2026-10-25 term-free, 21 results,
+  shape-verified (tweets+cursor, no error key) → replies + three self-RTs
+  05:27-05:28 + CET original + mtndao video + his 07:25 tiur_eth Accord-link
+  reply (founder live vocabulary stays off carriers) + today's 07:33
+  terminology original → the 10-25T15:11 ballot-modes draft unposted → spent
+  under the proposed-but-unapproved law, overwritten, overwrite named in the
+  proposal.
+- Angle: cost-scaling invariance. The 15:11 entry's designated pick
+  batch-as-dispute-unit code-verified ABSENT (rg batch programs/ = 0 hits;
+  whitepaper L1346 settlement-write batching is an implementation
+  optimization, not the dispute-unit design) — left fresh per the design-note
+  law (10-25 14:46 precedent, swig→hanse). The verify read surfaced the
+  adjacent shipped fact: dispute cost is linear in panel size and blind to
+  the amount — filing deposit (min_jury_size+1)·fee_per_juror (state.rs
+  L157-164), compute concentrates in Merkle verification + settlement, both
+  linear in panel size (whitepaper sec:implementation L1344-1346),
+  create_dispute carries no amount field. Ever-run grep zero for scale /
+  same math / not an input / $100 case.
+- Draft: "adjudication costs scale with the panel size. / the amount is not
+  an input. / $100 case, $1,000,000 case. same math." Closer = parity-fact,
+  NEW family vs code-fact (Rip 08:10 today), parameter-fact (own 15:11),
+  allocation-fact (Trib 14:15), absence-fact (Rip 14:46) and the standing
+  list. Register: economics-fact (off problem-frame 08:08, off openness
+  08:06, off mechanism-fact 15:11). 110 chars, 3 beats, lowercase, no
+  tags/hashtags/emoji, zero -ing forms, no contractions.
+- Echo audit: no pool/pays/gets done/goes wrong/group/either way/peers/code
+  (Rip 08:10 today), no ballot/options/winner/mode/vote/shape/parameter
+  (own 15:11), no travels/rent/wsol/recipient/absorbs/bonus/execution/pull/
+  delivers (Trib 14:15), no crank/asleep/wallet/turn/still lands/payout
+  (Rip 14:46), no 98.6/collapse/judgment/launch (own 08:08), no decides/
+  disputes/jury/protocol/register/subaccord/gatekeeper/empty/token/fee
+  (own 08:06), no price/priced/verdict/ruling/pot/buy (10-23 ceiling);
+  "question" avoided via "the amount is not an input" (Rip 07:37 ran it);
+  "panel size" 4 days from the 10-22 "small panel, low floor" support
+  compression, 6 from capture-math coin-toss — different load-bearing claim
+  (scaling vs level vs capture), technical name, adjacency logged;
+  "adjudication" 4 days from the 10-22 ex-ante reply's "juror-based
+  adjudication" closer — different claim, opener position, logged; "case" =
+  CaseTerms technical name, first run as carrier. STE 0 errors 0 warnings
+  (8 unlisted = technical names + plain casual-register words).
+- @xer0c/Accord angle ledger after this run (adds): cost-scaling invariance
+  (10-26 08:30, spent unposted). Fresh left: batch-as-dispute-unit (still
+  unrun — design-note class until a batch surface ships), no-double-draw/
+  one-seat-one-slash (slash tokens clear since 10-24), antipre
+  steal-the-stake (honesty family, distance fine since 10-24), per-pool
+  collateral-collapse containment (distance fine since 10-23),
+  pay-victim-not-to-appeal boundary (limits family), free-list slot
+  recycling / bounded accumulator (whitepaper L1341-1343, fresh), juror-set
+  root reconstructible from public state (L1347, fresh), one-seat-per-draw +
+  1,232-byte tx constraint (L1340, fresh), ratio parameters as integer
+  basis points (L1349, fresh), ~0.0007 SOL juror-seat rent (L1342 — hold
+  until Trib rent tokens cool, ~week), Canon naming (liveness-blocked),
+  whitepaper-numbers re-run only after the .tex moves again.
+- Delivery: hermes send DM sent first try (no auto-delivery guard this run),
+  /tmp/accord_dm_20261026T0832.txt, 2026-10-26T08:32Z.
+
+## Bounty-template original + DM attempt (Riprap run, 2026-10-26T08:10)
+
+- Search: s1 first call died the transient txid-404 while s2/s3/state
+  returned data — single retry clean (fifth confirmation of the class).
+  Content: own/founder surface again (Sep 30 triple, Oct 3 five-days, Oct 5
+  modus operandi, pavankat Lore Ep. 2, Sep 21 sbpfv3, Oct 1 naming) +
+  JosipVolarevic2 Oct 5 pitch game standing reject (xer0c answered it).
+  s2: xer0c own posts, mmerge_io Oct 23 newsletter statement no-ask,
+  WatchersLabs Oct 25 Sasona review (statement, no ask), dappingHQ Sep 22
+  adjudication-trust question already answered by the account same day,
+  HSBC RedCoin explainer, @solana broker news, redacted_noah old. s3:
+  standing rejects — SuperteamDE who's-coming/side-events (founder-
+  occupied), KamsiDayes attendance-joy statement f=33, CapinUK Oct 20
+  reveal-setup promo reconfirmed + travel-class mismatch, SuperteamEarn
+  brand contest, solana brand announcements. Zero reply targets —
+  streak continues.
+- Posting-state: from:riprapxyz since:2026-10-25 term-free → 0 tweets,
+  shape-verified (tweets+cursor, no error key) → the 10-25T14:46
+  payout-crank draft unposted → spent under the proposed-but-unapproved
+  law; pending file overwritten, overwrite named in the proposal.
+- Angle: bounty-template — the ledger's designated recheck-Oct-26 pick
+  (fresh-left since 10-23), unblocked at exactly 7 days past the founder
+  fun-pools thread (10-19, which ran live act-shaped pools: OnlyFriends
+  "Paid per introduction", Mert of the Year "One $1,000 bounty" — the
+  thread DEMONSTRATED the template, never ARTICULATED the platform claim).
+  Load-bearing claim: cover and bounties are one machine — the group
+  funds, peers check, the code path never differs. Layer 1 translation
+  doctrine applied twice: "bounty" (live-thread token, 7 days) → plain
+  gloss "pays when something gets done"; "purpose" (retired until ~Oct
+  27, founder GPP + 10-20 repositioning) → absent entirely, the closer
+  carries the breadth claim via deployed-code symmetry. Ever-run grep
+  clean: "goes wrong" / "gets done" / "same code" / "one path" /
+  "either way" / "peers" as subject = 0 draft hits; "funds"/"the group"
+  only in rationale prose and an 8-day-old closer ("The mix is the
+  group's call.", 10-18) — mid-draft subject, different claim, logged.
+- Draft shape (167 chars incl. breaks, 4 beats, no emoji/tags/hashtags,
+  lowercase): contrast-pair opener ("one pool pays when something goes
+  wrong. / another pays when something gets done."), mechanism beat
+  (group funds + peers check, two flat sentences), code-fact closer
+  "both run on the same code." — NEW family vs parameter-fact (Accord
+  10-25 15:11), allocation-fact (Trib 14:15), absence-fact (own 14:46)
+  and the standing list (exchange-antithesis, definitional-flat,
+  invariant-flat, binary-scope, market-test, effort-asymmetry,
+  settlement-fact, proof-fact, characterization). First proposal of the
+  day — sibling pending files still carried 10-25 drafts at 08:0x.
+- Echo audit: no crank/asleep/wallet/turn/still lands/payout/approved
+  (own 14:46), no $20/buy/right/ask/question/request/evidence/drawn/
+  members/"what the pool is for" (own 07:37), no attendance/room/
+  requirement (own 06:40), no ballot/vote/winner/options/mode/shape/
+  parameter (Accord 15:11), no pull/delivers/rent/recipient/bonus
+  (Trib 14:15); "pays" x2 = deliberate axis parallelism, not anaphora
+  stack; fun-pools thread tokens all avoided (P2P / crowd funded /
+  refunded / left-over / "$X in. $Y out." pair / trophy / introduction /
+  bounty / fun); "moves" avoided (spent "nothing moves" closer family
+  10-17/10-19); "verdict"/"ruling" (Accord carriers), "terms"/"create"/
+  "deploy" (parked creation-flow axis ~Oct 29) all avoided.
+- Layer 1 clean: member-voiced, plain words, no number/event/peril/
+  expiry/refund promise, no mutual/insurance/protocol; the closer is
+  deployed-code truth (user-authored terms docs, the program never
+  branches on the pool's content — PROJECT.md L23 "imposes no purpose"
+  translated, not quoted). STE descriptive 0 errors 0 warnings (12
+  unlisted = technical names pool/peers + plain casual-register words).
+- Fresh left for next run: lifecycle finite-vs-ongoing + creation-flow
+  terms-as-document (~Oct 29, epoch/GPP distance); terms-hash
+  immutability (~Oct 29); juror unstake-anytime (exit-adjacent, distance
+  growing); zero-take first-pool economics (founder scoping needed
+  first); geographic Olympia/area (blocked while attendance binary warm);
+  swig TokenDestinationLimit payout installation (design note only —
+  re-verify in code when the pool-program treasury path ships); refund-
+  direction "whatever is left comes back" promotion NOW 11 days from
+  10-16 and unblocked from the 10-22 founder exit-rules live post (4
+  days) — exit-vocabulary check first ("epochs" class); claim-restore/
+  evidence-hash audit surface still parked (claim-lifecycle family:
+  walkthrough 10-19, payout crank 10-25 — keep spacing); bounty-template
+  ARTICULATED today, but the bounty-SIDE instance story (an act pool's
+  own walkthrough) stays unrun and fresh once the pilot surface is
+  live. 20 days to Breakpoint.
+
+## Ballot-modes original + DM attempt (Accord run, 2026-10-25T15:11)
+
+- Fourteenth-plus consecutive zero-reply-target Accord run. New rejects this
+  pass: Ashkan_0_ETH Oct 24 f=48 machine-economy essay — thread-pulled, names
+  @termix_ai as the answer in paragraph two (AACP four-roles promo) and the
+  reply section is a TermiX engagement farm (every reply tags the product,
+  all f=1 generic praise, author answers each with "Exactly.") — tofudestiny/
+  NekiWeb3/LeonWgmii class; jaouad2d Oct 23 f=0 asks "what features will
+  TermiX offer for dispute handling?" — a competitor ask, answering with
+  Accord is an off-topic pitch into a promo thread; JannatSariha Oct 25
+  14:33 f=27 gTermix promo. Standing rejects reconfirmed: pcryptowoman Oct 14
+  f=148 (GenLayer/Internet Court named as the answer, 11 days stale),
+  truonggiangle99/Hasnain_Akhtar_ astroturf wave, Kleros brand necros,
+  Yellow launch promo, SchwoZ12/When_50SOL Aug wave.
+- Posting-state: from:xer0c since:2026-10-24 term-free, 30 results,
+  shape-verified (tweets+cursor, no error key) → replies + three self-RTs
+  05:27-05:28 + CET original 05:30 + mtndao video 06:36 + his 07:25
+  tiur_eth reply carrying an Accord link ("get a dipute resolved openly and
+  on-chain" — founder live vocabulary stays off-limits as carriers) → the
+  08:08 stat-inversion draft unposted → spent under the proposed-but-
+  unapproved law, overwritten, overwrite named in the DM (the 08:06
+  permissionless-creation draft it had overwritten stays spent too).
+- Angle: ballot modes — the 08:08 entry's fresh-left menu held ONE actionable
+  pick (batch-as-dispute-unit, "code-verify first"); everything else was
+  distance- or artifact-blocked (no-double-draw slash tokens 2 days,
+  antipre/containment/pay-victim families need distance, Canon naming
+  liveness-blocked, whitepaper .tex mtime still 10-13 so numbers/
+  process-narration dishonest). The code-verify read of create_dispute
+  surfaced the sibling fact (CF-020 replenishment precedent): the ADR-0025
+  options gate — Plurality enumerates 2..=MAX_OPTIONS(8) option hashes,
+  Median files ZERO options and the vote is a u64 fixed-point value, not an
+  index; aggregation is the per-subaccord parameter, frozen into CaseTerms
+  at filing (SPEC.md ix.4, constants.rs MAX_OPTIONS=8). Ever-run grep ZERO
+  for median / how much / up to eight / shape of / mode — no draft has ever
+  touched the aggregation surface; the spent 10-19 synod party-ballot draft
+  used the ballot for a different claim (options are the parties).
+- Draft: "up to eight options on a ballot. or none at all. / one mode picks
+  a winner. the other says how much. / the shape of the vote is a
+  parameter." Closer = parameter-fact flat, NEW family vs absence-fact (Rip
+  14:46), allocation-fact (Trib 14:15), effort-asymmetry (own 08:08),
+  market-test (own 08:06), definitional-flat (Trib 07:08),
+  exchange-antithesis (Rip 07:37), invariant-flat (Trib 06:06), binary-scope
+  (Rip 06:40) and the standing list. Register: mechanism-design fact (third
+  distinct Accord register today: openness 08:06, problem-frame 08:08, fact
+  here). 138 chars, 3 beats, no tags/hashtags/emoji, zero -ing, no
+  contractions.
+- Echo audit: no decides/disputes/jury/protocol/register/subaccord/
+  gatekeeper/empty/pool/token (own 08:06), no 98.6/collapse/judgment/launch
+  (own 08:08), no $20/ask/request/evidence/drawn/members/buy/question (Rip
+  07:37), no attendance/room/entry (Rip 06:40), no clamp/past/billing/
+  program/creation (Trib 07:08), no counter/account/numbers/ceiling (Trib
+  06:06), no pull/delivers/rent/recipient/pays/execution/bonus (Trib 14:15),
+  no crank/asleep/wallet/turn/still lands (Rip 14:46), no fee (third-slot
+  ban — Rip 06:40 + own 08:06 both carried it); "ballot" 6 days from the
+  spent synod draft, different claim, logged; "vote" 2 days from 10-23
+  support clause, logged; "winner" 6 days from synod pot economics, logged;
+  "parameter" 3 days from the 10-22 reply support clause, first run as a
+  closer; "who is right" rephrased to "picks a winner" because Rip 07:37 ran
+  "right" today. STE check 0 errors 0 warnings (8 unlisted words = subject
+  technical names + plain casual-register words).
+- Fresh left after this run: batch-as-dispute-unit STILL unrun as its own
+  axis (the unit-economics frame: one filing amortizes over many claims —
+  the 10-22 reply consumed only the razor; code-verify the batch surface
+  first), Canon curated-list naming (once liveness-safe),
+  no-double-draw/one-seat-one-slash (slash tokens 2 days — eligible ~10-31),
+  antipre steal-the-stake (honesty family — distance), per-pool
+  collateral-collapse containment (distance), pay-victim-not-to-appeal
+  (limits family — distance), whitepaper-numbers only after the .tex moves,
+  median use-case concretes (valuation/damages glosses — this run claimed
+  only the mode fact, the "how much" use-case beat stays unspent).
+- Delivery: hermes send attempt to Fabian's DM from a timestamped /tmp file;
+  if the auto-delivery guard fires, wrapper mode per standing doctrine.
+  Never posted — awaiting approval.
+
+## Payout-crank original + DM attempt (Riprap run, 2026-10-25T14:46)
+
+- Search: s1 = own/founder surface again (Sep 30 project triple, Oct 3
+  five-days update, Oct 5 JosipVolarevic2 pitch game already answered by
+  xer0c, Oct 15 naming banter), s2 = xer0c own posts + statements without
+  asks (Victusglobal Oct 25 11:20 f=42 payments-infra article drop —
+  statement, no ask, same call as the Trib 14:15 run; tracerbot Solana
+  token-check product post; 0xHoodMaxi dollar-products essay; CryptoCrows/
+  ChadSteingraber Franklin Templeton news; mjdwarner "let's mutual"
+  follow-back joke), s3 = standing rejects + travel-class mismatches
+  (solana official f=262, SuperteamDE x3 — founder-occupied class,
+  thetrackk f=94 Deutsche Bahn enthusiasm statement, heisenburgirrs road
+  trip, Luacantu attendance-joy statement, rendernetwork art event).
+  Zero reply targets — streak continues.
+- Posting-state: from:riprapxyz since:2026-10-25 term-free → 0 tweets,
+  shape-verified (tweets+cursor, no error key) → the 07:37 rights-stake
+  draft unposted → spent under the proposed-but-unapproved law; pending
+  file overwritten, overwrite named in the proposal.
+- Angle: the payout crank — fresh-left's "swig TokenDestinationLimit
+  payout installation" candidate rebuilt on the LIVE mechanism after
+  source-verification killed the swig framing: TokenDestinationLimit
+  appears nowhere in code (design note meta/Pool Program.md L65-69 only);
+  the shipped path is hanse claim_payout, "the permissionless payout
+  crank" (claim_payout.rs L8), and security test S1 proves a
+  non-authority cranker succeeds with payout to the claimant ATA (pilot
+  gate retired 2026-10-15) — the draft claims code truth, not the design
+  note. "Crank" word ownership is claim-scoped: the spent crank beat is
+  the DISSOLUTION direction (live Sep 16 "unused money returns", quoted
+  inside the 10-16 draft); this is the PAY-OUT direction on a different
+  instruction — 39 days live / 9 days draft distance, thematic callback
+  not echo, adjacency logged.
+- Draft shape (130 chars incl. breaks, 3 beats, no emoji/tags/hashtags,
+  lowercase): metonymy opener ("an approved payout is a crank."),
+  permissionless beat carried by "anyone can turn it" (the word
+  "permissionless" avoided — Accord's spent 08:06 angle word), member-
+  absent closer "you can be asleep for the whole thing." = absence-fact,
+  NEW family vs allocation-fact (Trib 14:15), effort-asymmetry (Accord
+  08:08), exchange-antithesis (own 07:37), definitional-flat (Trib 07:08),
+  market-test (Accord 08:06), invariant-flat (Trib 06:06), binary-scope
+  (own 06:40). Ever-run grep clean: "asleep" / "still lands" /
+  "in your wallet" / "anyone can turn" / "claimant" = 0 draft hits.
+- Echo audit: "anyone can" mid-beat in today's spent Accord 08:06 draft
+  ("anyone can register a subaccord") — common collocation, different
+  claim (payout crank vs subaccord registration), one prior proposal only,
+  logged; "juror-approved payout" ran only as support clause in the 10-17
+  two-doors rationale — new construction, different claim, 8 days,
+  logged; "the whole thing" exists only as a quoted live-feed precedent
+  inside an STE-check note, never drafted; no $20/buy/right/ask/question/
+  request/evidence/drawn/members (own 07:37), no attendance/room/
+  requirement (own 06:40), no clamp/create (Trib 07:08), no decides/
+  disputes/jury/protocol/register/gatekeeper/empty/pool (Accord 08:06),
+  no 98.6/collapse/judgment/easy (Accord 08:08), no pull/delivers/rent/
+  recipient/pays/absorbs/execution/bonus (Trib 14:15); "cranker" and
+  "redirect" avoided; "fee" avoided entirely; the draft never says "pool".
+- Layer 1 clean: platform mechanism, member-voiced you/your, no number/
+  event/peril/expiry/refund promise, no mutual/insurance/protocol;
+  liveness verified in deployed code (S1 + state.rs "Paid by
+  claim_payout"). STE descriptive 0 errors 0 warnings (10 unlisted =
+  technical names payout/crank/wallet + plain function words).
+- Fresh left for next run: bounty-template (recheck Oct 26 — tomorrow);
+  lifecycle finite-vs-ongoing + creation-flow terms-as-document (~Oct 29);
+  terms-hash immutability as its own axis (~Oct 29); juror unstake-anytime
+  (exit-adjacent, distance growing); zero-take first-pool economics
+  (founder scoping needed first); geographic Olympia/area (blocked while
+  the attendance binary stays warm); swig TokenDestinationLimit payout
+  installation stays on the list ONLY as a design note — re-verify in
+  code the day the pool-program treasury path ships; NEW candidates:
+  refund-direction "whatever is left comes back" promotion at 10+ days
+  from 10-16 (settlement-adjacent — exit-vocabulary check first), and
+  claim-restore/evidence-hash audit surface (needs distance from the
+  10-19 walkthrough AND from today's payout-crank draft — a
+  claim-lifecycle family is forming, space consecutive claim drafts).
+
+## CF-023 rent-routing original + DM attempt (Tributary run, 2026-10-25T14:15)
+
+- Twenty-fourth consecutive zero-reply-target run: s1 = xer0c own posts (May/Jun) + solana_sailor May showcase + arifkazi_ Oct 21 standing reject; s2 = Quicknode Jul 15 official tutorial, triton Aug/Feb product posts, _ClockIn ad, itsharmanjot May listicle, joshyote May, subyhq Aug update, arcenpayhq Oct 21 competitor promo (no ask), ImDenixSol Oct 10 joke register, Victusglobal Oct 25 11:20 f=39 payments-infra article drop (statement, no ask — no legal reply surface). Posting-state: from:tributaryso since:2026-10-24 term-free → empty, shape-verified (tweets+cursor, no error key) → the 07:08 clamp draft unposted → spent under the proposed-but-unapproved law; pending file overwritten, overwrite named in the proposal.
+- Angle: CF-023 composable rent routing — the 07:08 entry's fresh-left pick, first run. Ever-run grep clean: "0.002" only inside fresh-left notes; "bonus"/"wsol"/"unwrap"/"native" zero draft hits; "travels" chosen over "rides" (rides lives in riprap rationale text L1121, not a draft, but avoided anyway). Source-verified: execute_composable.rs L525-537 — NATIVE_OUTPUT branch, closeAccount sends ALL lamports (WSOL value + rent) to the recipient's system wallet because closeAccount is the only unwrap path at a system wallet (transfer_checked needs a token-account destination); comment verbatim: "the fee_payer absorbs ~0.002 SOL per native-output execution, the recipient gets a small bonus. Not exploitable." Transient intermediates confirmed L131/182/293/938. Claim set: rent travels with the value, split requires a WSOL account per recipient, payer absorbs ~0.002, recipient keeps the bonus.
+- Draft shape (251 chars, 3 beats, no emoji/tags/hashtags, lowercase): number-fact opener, mechanism beat with approved modal "must first hold one", trade-off beat. Closer "the recipient keeps a small bonus." = allocation-fact (value-destination flat), NEW family vs definitional-flat (Trib 07:08), invariant-flat (Trib 06:06), exchange-antithesis (Rip 07:37), effort-asymmetry (Accord 08:08), market-test (Accord 08:06), binary-scope (Rip 06:40), identity-fact (Accord 10-24 14:13), settlement-fact (Rip 10-24 13:31), zero-fact, enforcement-cost, memory-axis, proof-fact, flat-repetition, temporal-flat, characterization, conditional-"..", deadpan-flat, capability-negation. Echo audit: no clamp/back/billing/past/start (own 07:08); "wsol account" once mid-beat as technical name, not headline (own 06:06 headlined "account" — logged); "rent" once mid-beat, different claim vs 10-24 06:05 rent-payer memory (deletion-refund vs delivery-rider — claim-scoped ownership, 2 days, adjacency logged); "fee" avoided entirely per third-slot law (Rip 06:40 entry-fee + Accord fee-token already carried it today), rendered "whoever pays for the execution"; no $20/right/ask/request/question (Rip 07:37), no 98.6/collapse/judgment/easy (Accord 08:08), no gatekeeper/empty/decides (Accord 08:06), no attendance/room/requirement (Rip 06:40), no signer/key/remembers/its own/returns/hash/terms/deploy. "pull"/"recipient"/"delivers" = platform technical names, exempt class; "delivers native sol" mirrors PROJECT.md deliver-transform vocabulary (L138, "pull USDC, deliver SOL"). STE descriptive: 0 errors 0 warnings (15 unlisted = technical names + plain function words). Live-capability voiced ("when a pull delivers"), no usage/liveness claim.
+- Fresh left for next run: CF-014 pause-before-delete (eligible ~10-26 — one more day), emergency pause (still carrier-blocked on signer/key; any "the brake stops every pull. it cannot move a token." construction needs capability-negation distance check), CF-022 referral anti-squatting (recentered off "owner signs"; referral ran 10-21), CF-019 hold (double-adjacency), composable byte-range forward pin ("the gateway cannot swap in an arbitrary call" — PROJECT.md L139/METEORA.md, never run as an axis), UpTo only on Fabian's request.
+
+## Stat-inversion authenticity original + DM sent (Accord run, 2026-10-25T08:08)
+
+- Thirteenth-plus consecutive zero-reply-target Accord run. New rejects this pass: NekiWeb3 Oct 23 f=49 (poses "who decides whether the agent should get paid?", then answers itself with "@termix_ai approaches this through AACP" — LeonWgmii promo-register class, TermiX praise in replies), tofudestiny Oct 24 f=219 (names TermiX as the answer in paragraph two), s3 termix astroturf wave reconfirmed (tebogaduit95, GujilRuipa, truonggiangle99, OGFIGO, eyupyavuz75, elenalin01, CRBOTSignals bot reply). Standing rejects reconfirmed: Kleros brand necros (Oct 20 Argentina f=288), livjenkss Oct 20, milesdeutscher founder-occupied, Aug courtofinternet wave, SchwoZ12/When_50SOL/Hassan_01890 stale.
+- Posting-state: from:xer0c since:2026-10-24 term-free, 20 results, shape-verified (tweets+cursor, no error key) → replies plus CET original 05:30, mtndao video 06:36, and his own 07:25 tiur_eth reply dropping an Accord link ("get a dipute resolved openly and on-chain" — live founder vocabulary, off-limits as carriers: resolved/on-chain/openly) → the 08:06 permissionless-creation draft unposted → spent under the proposed-but-unapproved law, overwritten, overwrite named in the DM.
+- Angle: the ~98.6% launchpad-collapse stat (PROJECT.md L26) as the axis, inversion construction — the collapse number is the easy part, the 1.4% selection is the hard part. Never run (grep 98.6 / 1.4 / hard part / takes judgment / every other = zero draft hits; the stat lived only inside fresh-left lists). Spent 10-20 authenticity named beats ALL absent (name/symbol/logo copy mechanics, mint-address identity, lock-status/holder-concentration checker enumeration, "solana has no equivalent" gap closer) — 5-day adjacency logged; substrate-reuse precedent (10-24 14:13 filer-pays over riprap's juror-fees beat). Whitepaper process-narration considered and rejected: the .tex mtime is 10-13, review has not moved in-repo, no fresh progress claim is honest.
+- Draft: "98.6% of launchpad tokens collapse into pump and dumps. / the hard part is the other 1.4%: which one is the real project while it looks like every other launch. / it is easy to avoid all of them. it takes judgment to find the real one." Closer = effort-asymmetry flat, NEW family (minted this run) vs market-test (own 08:06), definitional-flat (Trib 07:08), exchange-antithesis (Rip 07:37), and the standing list. Register: stat-inversion problem-frame (off mechanism-design openness, off containment, off participation-economics). Echo audit: no decides/disputes/jury/protocol/register/subaccord/gatekeeper/empty/pool/token-as-carrier (own 08:06), no clamp/past/billing/program/creation (Trib), no $20/right/ask/request/evidence/drawn/members/buy/question (Rip), no fee/round/spam/payroll (10-24 14:13), no commit/reveal/slash (10-24 07:05), no on-chain/resolved (founder live today), no mint address/checkers/name-symbol-logo (10-20 spent); "collapse" beside Rip's 10-18 institution-collapse = different claim, 7 days, logged. 234 chars, 3 beats, lowercase, no tags/hashtags/emoji, zero -ing, no contractions. STE 0 errors 0 warnings (13 unlisted words = subject technical names).
+- Fresh left after this run: Canon curated-list naming (once liveness-safe), batch-as-dispute-unit (code-verify first), no-double-draw/one-seat-one-slash (slash tokens 1 day old — needs distance), antipre steal-the-stake (honesty family — needs distance), per-pool collateral-collapse containment (needs distance from the 10-23 closer AND the 10-24 containment register), pay-victim-not-to-appeal boundary (limits family — needs distance), whitepaper-numbers re-run only after the .tex moves again.
+- Delivery: hermes send to Fabian's DM went through first try ("sent"), no guard. Never posted — awaiting approval.
+
+## Rights-stake original + DM attempt (Riprap run, 2026-10-25T07:37)
+
+- Search: s1 = own/founder surface (Sep 23 pavankat interview, stale Oct 5
+  JosipVolarevic2 one-liner ask already answered by xer0c), s2 died on the
+  transient txid-expired 404 while siblings in the batch returned data —
+  single retry clean (fourth confirmation of the transient class: 10-23
+  mutual search, 10-24 agents-dispute timeout, 10-24 txid-404) — content:
+  tokenized-deposit threads, a declined-grant complaint, partnership spam,
+  Logically_JC joke register (f=1884, mismatch), zero event-cover or
+  Solana-protection asks. s3 = standing rejects only (heisenburgirrs road
+  trip, MonkeDAO, SuperteamDE, solana official, playbellabumper). Zero
+  reply targets — consecutive zero-reply-target run continues.
+- Posting-state check: from:riprapxyz since:2026-10-24 (term-free) → 0
+  tweets, shape-verified (tweets+cursor, no error key) → the 06:40
+  attendance-gate draft unposted → spent under the proposed-but-unapproved
+  law, overwritten (named in the proposal).
+- Angle: rights stake — the membership exchange never drafted: entry fee →
+  pool, the account tracks the deposit and mints a rights stake, the right
+  to request (PROJECT.md L37-38; Standard-tier $20 L67). Adjudication
+  support clause uses PROJECT.md L25's verb with the noun translated to the
+  plain gloss "what the pool is for" — "purpose" is a loaded carrier
+  (founder's live Oct 22 GPP any-purpose kills + purpose-pool
+  repositioning spent 10-20, 5 days). Ever-run grep clean: "right to
+  ask/request/file" and "rights stake" = 0 hits. All four ledger-named
+  fresh angles still blocked (bounty-template recheck Oct 26, lifecycle +
+  creation-flow ~Oct 29, juror unstake exit-adjacent).
+- $20 headline: official Layer-2 figure, 8 days from the spent 10-17 tier
+  table, 6 days from the 10-19 worked-example draft; new exchange
+  construction, no tiers/up-to/back, no refund direction.
+- Spent-axis compression: "drawn members" = the members-only-jury axis
+  (10-18, 7 days) as a support clause, the same promotion-precedent class
+  the 06:40 run used on the scope-card axis; adjacency logged here.
+- Draft shape that passed (152 chars incl. breaks): exchange opener ($20
+  headline, object-voiced, no we), support beat (request + evidence + drawn
+  members + plain purpose gloss), exchange-antithesis closer "you buy a
+  question, not an answer." — new closer family vs definitional-flat (Trib
+  07:08), market-test (Accord 08:20), binary-scope (own 06:40),
+  invariant-flat (Trib 06:06), identity-fact, settlement-fact, zero-fact,
+  enforcement-cost, memory-axis, proof-fact, characterization,
+  temporal-flat, conditional-"..", flat-repetition, deadpan-flat,
+  capability-negation. Echo audit: no attendance/room/requirement/entry-fee
+  (own 06:40), no clamp/back-pay/billing/program/creation (Trib 07:08), no
+  decides/disputes/jury/protocol/register/gatekeeper/empty (Accord 08:20);
+  "pool" = own platform technical name beside Accord's juror-pool claim,
+  different direction, logged; "buy" 2 days from a mid-draft Accord 10-23
+  use, different claim, logged; "fee" avoided entirely — would be the third
+  same-day proposal carrying it.
+- Layer 2 clean: pilot-anchored number, no platform claim, no
+  liveness/refund/expiry promise, no banned Layer-1 words. STE check
+  0 errors 0 warnings (flagged words = project vocabulary).
+- @riprapxyz angle ledger after this run (used, spent, or LIVE adds):
+  rights stake (10-25 07:37, proposed-unposted) added to the standing spent
+  list (mechanism summary, RWA framing, why-now enablers, Blade Pool
+  announcement, dissolution/crank, starter-pack banter, engine quote-post
+  LIVE 10-14, fixed-cost nobody-sells 10-14, fail-cap 10-15, worked example
+  10-15 + 10-19, two-blockers 10-16, naming story 10-16, tier table 10-17,
+  two-doors-out 10-17, members-only jury 10-18, institution-collapse 10-18,
+  claim walkthrough 10-19, unfunded-promise 10-20, purpose-pool
+  repositioning 10-20, three-track 10-21, hero line 10-21, exit-rules
+  founder-rewritten LIVE 10-22, non-agency 10-23, epoch-scope 10-23,
+  browser-create 10-24, scope-card 10-24, attendance-gate 10-25). Fresh
+  left: bounty-template (recheck Oct 26); lifecycle finite-vs-ongoing +
+  creation-flow terms-as-document (~Oct 29); juror unstake-anytime
+  (distance grows, still exit-adjacent); NEW candidates for the next
+  mining pass: zero-take first-pool economics (retired-"no company"
+  adjacency — needs founder scoping before drafting), terms-hash
+  immutability as its own axis (exit-rules support clause, needs week
+  distance from 10-22), geographic scope Olympia/area (blocked while the
+  attendance binary stays warm — same-day construction twin), swig
+  TokenDestinationLimit payout installation (plumbing, thin).
+
+## CF-005 create-time clamp original + DM attempt (Tributary run, 2026-10-25T07:08)
+
+- Twenty-third consecutive zero-reply-target run: s1/s2 = xer0c own posts (May/Jun/Oct), standing rejects (solana_devs Aug 3 tutorial, arifkazi_ Oct 21 volume flex, SolanaFndn/solanapayments/SolanaFloor Jun 2, CloakdDev Aug 21, coinbase Sep 27 payroll tease, triton Aug 18), competitor promo with no ask (arcenpayhq Oct 21 f=129/f=243/f=66, mesub_io Sep 3 waitlist, SublyFi Jun 12/13, zkdamien Jun 8), Helgaweb_3 Sep 3 collab-bait f=0 under mesub's post. Posting-state: from:tributaryso since:2026-10-24 term-free → empty (shape-verified tweets+cursor) → the 06:06 two-counter draft unposted → spent, overwritten, overwrite named in the proposal.
+- Angle: CF-005 create-time clamping — the 06:06 run's designated fresh pick. Ever-run grep clean ("clamp" only inside 06:06's fresh-left note; "back pay"/"billing period"/"arrear"/"retroactive" zero hits). Source-verified: create_payment_policy.rs L90-94 ("Adjust schedule fields for creation (CF-005): clamp past due dates and force PayAsYouGo period start to now. Single source of truth in shared::schedule — the composable create path uses the same helper."), schedule.rs L1733-1780 (past subscription due clamped to now; future due untouched; PAYG current_period_start forced to now). Claim set: creation succeeds (clamp, not reject), nothing accrues for pre-creation time, helper shared by regular + composable paths.
+- Draft shape that passed (217 chars incl. breaks): thought-experiment opener ("hand the program..."), mechanism beat (active voice, agent = the program), definitional-flat closer "the past is not a billing period." — new family vs invariant-flat (Trib 06:06 today), binary-scope flat (Rip 06:40 today), identity-fact (Accord 10-24 14:13), settlement-fact (Rip 10-24 13:31), zero-fact (Trib 10-24 13:10), enforcement-cost (Accord 10-24 07:05), memory-axis (Trib 10-24 06:05), proof-fact (Rip 10-24 06:37), flat-repetition (Trib 10-23 13:05), temporal-flat/characterization/conditional-".."/deadpan-flat/capability-negation (10-23); 5-day distance from the streaming-razor image closer ("a drip has no calendar.", 10-20 13:04) — different family, different carriers, logged. Carrier rotation: no account/counter/number/id/issued/ceiling (Trib today), no attendance/pool/room/entry-fee/requirement (Rip today), no spam/payroll/attack/juror (Accord 10-24), no signer/key/remembers/its own/returns/hash/terms/deploy/".."; "creation" once mid-beat (06:06 also mid-beat, logged); "pay" vs Accord's "payroll" = generic payment noun, different claim, logged. STE descriptive: 0 errors 1 warning ("billing" = domain technical name in "billing period"; structural zero, 10-23 precedent). No emoji, no tags, no hashtags, lowercase throughout.
+- Fresh-left for next run: CF-014 pause-before-delete (eligible ~10-26 at a week past OneTime's 10-19 "pause-or-delete" support clause — promotion needs construction change + adjacency logged; also adjacent to spent rent/close family), CF-023 composable rent routing (~0.002 SOL transient intermediate; never run; read execute_composable.rs L532 first), CF-022 referral anti-squatting (referral ran 10-21; "owner signs" collides with zero-fact "users sign nothing" carriers — recenter before drafting), CF-019 non-decreasing milestone timestamps (double-adjacency: spent CF-020 fixed-order 10-23 AND today's monotonic-counter beat "the numbers only move up" — "dates only move forward" echoes both, hold), emergency pause (never run; "stops signer swaps" phrasing blocked by signer/key carriers — needs a carrier-silent construction), UpTo re-run only if Fabian asks (spent 10-16).
+
+## Permissionless-creation original + DM delivered (Accord run, 2026-10-25T08:06)
+
+- Twelfth-plus consecutive zero-reply-target Accord run. New rejects this pass: tebogaduit95 Oct 24 f=365 termix/AACP essay (astroturf promo, LeonWgmii/handeh777 class), Kleros Oct 20 Argentina f=288 (brand announcement, asks nothing), Kleros Sep 15 ClawBank + Sep 17 Ricardian (brand necros), CoinMarketCap Jun 25 AAA news + Forbes Jul 10 agentic juries (stale news). Standing rejects reconfirmed: milesdeutscher Oct 6 founder-occupied, livjenkss Oct 20, theoneneeobari Oct 14 f=70 Amazon story (11 days stale, barrandland age), SchwoZ12/When_50SOL/Nnenne070/Hassan_01890/Sejan71 Aug-Sep wave.
+- Posting-state: from:xer0c since:2026-10-24 term-free, 20 results, shape-verified → replies only + two non-Accord originals (CET clock-change 05:30, mtndao video 06:36) → the 10-24T14:13 spam-economics draft never posted → spent, overwritten, overwrite named in the DM.
+- Angle: permissionless subaccord creation — the ledger's standing fresh pick, first run. Axis = pool ADMISSION (any wallet registers a court, picks the two mints), deliberately disjoint from the spent 10-21 stake-vs-competence (juror competence, attestation, self-selection — no shared beat, 4 days anyway). Code-verified: create_subaccord.rs creator is a bare Signer, init PDA [SEED_SUBACCORD, creator, domain_ref], no authority gate; state.rs L39 "A specialized Juror pool. Permissionless"; staking_token + fee_token creator-chosen (ADR-0002/0020).
+- Draft: "who decides which disputes deserve a jury? / not the protocol. anyone can register a subaccord, pick its staking token and its fee token. / no gatekeeper. a bad pool sits empty." Closer "a bad pool sits empty." = market-test flat, NEW family (minted this run) vs binary-scope (Rip 10-25), invariant-flat (Trib 10-25), identity-fact, settlement-fact, enforcement-cost, memory-axis, proof-fact, characterization, temporal-flat, conditional-"..", flat-repetition, deadpan-flat, capability-negation, zero-fact. Register: mechanism-design openness (off containment, off participation-economics).
+- Echo audit: "pool" once, juror-pool technical name, different claim than Rip's event-membership pool (logged); no counter/account/id/issued/numbers/ceiling/creation-carrier (Trib), no room/entry/members/attendance/cover/event (Rip), no attestation/stake-proves/expertise (10-21), no fee/round/spam/payroll (10-24 14:13), no commit/reveal/slash (10-24 07:05), no price/buy (10-23), no "its own". 175 chars, 3 beats, no tags/hashtags/emoji, zero -ing, no contractions. STE 0 errors, 1 warning ("staking" = field name, technical-name allowance).
+- Delivery: hermes send to Fabian's DM went through first try ("sent"), no guard. Never posted — awaiting approval.
+
+## Attendance-gate original + DM attempt (Riprap run, 2026-10-25T06:40)
+
+- Zero-reply-target again. Task searches: riprap query = own posts +
+  JosipVolarevic2 pitch game (standing reject, founder-occupied Oct 5);
+  mutual/insurance/protection pool = xer0c own posts + fintechlawyerkc FDIC
+  stablecoin-notice thread (banking compliance, no ask) + Logically_JC f=1875
+  "doesn't understand crypto" (joke register, brand reply unsolicited) +
+  0x_vcharles insurance-career story (statement, no ask); breakpoint
+  min_faves:30 = heisenburgirrs road trip (standing reject), SuperteamDE Oct
+  15 who's-coming (poll-parent law), MonkeDAO newsletter, playbellabumper
+  arcade promo, solana Oct 14 schedule mega-thread (official class),
+  SuperteamEarn travel boosts. New candidate checked and rejected: CapinUK
+  Oct 20 "26 days ... entire trip covered for less than £300" (f=32),
+  thread-pulled — replies are a Nomadz promo circle (@NOMADZxyz tagged in
+  every reply, "book your stays today"), zero asks, and the parent is his own
+  reveal-setup ("tomorrow I'll tell you how") = promo register; product
+  mismatch too (trip/travel cover ≠ event-area peril cover). Own-thread
+  check: Sep 17 announcement (2110575598607274484) tweet pull returned
+  tweet:null twice while sibling calls returned data — per-tweet quirk on the
+  old thread root, not auth death, single retry done; last known state stays
+  the 10-22 ledger note (eyes-emoji + joke replies, no asks).
+- Posting-state check: from:riprapxyz since:2026-10-24 term-free → 0 tweets,
+  shape-verified (top-level tweets+cursor, no error key) → the 10-24T13:31
+  scope-card draft unposted → spent under the proposed-but-unapproved law,
+  overwritten by this run, overwrite named in the proposal.
+- Angle: attendance gate — PROJECT.md narrowing-table row 5 (anyone may join
+  → conference attendance required). Never run on any surface; every prior
+  "attendance" ledger hit is reply-target class, never a drafted axis.
+  Load-bearing claim = WHO joins, distinct from the spent 10-24 scope-card
+  (WHAT/WHEN cover applies); "The cover follows the event." is the spent axis
+  compressed to a support clause, changed construction, adjacency logged. All
+  four ledger-named fresh angles blocked today: bounty-template rechecks Oct
+  26, lifecycle finite-vs-ongoing and creation-flow terms-as-document ~Oct 29
+  (epoch/GPP distance), juror-duty weak + exit-adjacent. 21 days to
+  Breakpoint — trip-decision window, the eligibility fact at its most useful.
+- Draft shape that passed (187 chars incl. breaks): requirement-first opener
+  (off yesterday's "The blade pool <verb>" template), fee-not-enough beat,
+  follows/So-do anaphora beat, binary-scope flat closer "In the room, or not
+  in the pool." — new closer family vs invariant-flat (Trib 10-25 06:06),
+  identity-fact (Accord 10-24 14:13), settlement-fact (Rip 10-24 13:31),
+  zero-fact, enforcement-cost, memory-axis, proof-fact, characterization,
+  temporal-flat, conditional-"..", flat-repetition. Echo audit: no
+  counter/account/id/issued (Trib today); "entry fee" beside Accord's
+  yesterday juror-fee claims = generic project noun, different claim,
+  logged; no "members" as closer bearer (Rip yesterday ended on members —
+  here it is mid-draft support, settlement verbs absent); scope-card tokens
+  all avoided (runs/opens/closes/window/event-area/date beat);
+  "blade pool"/"Breakpoint" official names, exempt class; no
+  its-own/remembers/returns/signer/key/hash/terms/deploy. Layer 2 clean:
+  instance surface, no platform claim, no liveness claim (requirement stated
+  as policy, like yesterday's definitional opener precedent), peril word not
+  needed. STE descriptive: 0 errors 0 warnings (flagged words = technical
+  names + plain english). No emoji, no tags, no hashtags, sentence case.
+- Delivery: hermes send attempt per task text ("The send_message call in
+  step 5 IS the delivery"); guard outcome picks DM vs wrapper mode.
+
+## Two-counter original + DM attempt (Tributary run, 2026-10-25T06:06)
+
+Zero-reply-target again: s1/s2 searches = xer0c own posts, standing rejects (solana_devs Aug 3, arifkazi_ Oct 21), arcenpayhq Oct 21 competitor promo/hiring (f=243/f=66, promo register, no ask), rest months stale. Posting-state from:tributaryso since:2026-10-24 term-free → empty → 10-24T13:10 signer-swap draft spent-unapproved, pending file overwritten (overwrite named in DM proposal).
+
+Draft: "one account, two counters: one for direct policies, one for composable policies. / a payment policy #1 and a composable #1 share one account. different counters, different addresses. / the numbers only move up. at the ceiling, creation fails. no id is issued twice." (263 chars, 3 beats, no emoji/tags/hashtags.)
+
+Shape notes: angle = counter separation, ever-run grep clean ("counter" only inside 10-24T13:10's never-run note). Source-verified: user_payment.rs L27/L31 (two u32 counters, zeroed at create, never reset), create_payment_policy.rs L107 / create_composable_policy.rs L196 (checked_add, CF-021 — saturating_add at u32::MAX would collide IDs, checked_add errors instead), distinct PDA seed prefixes → #1+#1 at different addresses. Closer family minted: invariant-flat ("no id is issued twice.") — distinct from zero-fact (Trib 10-24 13:10), settlement-fact (Rip 13:31), identity-fact (Accord 14:13), enforcement-cost (Accord 07:05), memory-axis (Trib 06:05), proof-fact (Rip 06:37), flat-repetition (Trib 10-23 13:05). "creation fails" kept mid-beat so no enforcement-closer collision. Carrier rotation: no "key"/"signer" (yesterday's Trib carriers), no "remembers"/"its own"/"returns"/"..". STE 0/0 (descriptive; flagged words = technical names). Fresh-left for next run: CF-019 non-decreasing milestone timestamps (adjacent to spent CF-020 fixed-order — needs construction distance), CF-022 referral anti-squatting owner-signs (referral chain ran 10-21, different beat), CF-005 create-time clamping ("a fresh meter starts now" semantics), CF-014 pause-before-delete (adjacent to spent rent/close family), UpTo still never run as an axis.
+
+## Spam-economics original + DM delivered (Accord run, 2026-10-24T14:13)
+
+- Zero viable reply targets. S1 = xer0c own posts + Aug essay re-serves (SchwoZ12, When_50SOL, Ola3803, Varashe_Baniya, oddareagainstme) + Kaptaein_ May stale promo + barrandland Oct 13 agent-essay (11 days, no ask). S2 = Kleros_io brand necros 2018-2025. S3 = livjenkss standing reject, milesdeutscher founder-occupied Oct 6, handeh777 Oct 24 03:47 astroturf (standing, same termix complex), ONE fresh candidate: @LeonWgmii Oct 24 01:52 agent-pays-agent-delivers-garbage essay (f=89, 54 replies) — thread-pulled and REJECTED: promo register (names @termix_ai as the answer twice) plus engagement-farm replies (generic one-liners, two verbatim duplicates, every reply tags the product). Freshness does not rescue an astroturf reply section; the astroturf class now includes same-day termix-adjacent essays on both schedules seen.
+- Posting-state check: from:xer0c since:2026-10-23 (term-free, 20 results) — replies only Oct 22-24, every foreign parent paired with an xer0c reply, no originals → the 10-24T07:05 veto draft unposted → spent under the proposed-but-unapproved law, overwritten, overwrite named in the proposal.
+- Angle: frivolous-filing spam economics — the 07:05 ledger's designated fresh pick, whitepaper-verified (sec:attack "Frivolous filing" lines 1229-1233): every filing and appeal pays a full tender up front; spam pays N_i*f per round it forces the pool to adjudicate; drawn jurors keep the fees regardless of the ruling. Participation-economics family — rotation off containment (07:05) and honesty (10-23 x2).
+- Beat-spent adjacency logged: filer-pre-pays ran 10-19 as a NAMED beat (riprap claim walkthrough, "front the round-1 juror fees") and fee-as-floor 10-22 (cost-floor reply); this construction is neither (spam billing + juror retention; "front"/"floor" tokens absent) and the per-round-forced + keep-regardless claims never ran. Named-beat risk accepted because the load-bearing inversion (the attacker funds the adjudicators) is a different claim, on a different surface, 5 days out.
+- Draft shape that passed (208 chars incl. breaks): fact-first mechanics opener (fee before draw), per-round + retention beat ("whatever the ruling, the jurors keep the fees."), identity-fact closer "the attack is the payroll." — new closer family vs zero-fact (Trib 13:10 same day), settlement-fact (Rip 13:31 same day), enforcement-cost (Accord 07:05 same day), memory-axis, proof-fact, and 10-23's six. Echo audit: no price/priced/buy (10-23 ceiling), no slashes/silent seats/commit/reveal (07:05), no signer/key/returns/goes back/remembers/its own/hash/terms/deploy (siblings); "juror"/"draws" shared with 07:05 as core technical names, different claims; "ruling" mid-draft support only (10-23 closer token, 1 day, different claim — logged). STE check 0 errors 1 warning ("ruling" = protocol's own output name, structural zero). Lowercase, no emoji, no tags, no hashtags, zero -ing, no contractions.
+- @xer0c/Accord angle ledger after this run (adds): frivolous-filing spam economics (10-24 14:13, spent unposted). Fresh left: permissionless Subaccord creation new frame, authenticity add-ons (~98.6% stat, checker enumeration, Canon naming once liveness-safe), batch-as-dispute-unit new frame, no-double-draw/one-seat-one-slash (AVOID next to 07:05's slash tokens — same-day carrier), antipre steal-the-stake (honesty family, 3rd in 3 days — needs distance), per-pool collateral-collapse containment (needs distance from 10-23 closer), pay-victim-not-to-appeal boundary (limits family — needs distance from 10-23 ceiling), panel-size double-edge slice of capture (distance fine since 10-20).
+- Search quirk: s3 died httpx.ReadTimeout (stderr traceback, empty file) while s1 + state returned — retry once, clean, sibling-with-data class extends to transport timeouts, not just txid-404. s2 txid-404 on first call also retried clean same run — transient class third confirmation.
+- Delivery: hermes send to Fabian's DM from /tmp/accord_dm_20261024T1413.txt — "sent" first try, no auto-delivery guard fired. Final response: one-line status per task text.
+
+## Cover-window scope-card original + DM delivered (Riprap run, 2026-10-24T13:31)
+
+- Zero-reply-target run continues. New reject: bigchog's Oct 24 07:08 "getting ready for breakpoint 2026" meme (f=102, joke register — a brand reply under a meme reads unsolicited, and the peril register bans joking adjacent to it). Standing rejects reconfirmed: heisenburgirrs road trip (06:37 class), SuperteamDE who's-coming (10-23 poll-parent law), boardyai epoch follow-up (angle spent + founder-scoping ban), official countdowns. Search quirk: the breakpoint query died txid-expired-404 on first call, clean on retry one minute later with sibling searches fine throughout — transient class confirmed a second time.
+- Posting-state check: from:riprapxyz since:2026-10-23 (term-free) → empty → the 10-24T06:37 browser-create draft unposted → spent under the proposed-but-unapproved law, overwritten, overwrite named in the proposal.
+- Angle: the pilot's cover-window perimeter as a scope card — pilot-aware register rotation off the 06:37 platform-surface beat, 22 days to Breakpoint. The window-equals-conference fact ran ONLY as a support clause in the spent 10-17 two-doors draft ("coverage opens and closes with the conference"); axis-promotion fresh with changed construction ("for exactly as long as the conference runs" — no phrasing reuse). "Nov 15-17. Olympia, London." sits as a MIDDLE ground beat; the date-naming closer family stays retired (mined 10-14..10-18). Settlement ran 10-19 only as the math block's refund/dissolve step — different beat, different verb, 5 days.
+- Draft shape that passed (222 chars incl. breaks): scope-sentence opener, duration razor + grounds beat, lifecycle-completion beat with settlement-fact closer "Then what is left returns to the members." — new closer family vs memory-axis (Trib 06:05), proof-fact (Rip 06:37), enforcement-cost (Accord 07:05), zero-fact (Trib 13:10), and 10-23's temporal-flat/characterization/conditional-".."/flat-repetition. Echo audit: "returns" ≠ Accord's same-day "goes back" (different words, different claims — dispute refund vs pool remainder); "settle" (spent epoch-reply vocabulary, 10-23), "split" (Trib fee-split, 2 days) and "goes back" all avoided; "request window" = official policy term, technical names do not rotate; no "its own", no hash/terms/deploy tokens (this morning's carrier), no "signer" (Trib 13:10 carrier), no time-fact closer. STE check 0 errors 0 warnings (flagged words = technical names). Layer 2 clean: peril/event/numbers/lifecycle legal on an instance surface, zero platform claim, zero liveness claim. No emoji/tags/hashtags.
+- Delivery: hermes send to Fabian's DM from /tmp/riprap_dm_20261024T1331.txt — "sent" first try, no auto-delivery guard fired. Final response: one-line status per task text.
+
+## Signer-swap original + DM delivered (Tributary run, 2026-10-24T13:10)
+
+- Twenty-first consecutive zero-reply-target run. Task searches: standing
+  rejects only (xer0c own posts, harkl_ May 17 founder-occupied, ImDenixSol
+  joke, QuicknodeSolana tutorial, joshyote stale x402) plus fresh non-asks
+  (arifkazi_ Oct 21 stablecoin-volume flex, gloamtrade Oct 20 privacy
+  pitch, shoehorn class). Supplementary "how to automate payments on
+  solana": JosipVolarevic2 referral game, zostaff heist drama,
+  solana_devs quantum post, ivan_nomadz fellowship promo. No asks.
+- Posting-state check: from:tributaryso since:2026-10-23 (term-free) ->
+  empty -> the 10-24T06:05 rent-payer draft unposted -> spent under the
+  proposed-but-unapproved law, overwritten, overwrite named in the
+  proposal. No original posted since Oct 13.
+- Angle: gateway signer swap — operational/lifecycle family, deliberate
+  rotation off account-close (06:05 same day) and off milestone.rs
+  (10-22/10-23). Source-verified in
+  programs/tributary/src/instructions/gateway/change_gateway_signer.rs:
+  gateway.signer is a plain field, handler swaps it under the authority's
+  signature; gateway PDA seeds [GATEWAY_SEED, authority] so the address
+  never moves; new_signer is an UncheckedAccount (the new key signs
+  nothing to take over); emits GatewaySignerChanged; blocked under
+  emergency pause. Ledger grep: signer/rotation/counter angles never run;
+  OneTime spent 10-19; UpTo listed spent.
+- Draft shape that passed (218 chars incl. breaks): field-not-identity
+  opener ("one field on the gateway account"), swap-mechanics beat with
+  address-stability consequence ("does not move, so every policy still
+  points there"), zero-fact closer "users sign nothing." — new closer
+  family vs memory-axis (Trib 10-24 06:05), proof-fact (Rip 10-24 06:37),
+  enforcement-cost (Accord 10-24 07:05). Echo audit: "key" token avoided
+  entirely because Trib 06:05 ran "one extra key" the same morning —
+  "signer" carries the draft; no remembers/memory, no "its own", no
+  conditional, no -ing forms. STE check 0 errors 0 warnings (flagged =
+  technical names + plain english). No emoji, no tags, no hashtags,
+  lowercase.
+- @tributaryso angle ledger after this run (adds): signer swap
+  (10-24 13:10). Fresh left: CF-019 non-decreasing timestamps
+  (milestone.rs 46-56), CF-018 unused-bits rejection (72-76), separate
+  policy/composable counters (never run), emergency pause (never run),
+  income-waterfall (blocked on N-recipient routing, not live),
+  dead-man's-switch (needs not-live scoping). Keep reply hunting first.
+- Delivery: DM mode per task text ("The send_message call in step 5 IS
+  the delivery"); hermes send to Fabian's DM from
+  /tmp/tributary_dm_20261024T1310.txt — "sent" first try, no
+  auto-delivery guard fired. Final response: one-line status.
+
+## Veto-by-abstention original + DM delivered (Accord run, 2026-10-24T07:05)
+
+- Zero viable reply targets. S1 dispute resolution solana = xer0c own posts + Aug essay re-serves (SchwoZ12 x2, When_50SOL, Ola3803, Hassan_01890 Jun, SimonDesue Aug 16 reply-necro) + SolanaEvents Aug 28 promo. S2 = Kleros brand necros 2019-2025 + Vitalik 2021 + pcryptowoman Oct 7 GenLayer (standing). S3 agents-payments-dispute = ONE fresh candidate, handeh777 Oct 24 03:47 agentic-commerce essay (f=16 r=14) — thread-pulled and REJECTED: livjenkss-class no-ask essay and the reply section is an engagement farm praising "termix"/"gTermix" ("Keep exploring gTermix", "termix system simply transfers trust from the agents doing the work to the agents") — astroturf adjacency. Also livjenkss Oct 20 5th reject, ryvexbt Oct 3 GenLayer promo, huckof2015 Oct 23 question addressed AT @GenLayer (not our ask), Kleros Sep 15 ClawBank.
+- Posting-state check: from:xer0c since:2026-10-23 (term-free, 20 results) — replies only Oct 22-23 (stablecoins, tokenized agreements, Breakpoint x2, AI-text, freelance, GLM subscription, obsidian .md, gold/sol joke, StephNass, goodhartproof, edgarpavlovsky), no originals → the 10-23T14:05 ceiling draft unposted → spent under the proposed-but-unapproved law, overwritten, overwrite named in the proposal.
+- Angle: veto-by-abstention — the 10-23 ledger's designated fresh pick, whitepaper-verified this run (sec:attack lines 1222-1227): coalition withholds reveals -> redraw ladder -> dispute Failed -> refund; "The outcome is a refund, not a wrong ruling"; cost lambda*seats*attempts in slashes plus lost fees. Mechanism/containment family, not honesty-admission (the two honesty drafts sat 10-23 07:05 + 14:05).
+- Draft shape that passed (179 chars incl. breaks): capability-fact opener ("simply never reveal" — the attack is trivial to attempt), containment beat with mid-line fragment "no wrong verdict.", enforcement-cost closer "and each attempt slashes the silent seats." — new closer family vs Trib 10-24 memory-axis, Rip 10-24 proof-fact, and 10-23's six families; the retired "the program refuses." beat was a refusal claim, this is a repeated-cost claim. Echo audit: "the money goes back" avoids Trib 10-24's "refund" token; no remembers/memory, no "its own", no price/priced (spent with the ceiling razor), no capture/bribe/commit vocabulary, no spent figures. STE 0 errors 0 warnings (flagged = technical names). Lowercase, no emoji, no tags, no hashtags, zero -ing, no contractions.
+- @xer0c/Accord angle ledger after this run (adds): veto-by-abstention (10-24 07:05, spent unposted). Fresh left: permissionless Subaccord creation new frame, authenticity add-ons (~98.6% stat, checker enumeration, Canon naming once liveness-safe), batch-as-dispute-unit new frame, no-double-draw/one-seat-one-slash (small, lines 1131-1136), antipre steal-the-stake (honesty family — the non-honesty gap now sits filled by this run, reusable), per-pool collateral-collapse containment (needs distance from the 10-23 closer), pay-victim-not-to-appeal boundary (lines 1121-1126, mined this run), frivolous-filing spam-pays-jurors beat (lines 1229-1233, mined this run).
+- Delivery: DM mode per task text ("The send_message call in step 5 IS the delivery"); hermes send to Fabian's DM from /tmp/accord_dm_20261024T0720.txt — "sent" first try, no auto-delivery guard fired. Final response: one-line status.
+
+## Browser-create original + DM delivered (Riprap run, 2026-10-24T06:37)
+
+- No viable reply target. Task searches: riprap query = own posts + JosipVolarevic2 pitch game (standing reject); mutual/insurance/protection pool = SoFi/JPMorgan tokenized-deposit explainers, Chamath necro-bait, mutual_sol sportsbook promo, xer0c own posts — no ask anywhere; breakpoint min_faves:30 = SuperteamDE who's-coming (founder image reply inside, closed per the 10-23 poll-parent law), heisenburgirrs Georgia→UK road trip (rhetorical "unforeseen problems - or can they?", ad-auction promo register, not an ask), Luacantu card thread (RSVP-shaped), platis_e official class. boardyai epoch follow-up re-pulled: still 0 replies, but the epoch-scope angle is spent (10-23T06:38 unapproved) and the brand cannot extend epoch semantics past founder scoping — window closed unless re-run.
+- Posting-state check: from:riprapxyz since:2026-10-23 (term-free) → empty → the 10-23T13:45 non-agency draft unposted → spent, overwritten, overwrite named in the proposal.
+- Angle: browser creation surface — the fresh axis the 10-23 stale-note observation opened (#/create shipped end-to-end per AGENTS.md while the 10-19 ledger still blocked creation beats). Mechanics all from AGENTS.md: riprap-def/v1 terms doc, policy_hash + domain_ref preview, browser initialize_mutual, hash-gated CAS PUT of exact bytes, GET read-back verify. Adjacency to the spent 10-20 immutability beat handled by axis: create journey + verification, zero purpose-immutability wording.
+- Draft shape that passed (224 chars incl. breaks): you-voiced capability opener (off the founder's live Oct 22 "anyone to pool money" construction), three-step true-sequence beat (write/see/deploy), on-chain-hash fact beat, CAS+read-back closer "proves the match." — proof-fact family, new vs memory (Trib 10-24 06:05), characterization (Rip 10-23 13:45), conditional-".." (Accord 10-23 14:05), flat-repetition (Trib 10-23 13:05). No "its own", no remembers/memory, no conditional, no -ing. Layer 1 clean. STE check 0 errors 0 warnings. No emoji/tags/hashtags. 22 days to Breakpoint; pilot mine empty (tier table, claim process, worked example, exit rules, epoch scope, non-agency all spent/live) — register rotates off yesterday's judgment axis onto a shipped-surface capability beat.
+- Delivery: hermes send to Fabian's DM from /tmp/riprap_dm_20261024T0637.txt — "sent" first try, no auto-delivery guard fired (unlike Trib 06:05). Final response: one-line status per task text.
+
+## Rent-payer memory original + DM delivery (Tributary run, 2026-10-24T06:05)
+
+- Twentieth consecutive zero-reply-target run. Task searches returned only
+  standing rejects: xer0c own posts (May 11 solana_devs pitch, May 13
+  e-commerce launch, Jun 5 two-roads, Mar 26 build intro, harkl_ May 17 —
+  founder-occupied), solana_devs + jacobvcreech Aug 3 SF-Subscriptions
+  praise class, QuicknodeSolana Jul 15 official tutorial, Doodlegenics Mar
+  25 necro, arcenpayhq Oct 21 intro + hiring wave reconfirmed (competitor
+  promo, asks nothing), ImDenixSol toly joke, joshyote May 10 x402 story
+  (stale, no ask). No new asks.
+- Posting-state check: from:tributaryso since:2026-10-22 (term-free) →
+  empty → the 10-23T13:05 mint re-validation draft unposted → spent under
+  the proposed-but-unapproved law, overwritten, overwrite named in the
+  proposal. No original posted since Oct 13.
+- Angle: rent-payer memory — deliberate rotation off milestone.rs (CF-015
+  10-22, CF-020 10-23 06:04, mint re-validation non-milestone 10-23 13:05);
+  first account-close-family draft. Source-verified: creation stores
+  fee_payer as rent_payer (create_payment_policy.rs:127,
+  create_user_payment.rs:61, create_composable_policy.rs:210);
+  shared/account_close.rs resolve_rent_destination does require_keys_eq!
+  exact-key match (default key → owner, historical fallback);
+  delete_payment_policy.rs:66-77 drains full account lamports there. Copy
+  stays one-beat: store → refund → revert.
+- Draft shape that passed (188 chars incl. breaks): one-extra-key opener,
+  consequence + enforcement beats ("any other key and the tx reverts."),
+  memory-axis closer "the account remembers." — new closer family vs
+  10-23's six proposals (capability-negation, deadpan-flat, temporal-flat,
+  flat-repetition, characterization, conditional-".."). First proposal of
+  the day: downstream Accord/Riprap runs stay off "remembers"/"memory"
+  tokens. Echo audit clean: "rent" never in live posts (Oct 11 cleanup was
+  stale fee copy, different topic). No emoji, no tags, no hashtags,
+  lowercase, zero -ing forms. STE 0 errors 0 warnings (flagged words =
+  technical names + plain english).
+- @tributaryso angle ledger after this run (adds): rent-payer memory
+  (10-24 06:05). Fresh left: CF-019 non-decreasing timestamps
+  (milestone.rs lines 46-56), CF-018 unused-bits rejection (lines 72-76),
+  income-waterfall (blocked on N-recipient routing, not live),
+  dead-man's-switch (needs not-live scoping). Keep reply hunting first.
+- Delivery: DM mode (task text: "The send_message call in step 5 IS the
+  delivery"); sent via hermes send from /tmp/tributary_dm_20261024T0605.txt.
+
+## Security-value-ceiling razor original + DM delivery (Accord run, 2026-10-23T14:05)
+
+- Zero viable reply targets. Task searches: S1 dispute resolution solana =
+  xer0c own posts (Aug 05 MetaDAO razor, Aug 12 devnet update, Oct 08
+  whitepaper, Oct 14 hard-to-bribe checklist, Oct 16 wake-up) + courtofinternet
+  astroturf (oddareagainstme Aug 16) + garybasin 2022 necro + Kleros brand;
+  S2 = pcryptowoman GenLayer promos (Oct 7 standing) + Kleros brand + Vitalik
+  2021 necro; S3 agents-payments-dispute = livjenkss Oct 20 no-ask essay (4th
+  reject) + hally_jnr July GenLayer advertorial + pcryptowoman x2 +
+  SlayneOnchain Aug astroturf.
+- Posting-state check: from:xer0c since:2026-10-23 (term-free, 20 results) —
+  replies only today, 08:38-10:59 (harkl_ stablecoins, @solana tokenized
+  agreements/real-world risk, BSCNews push-vs-pull, SuperteamDE x2 Breakpoint,
+  readylayerone AI-text, SolanaSensei PHP, simonmolitor, edgarpavlovsky,
+  goodhartproof), no originals, no commit-window text → the 07:05 commit-window
+  draft unposted → spent under the proposed-but-unapproved law, overwritten,
+  overwrite named in the proposal. Day-kills: tokenization/agreements,
+  real-world risk, stablecoins, push/pull payments, breakpoint, freelance,
+  AI-writing-patterns vocabulary.
+- Angle: security-value ceiling — the 07:05 entry's designated fresh pick,
+  whitepaper-verified this run (sec:ceiling lines 362-372, eq:ceiling;
+  sec:attack eq:bribe lines 1170-1190 + eq:stakecost 1191-1215): "Capture of a
+  dispute is priced, not impossible. An attacker controls an outcome through a
+  stake majority or through bribery. The cheaper path sets the ceiling" /
+  "Applications must file disputes only for values below C*". Non-math framing
+  per the ledger note. "buy the jurors" spent part of the bribery vocabulary;
+  the literal word "bribe" stays in reserve.
+- Draft shape that passed (163 chars incl. breaks): razor opener "every
+  verdict has a price." (new opener family vs spent source-naming 10-19 and
+  confession 10-20), two-paths beat (the mechanism's actual two paths,
+  two-item list), conditional-prediction closer "if the pot is worth more than
+  that, someone will buy the ruling .." — new closer family vs today's five
+  proposals (Trib 06:04 capability-negation, Rip 06:38 deadpan-flat, Accord
+  07:05 temporal-flat, Trib 13:05 flat-repetition, Rip 13:45
+  characterization); no "its own" reflexive (Trib 06:04 + Rip 13:45 both ran
+  "its own" tokens today). Distance: no 30(f+lambda)/2,000/6,150 figures
+  (spent 10-19), no panel/coin-toss beat (spent 10-20), the word "capture"
+  nowhere (claim-scoped to 10-20 at only 3 days), no collusion/commit
+  vocabulary (spent 07:05). STE check: 0 errors 1 warning ("ruling" =
+  protocol's own output name; structural zero). No emoji, no tags, no
+  hashtags, lowercase, straight punctuation, zero -ing forms, no contractions.
+- @xer0c/Accord angle ledger after this run (used or spent adds):
+  commit-reveal (10-16 07:04), wallet-filing (10-16 14:06), stake-vs-ai-jury
+  (10-17, spent), worked-example numbers (10-17, spent), encrypted-evidence
+  (10-18, spent), appeal-tender math (10-18, spent), bribery-escalation
+  (10-19, spent), synod party-ballot (10-19, spent), prediction-market-oracle
+  (LIVE 10-19 15:50, founder-run — do not rerun), capture-math (10-20, spent),
+  token-impersonation authenticity (10-20, spent), evidence-vs-introspection
+  reply (10-21 07:06, spent unposted), stake-vs-competence (10-21 14:04, spent
+  unposted), cost-floor reply (10-22 07:08, spent unposted), ex-ante-criteria
+  reply (10-22 14:05, spent unposted), commit-window receipt honesty (10-23
+  07:05, spent unposted), security-value ceiling (10-23 14:05). Fresh left:
+  panel-size double-edge slice of capture (capture spent 10-20 — distance
+  fine), permissionless Subaccord creation new frame (competence frame
+  consumed 10-21), authenticity add-ons (~98.6% launchpad-collapse stat,
+  checker enumeration, Canon naming once liveness-safe), batch-as-dispute-unit
+  as an ORIGINAL (needs a new frame), no-double-draw / one-seat-one-slash beat
+  (small, paper lines 1131-1136), antipre steal-the-stake future-work beat
+  (lines 1151-1157, honesty family — two honesty-family drafts now sit 07:05 +
+  14:05 today; put one non-honesty proposal between before reusing),
+  veto-by-abstention refund-not-wrong-ruling beat (lines ~1216-1221, mined
+  this run while verifying sec:attack), per-pool collateral-collapse
+  containment beat (eq:stakecost context, mined this run — adjacent to this
+  run's closer, needs distance).
+- Delivery: DM mode — task text names the step-5 send as the delivery and
+  caps the final response at one line, so the hermes send DM IS the delivery
+  (2026-10-23T13:05 restoring rule); sent from time-stamped temp file
+  /tmp/accord_dm_20261023T1405.txt.
+
+## Pool non-agency original + DM delivery restored (Riprap run, 2026-10-23T13:45)
+
+- No viable reply target this pass. Task searches: riprap = own posts only;
+  mutual/insurance (one transient txid 404, retried clean) = xer0c own posts +
+  Vitalik Feb 14 hedging essay (905 replies, necro/celebrity) + harkl_ April +
+  Paxos March; breakpoint min_faves:30 = official/community/brand set
+  (SuperteamDE Aug bounty + Oct 15 who's-coming, SuperteamUK, superteam,
+  rendernetwork RSVP, eventninja, solana Dec 2025, farhaj Jan, SolanaFndn).
+  Founder day-kills 10-23: the 09:40 "@solana ... tokenize and sell real-world
+  risk on chain" reply (risk-tokenization framing dead today, cross-surface);
+  simonmolitor's "be there starting 13/11" Breakpoint post occupied 10:56
+  ("looking forward to meeting irl"); SolanaSensei ranking + goodhartproof +
+  edgarpavlovsky threads all founder-occupied by 11:00.
+- Poll-parent mining: SuperteamDE Oct 15 who's-coming (50 replies) —
+  founder-occupied in-thread (xer0c image reply 08:09) and replies are RSVPs,
+  no asks. boardyai's epoch follow-up (2113284297612476490) still open (0
+  replies, 3 views) but its angle was proposed 06:38 — spent, not rerun; noted
+  in the DM that Fabian can still fish the 06:38 shape from the morning
+  proposal if he wants it.
+- Posting-state check: from:riprapxyz since:2026-10-23 (term-free) → empty →
+  the 06:38 epoch-scope draft unposted → spent under the proposed-but-
+  unapproved law, overwritten, overwrite named in the proposal.
+- Angle: pool non-agency — PROJECT.md line 56 verbatim razor ("The pool never
+  decides anything; it files a dispute with Accord via CPI and enforces the
+  ruling"), grounded by the shipped restore surface (Dispute.evidence_hashes[0]
+  verify, AGENTS.md → "evidence hash-pinned"). Fresh axis check: 10-18 ran WHO
+  judges, 10-19 the member journey, 10-17 the money doors, 10-14 the engine
+  internals — the pool's own non-discretion never ran on any surface.
+  Ledger-named fresh angles all blocked today: bounty-template (fun-pools Mert
+  bounty echo, recheck Oct 26), lifecycle finite-vs-ongoing (epochs distance,
+  week+), creation-flow terms-as-document (GPP any-purpose echo, ~Oct 29),
+  juror unstake-anytime (exit-adjacent, live-consumed yesterday). "boring
+  engineering: collect, adjudicate, disburse" re-verified SPENT (consumed by
+  the 10-18 institution-collapse draft as its closer beat).
+- Draft shape that passed (187 chars incl. breaks): verbatim razor opener,
+  three-step true-sequence chain (filing -> ruling -> payout; sequence, not an
+  enumeration), flat characterization closer "A pool with no opinion of its
+  own." — new closer family (judgment-axis; the 10-21 "The money never gets a
+  boss." was command-axis, 2 days). Deliberate decide/decide/opinion anaphora.
+  "dispute filing" = technical name (STE permitted); "drawn peers" one shared
+  term with the spent 10-21 hero draft, different axis (precedent-acceptable).
+  Layer 1 clean: no insurance/protocol/mutual, no number/event/peril/expiry/
+  refund. STE: tweet block 0 errors 1 warning (technical name); remaining
+  findings confined to rationale metadata. Sentence case, no emoji, no tags,
+  no hashtags, no we-line (frame post; bio anchors identity). 23 days to
+  Breakpoint.
+- @riprapxyz angle ledger after this run (used, spent, or LIVE adds):
+  mechanism summary, RWA framing, why-now enablers, Blade Pool announcement,
+  dissolution/crank (feed Sep 16), starter-pack banter, engine quote-post
+  (LIVE Oct 14), fixed-cost nobody-sells (10-14), fail-cap reply (10-15,
+  spent), worked example + one-month beat (10-15, spent), two-blockers (10-16
+  06:35), naming story (10-16 13:34), tier table (10-17 06:33, spent),
+  two-doors-out (10-17 13:33, spent), members-only jury (10-18 06:33, spent),
+  institution-collapse (10-18 13:33, spent), worked-example math (10-19 06:33,
+  spent), fun pools (LIVE 10-19 09:09, founder-run), claim-process walkthrough
+  (10-19 13:36, spent), unfunded-promise reply (10-20 06:36, spent),
+  purpose-pool repositioning (10-20 13:35, spent), three-track decomposition
+  (10-21 06:31, spent), self-governing-money hero razor (10-21 13:34, spent),
+  cover-template member line (10-22 06:36, spent unposted), exit-rules reply
+  (10-22 13:39, LIVE founder-rewritten — do not rerun), epoch-scope reply
+  (10-23 06:38, spent unposted), pool non-agency (10-23 13:45, spent
+  unposted). Fresh left: bounty-template (recheck Oct 26), lifecycle
+  finite-vs-ongoing (~Oct 29+, new frame required), creation-flow
+  terms-as-document (~Oct 29), juror-duty experiential (weak). Breakpoint week
+  Nov 8-15 is the pilot-beat moment; keep reply hunting.
+- Delivery: DM mode restored per task text ("The send_message call in step 5
+  IS the delivery" + one-line final response) — sent via hermes send from
+  /tmp/riprap_dm_20261023T1345.txt.
+
+## Mint re-validation original + DM delivery restored (Tributary run, 2026-10-23T13:05)
+
+- Nineteenth consecutive zero-reply-target run. Task searches returned only
+  standing rejects (xer0c own posts incl. the Oct 21 arifkazi_ thread,
+  founder-occupied via the 08:57 slides reply; solana_devs/solana official
+  class; Doodlegenics Mar 25 necro). New reject: MeteoraEco Oct 22 ecosystem
+  recap (promo register, asks nothing; its agent-metering items
+  corinedotin/miniroutersh are third-party progress notes, not asks).
+- Posting-state check: from:tributaryso since:2026-10-20 (term-free) →
+  empty → the 06:04 CF-020 draft unposted → spent under the
+  proposed-but-unapproved law, overwritten, overwrite named in the
+  proposal. No original posted since Oct 13.
+- Angle: mint re-validation — the ledger transfer-hook pick, upgraded
+  during source verification: shared/mint.rs validate_mint_compatible
+  rejects six Token-2022 extensions (reasons code-commented; TransferHook
+  = "arbitrary transfer-time CPI"), and BOTH create_payment_policy.rs
+  (~line 80) and execute_payment.rs (~line 113) re-validate with the
+  comment "Token-2022 extensions (TransferHook, TransferFee) are mutable
+  post-creation ... could have become hostile" — the check travels with
+  every pull. First non-milestone angle since 10-21.
+- Draft shape that passed (193 chars incl. breaks): mutable-extension
+  opener, we-voiced enforcement beat ("we re-validate the mint at every
+  pull." + fragment "policy creation too."), flat repetition closer "a
+  signup check covers signup day." — new closer family. Closer law:
+  rotated off "X cannot Y" (would have been the third consecutive
+  proposal in that family) and off "the program refuses." (06:04 spent
+  enforcement beat). No emoji, no tags, no hashtags, lowercase, zero -ing
+  forms. STE 0 errors 0 warnings (flagged words = technical names).
+- @tributaryso angle ledger after this run (adds): CF-020 fixed-order
+  (10-23 06:04, spent unposted), mint re-validation (10-23 13:05). Fresh
+  left: income-waterfall (blocked on N-recipient routing, not live),
+  dead-man's-switch (needs not-live scoping), CF-019 non-decreasing
+  timestamps (milestone.rs lines 46-56), CF-018 unused-bits rejection
+  (lines 72-76). Keep reply hunting first.
+- Delivery: task text now says "The send_message call in step 5 IS the
+  delivery" + "Final response: one line of status only" — explicit DM
+  restoration overriding the 10-16T14:06 wrapper precedent (whose
+  "self-DM forbidden" precondition no longer holds). Sent via hermes
+  send from /tmp/tributary_dm_20261023T1305.txt.
+
 ## Commit-window receipt honesty original + wrapper delivery (Accord run, 2026-10-23T07:05)
 
 - Zero viable reply targets. Task searches: xer0c own posts, Kleros_io brand 2018-2025, pcryptowoman GenLayer promos (Oct 7 + Oct 14, standing), courtofinternet astroturf (oddareagainstme, Varashe_Baniya, SchwoZ12, Aug), Ord_ahmed FUD/GenLayer essay 28 days stale, livjenkss Oct 20 marketplace forecast re-rejected (no-ask essay, 28 replies, dispute resolution = one bullet of four), t54ai Mastercard promo off-topic, garybasin 2022 necro, SimonDesue stale. Own-thread check: Oct 14 whitepaper post (2110254298667847789) — lone outsider reply berliangor (fractal governance) answered by the founder live 11:21 same day; resolved.

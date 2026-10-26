@@ -1,0 +1,54 @@
+{
+  "fabian-writing-style": {
+    "archived_at": null,
+    "created_at": "2026-10-23T13:00:16.938926+00:00",
+    "created_by": null,
+    "last_patched_at": "2026-10-26T08:29:10.782490+00:00",
+    "last_used_at": "2026-10-26T08:09:01.770163+00:00",
+    "last_viewed_at": "2026-10-26T07:55:06.014657+00:00",
+    "patch_count": 51,
+    "pinned": false,
+    "state": "active",
+    "use_count": 32,
+    "view_count": 11
+  },
+  "rmslop": {
+    "archived_at": null,
+    "created_at": "2026-10-23T13:02:40.245289+00:00",
+    "created_by": null,
+    "last_patched_at": null,
+    "last_used_at": "2026-10-26T08:09:38.631307+00:00",
+    "last_viewed_at": "2026-10-26T08:09:37.793255+00:00",
+    "patch_count": 0,
+    "pinned": false,
+    "state": "active",
+    "use_count": 16,
+    "view_count": 16
+  },
+  "simplified-technical-english": {
+    "archived_at": null,
+    "created_at": "2026-10-23T13:00:17.290913+00:00",
+    "created_by": null,
+    "last_patched_at": null,
+    "last_used_at": "2026-10-26T08:09:02.010195+00:00",
+    "last_viewed_at": null,
+    "patch_count": 0,
+    "pinned": false,
+    "state": "active",
+    "use_count": 21,
+    "view_count": 0
+  },
+  "tributary": {
+    "archived_at": null,
+    "created_at": "2026-10-23T13:00:16.558235+00:00",
+    "created_by": null,
+    "last_patched_at": "2026-10-25T14:10:06.922377+00:00",
+    "last_used_at": "2026-10-26T07:00:46.540711+00:00",
+    "last_viewed_at": null,
+    "patch_count": 7,
+    "pinned": false,
+    "state": "active",
+    "use_count": 7,
+    "view_count": 0
+  }
+}

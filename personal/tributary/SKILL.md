@@ -115,10 +115,14 @@ Admin: ChangeProgramAuthority, SetEmergencyPause
 
 - User does NOT sign CreatePaymentPolicy or CreateUserPayment (fee_payer does)
 - Manual close with CLOSE_DISCRIMINATOR (not Anchor's default close)
+- rent_payer stored at account creation (the fee_payer's key — create_payment_policy.rs:127, create_user_payment.rs:61, create_composable_policy.rs:210); deletion refunds the full rent to that exact key via require_keys_eq! (shared/account_close.rs resolve_rent_destination, InvalidRentPayer on mismatch), Pubkey::default() → owner as historical fallback. Verified in source 2026-10-24; proven tweet angle: "the account remembers." (rent-payer memory, Tributary run 10-24).
 - policy_id is monotonic per UserPayment (never reused)
-- Separate counters: PaymentPolicy IDs come from `created_policies_count`, ComposablePolicy IDs from `created_composable_count` — independent counters; a regular policy #1 and a composable #1 coexist on one UserPayment
-- Emergency pause blocks all execute_payment calls
-- Transfer hook mints are rejected at UserPayment creation
+- Separate counters: PaymentPolicy IDs come from `created_policies_count`, ComposablePolicy IDs from `created_composable_count` — independent counters; a regular policy #1 and a composable #1 coexist on one UserPayment. Both counters are u32, zeroed at account creation and written only at policy creation — deletion never decrements them, so an ID is never reused even after its policy is gone; at the u32 ceiling `checked_add` fails creation with `ArithmeticOverflow` rather than let `saturating_add` collide with the prior ID (CF-021, create_payment_policy.rs ~L107 / create_composable_policy.rs ~L196, verified in source 2026-10-25)
+- Create-time schedule sanitization (CF-005, verified in source 2026-10-25): `sanitize_policy_for_creation` (shared/schedule.rs) clamps a past subscription due date to now — future due dates untouched — and forces a PayAsYouGo `current_period_start` to now. Creation succeeds with the clamp: no retroactive billing, nothing accrues for pre-creation time. The composable create path calls the same helper (create_payment_policy.rs ~L90-94), so both policy families get it.
+- Emergency pause blocks all execute_payment calls and gateway signer changes
+- ChangeGatewaySigner swaps `gateway.signer` under the authority's signature — the gateway PDA (seeds `[gateway, authority]`) never moves, so every policy keeps pointing at it; `new_signer` is an UncheckedAccount, the new key takes over without signing anything (source-verified 2026-10-24, change_gateway_signer.rs). Proven copy angle: "users sign nothing." (signer swap, Tributary run 10-24)
+- Token-2022 mint compatibility (verified in source 2026-10-23): `validate_mint_compatible` (programs/tributary/src/shared/mint.rs) rejects six extensions — ConfidentialTransferMint (amounts hidden from program logic), NonTransferable, PermanentDelegate (authority can seize/reassign), TransferHook (arbitrary transfer-time CPI), TransferFeeConfig (fees distort amounts), MintCloseAuthority. The check re-runs at policy creation AND at every execute (create_payment_policy.rs ~L80, execute_payment.rs ~L113) — extensions are mutable post-creation, so a mint clean at signup "could have become hostile" mid-policy (the code comment's words). Legacy SPL mints always pass. Proven copy angle 2026-10-23: the check travels with every pull.
+- Composable native-output rent routing (CF-023, verified in source 2026-10-25): in NATIVE_OUTPUT mode the intermediate WSOL account is closed with `closeAccount` — the only way to unwrap WSOL at a system wallet, since `transfer_checked` needs a token-account destination — so the rent-exempt minimum (~0.002 SOL) travels with the value to the recipient's system wallet. The fee_payer absorbs ~0.002 per native-output execution; the recipient keeps a small bonus. Named trade-off in the code (`execute_composable.rs` ~L525-537, comment closes "Not exploitable"); intermediates are transient per execution. Copy takeaway: an honest named cost with a hard number — and note "travels" was the 10-23 mint-check draft's carrier, so re-center the motion verb if that angle ever re-runs.
 
 ## Composable Pull Payments (LIVE on Mainnet)
 
@@ -211,7 +215,7 @@ make test_surfpool     # Full suite (Rust + jest) against a running Surfpool ins
 
 ### Repo Search
 
-search_files/ripgrep does not surface this tree, and a full-tree grep times out (target/ build artifacts). Grep a narrow subdir — `grep -ril <term> programs/tributary/src --include=*.rs` — or read modules directly by import path (a `shared::referral` import in execute_payment.rs → `programs/tributary/src/shared/referral.rs`).
+search_files/ripgrep does not surface this tree, and a full-tree grep times out (target/ build artifacts). Grep a narrow subdir — `grep -ril <term> programs/tributary/src --include=*.rs` — or read modules directly by import path (a `shared::referral` import in execute_payment.rs → `programs/tributary/src/shared/referral.rs`). Instruction files are NOT flat in `src/` — they group under `src/instructions/<family>/`: `execute_composable.rs` lives at `programs/tributary/src/instructions/composable/execute_composable.rs`, `execute_payment.rs` at `src/instructions/payment/` (a fresh-left note citing the bare filename cost a failed grep first, observed 2026-10-25).
 
 ## Code Style
 
